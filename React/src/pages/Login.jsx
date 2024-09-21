@@ -15,15 +15,15 @@ export default function Login() {
             </div>
             <div className={"right-side"}>
                 <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt=""/>
-                <label htmlFor="email">email ou cpf</label>
+                <label htmlFor="email">EMAIL OU CPF</label>
                 <input type="text" id="email" placeholder="email ou cpf"/>
-                <label htmlFor="senha">senha</label>
-                <input type="text" id="senha" placeholder="senha"/>
+                <label htmlFor="senha">SENHA</label>
+                <input type="password" id="senha" placeholder="senha"/>
 
-                <button>
-                    <i className="bi bi-feather2"></i>
-                    entrar
-                    <i className="bi bi-feather2"></i>
+                <button className="button-login">
+                    <i className="bi bi-feather2 left"></i>
+                    Iniciar
+                    <i className="bi bi-feather2 right"></i>
                 </button>
             </div>
         </div>
