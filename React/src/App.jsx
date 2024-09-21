@@ -11,21 +11,54 @@ import Login from './pages/Login';
 import Perfil from "./pages/Perfil.jsx";
 import Registros from "./pages/Registros.jsx";
 import Configuracoes from "./pages/Configuracoes.jsx";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./assets/ContextoDoUsuario.jsx";
+import {toggleClassOnBody} from "./systems/ThemeSystems.jsx";
 
 function App() {
 
+  const [loading, setLoading] = useState(true);
+
   const location = useLocation();
 
-  const { tema } = useContext(UserContext);
+  const { tema, setTema } = useContext(UserContext);
+
+  useEffect(() => {
+    handleThemeLocalState();
+  }, []);
+
+  useEffect(() => {
+    const htmlElement = document.documentElement;
+
+    htmlElement.classList.add('disable-scroll');
+
+    const timer = setTimeout(() => {
+      htmlElement.classList.remove('disable-scroll');
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  function handleThemeLocalState() {
+    const tema = localStorage.getItem("tema");
+    if (tema === "dark") {
+      setTema("dark");
+      toggleClassOnBody("root-light", "root-dark");
+    } else {
+      setTema("light");
+      toggleClassOnBody("root-dark", "root-light");
+    }
+    setLoading(false);
+    console.log("Bunchin: tema carregado.");
+  }
 
   return (
-    <main className={`appMain display-flex-center ${tema}`}>
-      {/* <h5>React CRUD operations using PHP API and MySQL</h5> */}
+      <main className={`appMain display-flex-center ${tema}`}>
+        {/* <h5>React CRUD operations using PHP API and MySQL</h5> */}
 
 
-      {/* <nav>
+        {/* <nav>
         <ul>
           <li>
             <Link to="/">List Users</Link>
@@ -35,21 +68,28 @@ function App() {
           </li>
         </ul>
       </nav> */}
-      {location.pathname !== "/login" && <NavBar/>}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/sobre" element={<Sobre />}/>
-        <Route path="/contato" element={<Contato/>}/>
-        <Route path="/perfil" element={<Perfil />} />
-        <Route path="/registros" element={<Registros />} />
-        <Route path="/configuracoes" element={<Configuracoes />} />
+        <div>
+          {(loading) && (
+              <div id="loader">
+                <div className="loader"/>
+              </div>
+          )}
+        </div>
+        {location.pathname !== "/login" && <NavBar/>}
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/sobre" element={<Sobre/>}/>
+          <Route path="/contato" element={<Contato/>}/>
+          <Route path="/perfil" element={<Perfil/>}/>
+          <Route path="/registros" element={<Registros/>}/>
+          <Route path="/configuracoes" element={<Configuracoes/>}/>
 
-        <Route path="/Login" element={<Login />} />
-        <Route path="user/create" element={<CreateUser />} />
-        <Route path="user/:id/edit" element={<EditUser />} />
+          <Route path="/Login" element={<Login/>}/>
+          <Route path="user/create" element={<CreateUser/>}/>
+          <Route path="user/:id/edit" element={<EditUser/>}/>
 
-      </Routes>
-    </main>
+        </Routes>
+      </main>
   );
 }
 
