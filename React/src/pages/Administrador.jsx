@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -20,12 +20,12 @@ export default function Administrador() {
         const value = event.target.value;
         setInputs(values => ({...values, [name]: value}));
     }
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
         axios.post('http://localhost:80/api/user/save', inputs).then(function(response){
             console.log(response.data);
-            navigate('/');
         });
         
     }
@@ -98,14 +98,14 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input funcao"}>
                             <label>FUNÇÃO</label>
-                            <select defaultValue={"comum"}>
+                            <select defaultValue={"comum"} name={"funcao"} onLoad={handleChange} onChange={handleChange}>
                                 <option value={"comum"}>Comum</option>
                                 <option value={"administrador"}>Administrador</option>
                             </select>
                         </div>
                         <div className={"article-inputs-input cargo"}>
                             <label>CARGO</label>
-                            <select defaultValue={"estagiario"}>
+                            <select defaultValue={"estagiario"} name={"cargo"} onLoad={handleChange} onChange={handleChange}>
                                 <option value={"estagiario"}>Estagiário</option>
                                 <option value={"auxiliar-administrativo"}>Auxiliar administrativo</option>
                                 <option value={"gerente"}>Gerente</option>
@@ -114,7 +114,7 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input departamento"}>
                             <label>DEPARTAMENTO</label>
-                            <select defaultValue={"administrativo"}>
+                            <select defaultValue={"administrativo"} name={"departamento"} onLoad={handleChange} onChange={handleChange}>
                                 <option value={"administrativo"}>Administrativo</option>
                                 <option value={"financeiro"}>Financeiro</option>
                                 <option value={"marketing"}>Marketing</option>
