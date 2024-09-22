@@ -2,27 +2,20 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Administrador() {
 
-    const [funcionarios, setFuncionarios] = useState(["Logan Sanders", "Arimo"]);
+    const navigate = useNavigate();
+
+    const [indexFuncionario, setindexFuncionario] = useState([]);
+
+    const [funcionarios, setFuncionarios] = useState([]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
 
     const { tema } = useContext(UserContext);
 
     const [inputs, setInputs] = useState([]);
-
-    useEffect(() => {
-        const defaultValues = {
-            funcao: "comum",
-            cargo: "estagiario",
-            departamento: "administrativo"
-        };
-
-        for (const [name, value] of Object.entries(defaultValues)) {
-            handleChange({ target: { name, value } });
-        }
-    }, []);
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -39,14 +32,25 @@ export default function Administrador() {
         
     }
 
+    useEffect(() => {
+        getUsers();
+    }, []);
+
+    function getUsers() {
+        axios.get('http://localhost:80/api/users/').then(function(response) {
+            console.log(response.data);
+            setFuncionarios(response.data);
+        });
+    }
+
     function GenerateEmployeesButtons({funcionarios}) {
 
         return (
             <article className={"article-employees"}>
                 {funcionarios.map(funcionario => (
-                    <div key={funcionario} className={`employee-item ${funcionarioSelecionado === funcionario ? "ativo" : ""}`}
-                         onClick={handleEmployeeButtonClick(funcionario)}>
-                        <p className={"nome"}>{funcionario}</p>
+                    <div key={funcionario.cpf} className={`employee-item ${funcionarioSelecionado === funcionario.nome ? "ativo" : ""}`}
+                         onClick={handleEmployeeButtonClick(funcionario.cpf)}>
+                        <p className={"nome"}>{funcionario.nome}</p>
                     </div>
                 ))}
             </article>
@@ -59,10 +63,34 @@ export default function Administrador() {
     }
 
     function handleEmployeeButtonClick(funcionario) {
-        return () => {
-            setFuncionarioSelecionado(funcionario);
-        }
+        setFuncionarioSelecionado(funcionario);
+        setindexFuncionario(funcionarios.findIndex(funcionario => funcionario.cpf === funcionarioSelecionado));
     }
+
+    console.log(inputs);
+    console.log(indexFuncionario);
+
+
+    useEffect(() => {
+        if (funcionarioSelecionado) {
+            setInputs(funcionarios[indexFuncionario]);
+        } else {
+            const defaultValues = {
+                n_registro: "",
+                nome: "",
+                email: "",
+                senha: "",
+                cpf: "",
+                funcao: "comum",
+                cargo: "estagiario",
+                departamento: "administrativo"
+            };
+    
+            for (const [name, value] of Object.entries(defaultValues)) {
+                handleChange({ target: { name, value } });
+            }    
+        }
+    }, [funcionarioSelecionado]);
 
     return (
         <main className={`mainCommon administrador ${tema}`}>
@@ -87,7 +115,7 @@ export default function Administrador() {
                     <article className={"article-inputs"}>
                         <div className={"article-inputs-input nome"}>
                             <label>NOME COMPLETO</label>
-                            <input placeholder={"exemplo da silva paiva"} type={"text"} name={"nome"} onChange={handleChange}></input>
+                            <input value={inputs.nome ? inputs.nome : ""} placeholder={"exemplo da silva paiva"} type={"text"} name={"nome"} onChange={handleChange}></input>
                         </div>
                         <div className={"article-inputs-input email"}>
                             <label>EMAIL</label>
@@ -107,14 +135,14 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input funcao"}>
                             <label>FUNÇÃO</label>
-                            <select defaultValue={"comum"} name={"funcao"} onChange={handleChange}>
+                            <select defaultValue={"comum"} name={"funcao"} onLoad={handleChange} onChange={handleChange}>
                                 <option value={"comum"}>Comum</option>
                                 <option value={"administrador"}>Administrador</option>
                             </select>
                         </div>
                         <div className={"article-inputs-input cargo"}>
                             <label>CARGO</label>
-                            <select defaultValue={"estagiario"} name={"cargo"} onChange={handleChange}>
+                            <select defaultValue={"estagiario"} name={"cargo"} onLoad={handleChange} onChange={handleChange}>
                                 <option value={"estagiario"}>Estagiário</option>
                                 <option value={"auxiliar-administrativo"}>Auxiliar administrativo</option>
                                 <option value={"gerente"}>Gerente</option>
@@ -123,7 +151,7 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input departamento"}>
                             <label>DEPARTAMENTO</label>
-                            <select defaultValue={"administrativo"} name={"departamento"} onChange={handleChange}>
+                            <select defaultValue={"administrativo"} name={"departamento"} onLoad={handleChange} onChange={handleChange}>
                                 <option value={"administrativo"}>Administrativo</option>
                                 <option value={"financeiro"}>Financeiro</option>
                                 <option value={"marketing"}>Marketing</option>
