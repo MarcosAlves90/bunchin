@@ -2,11 +2,8 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export default function Administrador() {
-
-    const navigate = useNavigate();
 
     const [funcionarios, setFuncionarios] = useState(["Logan Sanders", "Arimo"]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
@@ -14,6 +11,18 @@ export default function Administrador() {
     const { tema } = useContext(UserContext);
 
     const [inputs, setInputs] = useState([]);
+
+    useEffect(() => {
+        const defaultValues = {
+            funcao: "comum",
+            cargo: "estagiario",
+            departamento: "administrativo"
+        };
+
+        for (const [name, value] of Object.entries(defaultValues)) {
+            handleChange({ target: { name, value } });
+        }
+    }, []);
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -98,14 +107,14 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input funcao"}>
                             <label>FUNÇÃO</label>
-                            <select defaultValue={"comum"} name={"funcao"} onLoad={handleChange} onChange={handleChange}>
+                            <select defaultValue={"comum"} name={"funcao"} onChange={handleChange}>
                                 <option value={"comum"}>Comum</option>
                                 <option value={"administrador"}>Administrador</option>
                             </select>
                         </div>
                         <div className={"article-inputs-input cargo"}>
                             <label>CARGO</label>
-                            <select defaultValue={"estagiario"} name={"cargo"} onLoad={handleChange} onChange={handleChange}>
+                            <select defaultValue={"estagiario"} name={"cargo"} onChange={handleChange}>
                                 <option value={"estagiario"}>Estagiário</option>
                                 <option value={"auxiliar-administrativo"}>Auxiliar administrativo</option>
                                 <option value={"gerente"}>Gerente</option>
@@ -114,7 +123,7 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input departamento"}>
                             <label>DEPARTAMENTO</label>
-                            <select defaultValue={"administrativo"} name={"departamento"} onLoad={handleChange} onChange={handleChange}>
+                            <select defaultValue={"administrativo"} name={"departamento"} onChange={handleChange}>
                                 <option value={"administrativo"}>Administrativo</option>
                                 <option value={"financeiro"}>Financeiro</option>
                                 <option value={"marketing"}>Marketing</option>
