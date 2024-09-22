@@ -61,7 +61,7 @@ export default function Administrador() {
             <article className={"article-employees"}>
                 {funcionarios.map(funcionario => (
                     <div key={funcionario.cpf} className={`employee-item ${funcionarioSelecionado === funcionario.nome ? "ativo" : ""}`}
-                         onClick={() => handleEmployeeButtonClick(funcionario.cpf)}>
+                         onClick={() => handleEmployeeButtonClick(funcionario)}>
                         <p className={"nome"}>{funcionario.nome}</p>
                     </div>
                 ))}
@@ -75,10 +75,11 @@ export default function Administrador() {
     }
 
     function handleEmployeeButtonClick(funcionario) {
-        setFuncionarioSelecionado(funcionario);
+        setFuncionarioSelecionado(funcionario.cpf);
         setindexFuncionario(funcionarios.findIndex(funcionario => funcionario.cpf === funcionarioSelecionado));
     }
 
+    console.log(funcionarioSelecionado);
     console.log(inputs);
     console.log(indexFuncionario);
 
