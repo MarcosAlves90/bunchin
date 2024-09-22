@@ -63,12 +63,17 @@ body.root-dark {
     .navbar-logo {
         transition: var(--common-transition);
         margin-left: 40px;
+        height: 50px;
     }
     .navbar-logo:hover {
         cursor: pointer;
     }
     .navbar-theme-icon {
         margin-right: 40px;
+        height: 40px;
+    }
+    .navbar-theme-icon:hover {
+        cursor: pointer;
     }
     #navbarNav {
         height: 100%;
@@ -103,18 +108,6 @@ body.root-dark {
                 }
             }
         }
-    }
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-    100% {
-        transform: translateY(0);
     }
 }
 
@@ -319,30 +312,6 @@ body.root-dark {
     }
 }
 
-@keyframes bottomFloatRight {
-    0% {
-        transform: translateX(0) translateY(0);
-    }
-    50% {
-        transform: translateX(10px) translateY(-10px);
-    }
-    100% {
-        transform: translateX(0) translateY(0);
-    }
-}
-
-@keyframes bottomFloatLeft {
-    0% {
-        transform: translateX(0) translateY(0);
-    }
-    50% {
-        transform: translateX(-10px) translateY(-10px);
-    }
-    100% {
-        transform: translateX(0) translateY(0);
-    }
-}
-
 .mainCommon.home {
     display: flex;
     flex-direction: column;
@@ -387,18 +356,6 @@ body.root-dark {
     }
 }
 
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-20px);
-    }
-    60% {
-        transform: translateY(-10px);
-    }
-}
-
 .mainCommon.home.dark {
     .titulo-svg {
         filter: invert(1);
@@ -440,6 +397,64 @@ body.root-dark {
 }
 
 .mainCommon.registros {
+    font-size: 20px;
+    .card-registros {
+        font-weight: bold;
+        transition: var(--common-transition);
+        text-align: start;
+        margin-top: 60px;
+        border-radius: 10px;
+        width: 80vw;
+        padding: 20px;
+        .card-registros-title {
+            font-size: 1em;
+            font-family: "Montserrat Subrayada", sans-serif;
+        }
+        .card-registros-bottom-title {
+            text-align: center;
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-weight: 300;
+            text-decoration: underline;
+        }
+        .card-registros-bottom-title:hover {
+            cursor: pointer;
+        }
+        .article-registro-itens {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            .registro-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border-radius: 10px;
+                margin-right: 25px;
+                padding: 10px 20px;
+                p {
+                    margin-bottom: 0;
+                }
+                .horario {
+                    font-weight: 700;
+                    margin: 10px 0 10px 0;
+                    font-size: 1.5em;
+                }
+                .container-data {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .icon-calendar {
+                        margin-right: 5px;
+                    }
+                    .data {
+                        font-size: 0.9em;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
     .card-horario {
         width: 80vw;
         transition: var(--common-transition);
@@ -454,21 +469,34 @@ body.root-dark {
             align-items: center;
             justify-content: center;
             .bi-clock {
-                font-size: 4em;
+                font-size: 4rem;
             }
             .horario {
                 width: 400px;
-                font-size: 6em;
+                font-size: 6rem;
             }
-        }
-        .card-registros {
-            width: 80vw;
         }
         .button-ponto {
             margin-top: 45px;
             transition: var(--common-transition);
             border: none;
             font-size: 20px;
+        }
+        .button-ponto.bloqueado {
+            background-color: #68c935 !important;
+            color: var(--background-color-light-theme) !important;
+        }
+        .button-ponto.bloqueado:hover {
+            background-color: var(--background-color-dark-theme) !important;
+            color: #68c935 !important;
+        }
+        .button-ponto.indefinido {
+            background-color: #e61f1f !important;
+            color: var(--background-color-light-theme) !important;
+        }
+        .button-ponto.indefinido:hover {
+            background-color: var(--background-color-dark-theme) !important;
+            color: #e61f1f !important;
         }
     }
 }
@@ -494,7 +522,21 @@ body.root-dark {
     }
     .card-registros {
         background-color: var(--background-color-dark-light-theme);
-
+        .card-registros-title {
+            color: var(--background-color-dark-theme);
+        }
+        .card-registros-bottom-title {
+            color: var(--background-color-navbar-light);
+        }
+        .card-registros-bottom-title:hover {
+            color: var(--background-color-dark-theme);
+        }
+        .article-registro-itens {
+            .registro-item {
+                color: var(--background-color-light-theme);
+                background-color: var(--background-color-dark-theme);
+            }
+        }
     }
 }
 
@@ -519,6 +561,241 @@ body.root-dark {
     }
     .card-registros {
         background-color: var(--background-color-light-dark-theme);
+        .card-registros-title {
+            color: var(--background-color-light-theme);
+        }
+        .card-registros-bottom-title {
+            color: var(--background-color-navbar-dark);
+        }
+        .card-registros-bottom-title:hover {
+            color: var(--background-color-light-theme);
+        }
+        .article-registro-itens {
+            .registro-item {
+                color: var(--background-color-dark-theme);
+                background-color: var(--background-color-light-theme);
+                .container-data {
+                    .icon-calendar {
+                        filter: invert(1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.mainCommon.administrador {
+    transition: var(--common-transition);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    .sidebar {
+        width: 20%;
+        height: 100%;
+        .div-title {
+            margin: 90px 20px 0 20px;
+            .title {
+                text-align: start;
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+        }
+        .div-search {
+            margin: 0 20px 0 20px;
+            border-bottom: 1px solid;
+            border-top: 1px solid;
+            .search {
+                padding: 5px;
+                width: 100%;
+                border: 2px solid;
+                margin: 20px 0 20px 0;
+            }
+        }
+        .search:focus {
+            outline: none;
+        }
+    }
+    .page {
+        margin-left: 60px;
+        width: 80%;
+        height: 100%;
+        .div-title {
+            margin-top: 90px;
+            .title {
+                padding-top: 50px;
+                text-align: start;
+                font-family: "Montserrat Subrayada", sans-serif;
+                font-size: 2.6em;
+            }
+        }
+    }
+}
+
+.mainCommon.administrador.light {
+    input {
+        border-color: var(--background-color-dark-theme);
+        background-color: var(--background-color-light-theme);
+        color: var(--background-color-dark-theme);
+    }
+    .sidebar {
+        background-color: var(--background-color-navbar-light);
+        .div-title {
+            .title {
+                color: var(--background-color-dark-theme);
+            }
+        }
+        .div-search {
+            border-color: var(--background-color-dark-theme);
+        }
+    }
+    .page {
+        background-color: var(--background-color-light-theme);
+        .title {
+            color: var(--background-color-dark-theme);
+        }
+    }
+}
+
+.mainCommon.administrador.dark {
+    input {
+        border-color: var(--background-color-light-theme);
+        background-color: var(--background-color-dark-theme);
+        color: var(--background-color-light-theme);
+    }
+    .sidebar {
+        background-color: var(--background-color-navbar-dark);
+        .div-title {
+            .title {
+                color: var(--background-color-light-theme);
+            }
+        }
+        .div-search {
+            border-color: var(--background-color-light-theme);
+        }
+    }
+    .page {
+        background-color: var(--background-color-dark-theme);
+        .title {
+            color: var(--background-color-light-theme);
+        }
+    }
+}
+
+.mainCommon.sobre {
+    .sobre-container{
+        transition: var(--common-transition);
+        padding: 40px;
+        border-radius: 10px;
+        .sobre-title {
+            transition: var(--common-transition);
+            font-size: 4.5em;
+            font-family: "Montserrat Subrayada", sans-serif;
+        }
+        .sobre-description {
+            margin-top: 30px;
+            font-size: 1.5em;
+            width: 70vw;
+            margin-bottom: 60px;
+            text-align: justify;
+        }
+        .button-home {
+            border: none;
+            transition: var(--common-transition);
+            font-size: 20px;
+        }
+        .button-home:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.mainCommon.sobre.light {
+    .sobre-container {
+        background-color: var(--background-color-dark-light-theme);
+        .sobre-title {
+            color: var(--background-color-dark-theme);
+        }
+        .sobre-description {
+            color: var(--background-color-dark-theme);
+        }
+        .button-home {
+            background-color: var(--background-color-navbar-light);
+            color: var(--background-color-light-theme);
+        }
+        .button-home:hover {
+            background-color: var(--background-color-light-theme);
+            color: var(--background-color-dark-theme);
+        }
+    }
+}
+
+.mainCommon.sobre.dark {
+    .sobre-container {
+        background-color: var(--background-color-light-dark-theme);
+        .sobre-title {
+            color: var(--background-color-light-theme);
+        }
+        .sobre-description {
+            color: var(--background-color-light-theme);
+        }
+        .button-home {
+            background-color: var(--background-color-navbar-dark);
+            color: var(--background-color-dark-theme);
+        }
+        .button-home:hover {
+            background-color: var(--background-color-dark-theme);
+            color: var(--background-color-light-theme);
+        }
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes bottomFloatRight {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    50% {
+        transform: translateX(10px) translateY(-10px);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+@keyframes bottomFloatLeft {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    50% {
+        transform: translateX(-10px) translateY(-10px);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
     }
 }
 

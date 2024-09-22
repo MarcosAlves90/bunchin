@@ -60,16 +60,19 @@ export default function NavBar() {
                             <Link className='nav-link' to="/perfil">Perfil</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className='nav-link' to="/registros">Registros</Link>
+                            <Link className='nav-link' to="/pontos">Pontos</Link>
                         </li>
                         <li className="nav-item">
                             <Link className='nav-link' to="/configuracoes">Configurações</Link>
                         </li>
-                    </ul>
-                </div>}
-                <img className='navbar-theme-icon'
-                     onClick={handleThemeChange}
-                     src={tema === "light" ? "/light_theme_icon.svg" : "/dark_theme_icon.svg"}
+                        {<li className="nav-item">
+                            <Link className='nav-link' to="/administrador">Painel de Controle</Link>
+                        </li>}
+                            </ul>
+                            </div>}
+                        <img className='navbar-theme-icon'
+                             onClick={handleThemeChange}
+                             src={tema === "light" ? "/light_theme_icon.svg" : "/dark_theme_icon.svg"}
                      alt={"Botão para mudança de tema"}/>
             </div>
         </nav>

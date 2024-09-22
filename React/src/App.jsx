@@ -9,11 +9,12 @@ import Sobre from "./pages/Sobre.jsx";
 import Contato from './pages/Contato.jsx';
 import Login from './pages/Login';
 import Perfil from "./pages/Perfil.jsx";
-import Registros from "./pages/Registros.jsx";
+import Pontos from "./pages/Pontos.jsx";
 import Configuracoes from "./pages/Configuracoes.jsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./assets/ContextoDoUsuario.jsx";
 import {toggleClassOnBody} from "./systems/ThemeSystems.jsx";
+import Administrador from "./pages/Administrador.jsx";
 
 function App() {
 
@@ -81,13 +82,14 @@ function App() {
           <Route path="/sobre" element={<Sobre/>}/>
           <Route path="/contato" element={<Contato/>}/>
           <Route path="/perfil" element={<Perfil/>}/>
-          <Route path="/registros" element={<Registros/>}/>
+          <Route path="/pontos" element={<Pontos/>}/>
           <Route path="/configuracoes" element={<Configuracoes/>}/>
+          <Route path="/administrador" element={<Administrador/>}/>
+          <Route path="/login" element={<Login/>}/>
 
-          <Route path="/Login" element={<Login/>}/>
           <Route path="user/create" element={<CreateUser/>}/>
           <Route path="user/:id/edit" element={<EditUser/>}/>
-
+          <Route path="user/list" element={<ListUser/>}/>
         </Routes>
       </main>
   );

@@ -5,6 +5,9 @@ export const UserContext = createContext();
 
 export function UserProvider({ children }) {
 
+    //Colocar dados do banco de dados aqui.
+    //Salvar dados de login no local storage.
+
     const [tema, setTema] = useState("light");
 
     return (

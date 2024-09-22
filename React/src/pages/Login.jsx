@@ -9,7 +9,7 @@ export default function Login() {
     const { tema } = useContext(UserContext);
 
     function handleLoginButtonClick() {
-        navigate('/registros');
+        navigate('/pontos');
     }
 
     return (
@@ -29,9 +29,9 @@ export default function Login() {
             <div className={"right-side"}>
                 <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt=""/>
                 <label htmlFor="email">EMAIL OU CPF</label>
-                <input type="text" id="email" placeholder="email ou cpf"/>
+                <input type="text" id="email" placeholder="Email ou CPF"/>
                 <label htmlFor="senha">SENHA</label>
-                <input type="password" id="senha" placeholder="senha"/>
+                <input type="password" id="senha" placeholder="Senha"/>
 
                 <button className="button-login" onClick={handleLoginButtonClick}>
                     <i className="bi bi-feather2 left"></i>
