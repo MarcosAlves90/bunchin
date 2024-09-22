@@ -3,6 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { useRef } from "react";
 import {v4 as uuidv4} from 'uuid';
+import {GeneratePoints} from "../systems/PointSystems.jsx";
 
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
@@ -53,23 +54,6 @@ export default function Pontos() {
 
     }, []);
 
-    function GeneratePoints() {
-        return (
-            <article className={"article-registro-itens"}>
-                {registros.map(registro => (
-                    <div key={registro.id} className="registro-item">
-                        <p className={"nome"}>{registro.nome}</p>
-                        <p className={"horario"}>{registro.data.toLocaleTimeString()}</p>
-                        <div className={"container-data"}>
-                            <img className={"icon-calendar"} src={"/Calendar_Days.svg"} alt={"Ícone de calendário"}/>
-                            <p className={"data"}>{`${registro.data.getDate()}/${(registro.data.getMonth() + 1).toString().padStart(2, '0')}/${registro.data.getFullYear().toString().slice(-2)}`}</p>
-                        </div>
-                    </div>
-                ))}
-            </article>
-        );
-    }
-
     return (
         <main className={`mainCommon registros ${tema}`}>
         <article className={"card-horario"}>
@@ -86,7 +70,7 @@ export default function Pontos() {
             </article>
             <article className={"card-registros"}>
                 <p className={"card-registros-title"}>Registros recentes</p>
-                <GeneratePoints/>
+                <GeneratePoints registros={registros}/>
                 <p className={"card-registros-bottom-title"}>Mais registros</p>
             </article>
         </main>
