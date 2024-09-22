@@ -1,9 +1,38 @@
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
+import PropTypes from "prop-types";
 
 export default function Administrador() {
 
+    const [funcionarios, setFuncionarios] = useState(["Logan Sanders", "Arimo"]);
+    const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
+
     const { tema } = useContext(UserContext);
+
+    function GenerateEmployeesButtons({funcionarios}) {
+
+        return (
+            <article className={"article-employees"}>
+                {funcionarios.map(funcionario => (
+                    <div key={funcionario} className={`employee-item ${funcionarioSelecionado === funcionario ? "ativo" : ""}`}
+                         onClick={handleEmployeeButtonClick(funcionario)}>
+                        <p className={"nome"}>{funcionario}</p>
+                    </div>
+                ))}
+            </article>
+        )
+
+    }
+
+    GenerateEmployeesButtons.propTypes = {
+        funcionarios: PropTypes.array.isRequired,
+    }
+
+    function handleEmployeeButtonClick(funcionario) {
+        return () => {
+            setFuncionarioSelecionado(funcionario);
+        }
+    }
 
     return (
         <main className={`mainCommon administrador ${tema}`}>
@@ -16,6 +45,7 @@ export default function Administrador() {
 
                     </input>
                 </div>
+                <GenerateEmployeesButtons funcionarios={funcionarios}/>
             </article>
             <article className={"page"}>
                 <div className={"div-title"}>
@@ -33,7 +63,7 @@ export default function Administrador() {
                         <input placeholder={"exemplo@gmail.com"} type={"email"}></input>
                     </div>
                     <div className={"article-inputs-input n-registro"}>
-                        <label>Nº DE REGISTRO</label>
+                        <label>REGISTRO</label>
                         <input placeholder={"1234567890"} type={"number"}></input>
                     </div>
                     <div className={"article-inputs-input senha"}>
