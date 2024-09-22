@@ -65,10 +65,10 @@ switch($method) {
         echo json_encode($response);
         break;
     case "DELETE":
-        $sql = "DELETE FROM users WHERE id = :id";
+        $sql = "DELETE FROM users WHERE cpf = :cpf";
         $path = explode('/', $_SERVER['REQUEST_URI']);
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $path[3]);
+        $stmt->bindParam(':cpf', $path[3]);
         if($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record deleted successfully.'];
         } else {
