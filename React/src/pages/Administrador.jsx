@@ -2,13 +2,10 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export default function Administrador() {
 
-    const navigate = useNavigate();
-
-    const [indexFuncionario, setindexFuncionario] = useState([]);
+    const [indexFuncionario, setindexFuncionario] = useState(0);
 
     const [funcionarios, setFuncionarios] = useState([]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
@@ -34,6 +31,21 @@ export default function Administrador() {
 
     useEffect(() => {
         getUsers();
+
+        const defaultValues = {
+            n_registro: "",
+            nome: "",
+            email: "",
+            senha: "",
+            cpf: "",
+            funcao: "comum",
+            cargo: "estagiario",
+            departamento: "administrativo"
+        };
+
+        for (const [name, value] of Object.entries(defaultValues)) {
+            handleChange({ target: { name, value } });
+        }
     }, []);
 
     function getUsers() {
@@ -49,7 +61,7 @@ export default function Administrador() {
             <article className={"article-employees"}>
                 {funcionarios.map(funcionario => (
                     <div key={funcionario.cpf} className={`employee-item ${funcionarioSelecionado === funcionario.nome ? "ativo" : ""}`}
-                         onClick={handleEmployeeButtonClick(funcionario.cpf)}>
+                         onClick={() => handleEmployeeButtonClick(funcionario.cpf)}>
                         <p className={"nome"}>{funcionario.nome}</p>
                     </div>
                 ))}
@@ -70,25 +82,9 @@ export default function Administrador() {
     console.log(inputs);
     console.log(indexFuncionario);
 
-
     useEffect(() => {
         if (funcionarioSelecionado) {
             setInputs(funcionarios[indexFuncionario]);
-        } else {
-            const defaultValues = {
-                n_registro: "",
-                nome: "",
-                email: "",
-                senha: "",
-                cpf: "",
-                funcao: "comum",
-                cargo: "estagiario",
-                departamento: "administrativo"
-            };
-    
-            for (const [name, value] of Object.entries(defaultValues)) {
-                handleChange({ target: { name, value } });
-            }    
         }
     }, [funcionarioSelecionado]);
 
@@ -135,14 +131,14 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input funcao"}>
                             <label>FUNÇÃO</label>
-                            <select defaultValue={"comum"} name={"funcao"} onLoad={handleChange} onChange={handleChange}>
+                            <select defaultValue={"comum"} name={"funcao"} onChange={handleChange}>
                                 <option value={"comum"}>Comum</option>
                                 <option value={"administrador"}>Administrador</option>
                             </select>
                         </div>
                         <div className={"article-inputs-input cargo"}>
                             <label>CARGO</label>
-                            <select defaultValue={"estagiario"} name={"cargo"} onLoad={handleChange} onChange={handleChange}>
+                            <select defaultValue={"estagiario"} name={"cargo"} onChange={handleChange}>
                                 <option value={"estagiario"}>Estagiário</option>
                                 <option value={"auxiliar-administrativo"}>Auxiliar administrativo</option>
                                 <option value={"gerente"}>Gerente</option>
@@ -151,7 +147,7 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input departamento"}>
                             <label>DEPARTAMENTO</label>
-                            <select defaultValue={"administrativo"} name={"departamento"} onLoad={handleChange} onChange={handleChange}>
+                            <select defaultValue={"administrativo"} name={"departamento"} onChange={handleChange}>
                                 <option value={"administrativo"}>Administrativo</option>
                                 <option value={"financeiro"}>Financeiro</option>
                                 <option value={"marketing"}>Marketing</option>
