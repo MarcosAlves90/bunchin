@@ -67,9 +67,41 @@ export default function Administrador() {
     }
 
     const deleteUser = (cpf) => {
-        axios.delete(`http://localhost:80/apifuncionario/${cpf}/delete`).then(function(response){
+        axios.delete(`http://localhost:80/api/funcionario/${cpf}/delete`).then(function(response){
             console.log(response.data);
             getUsers();
+        });
+    }
+
+    useEffect(() => {
+        getPontosDoDia();
+    }, []);
+
+    function getPontosDoDia() {
+        axios.get(`http://localhost:80/api/ponto/`).then(function(response) {
+            if (Array.isArray(response.data)) {
+                const pontos = response.data
+                    .filter(ponto => {
+                        return ponto.funcionario_fk === inputs.cpf;
+                    })
+                    .map(ponto => ({
+                        nome: ponto.nome_tipo,
+                        id: ponto.id_ponto,
+                        data: new Date(ponto.data_hora)
+                    }));
+                setRegistros(pontos);
+            } else {
+                console.error("Resposta inesperada da API:", response.data);
+            }
+        }).catch(error => {
+            console.error("Erro ao carregar pontos do dia:", error);
+        });
+    }
+    
+    const deletePonto = (id) => {
+        axios.delete(`http://localhost:80/api/ponto/${id}/delete`).then(function(response){
+            console.log(response.data);
+            getPontosDoDia();
         });
     }
 
@@ -95,6 +127,7 @@ export default function Administrador() {
     function handleEmployeeButtonClick(funcionario) {
         setFuncionarioSelecionado(funcionario.cpf);
         setindexFuncionario(funcionarios.findIndex(f => f.cpf === funcionario.cpf));
+        getPontosDoDia();
     }
 
     useEffect(() => {
@@ -175,7 +208,7 @@ export default function Administrador() {
                     </div>
                 </form>
                 <button onClick={() => deleteUser(funcionarioSelecionado)}>Delete</button>
-                <GeneratePoints registros={registros}/>
+                <GeneratePoints deletePonto={deletePonto} registros={registros}/>
             </article>
         </main>
     )

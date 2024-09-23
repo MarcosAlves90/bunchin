@@ -53,6 +53,7 @@ export default function Pontos() {
 
     function salvarPonto(registro) {
         axios.post('http://localhost:80/api/ponto', {
+            id_ponto: registro.id,
             funcionario_fk: usuario.cpf,
             nome_tipo: registro.nome,
             data_hora: registro.data
@@ -70,11 +71,17 @@ export default function Pontos() {
     function getPontosDoDia() {
         axios.get(`http://localhost:80/api/ponto/`).then(function(response) {
             if (Array.isArray(response.data)) {
-                const pontos = response.data.map(ponto => ({
-                    nome: ponto.nome_tipo,
-                    id: ponto.id_ponto,
-                    data: new Date(ponto.data_hora)
-                }));
+                const today = new Date();
+                const pontos = response.data
+                    .filter(ponto => {
+                        const pontoDate = new Date(ponto.data_hora);
+                        return pontoDate.toDateString() === today.toDateString();
+                    })
+                    .map(ponto => ({
+                        nome: ponto.nome_tipo,
+                        id: ponto.id_ponto,
+                        data: new Date(ponto.data_hora)
+                    }));
                 setRegistros(pontos);
             } else {
                 console.error("Resposta inesperada da API:", response.data);

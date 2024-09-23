@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import {useContext} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 
-export function GeneratePoints({ registros }) {
+export function GeneratePoints({ registros, deletePonto }) {
 
-    const { tema } = useContext(UserContext);
+    const { tema, usuario } = useContext(UserContext);
 
     return (
         <article className={`article-registro-itens ${tema}`}>
@@ -13,7 +13,7 @@ export function GeneratePoints({ registros }) {
                 return (
                     <div key={registro.id} className="registro-item">
                         <div className={"display-flex-center"}>
-                            <i className="bi bi-trash3"></i>
+                            {usuario.funcao === "administrador" && <i className="bi bi-trash" onClick={() => deletePonto(registro.id)}></i>}
                             <p className={"nome"}>{registro.nome}</p>
                             <i className="bi bi-pen"></i>
                         </div>
@@ -30,5 +30,6 @@ export function GeneratePoints({ registros }) {
 }
 
 GeneratePoints.propTypes = {
-    registros: PropTypes.array.isRequired
+    registros: PropTypes.array.isRequired,
+    deletePonto: PropTypes.func.isRequired
 }
