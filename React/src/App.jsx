@@ -1,8 +1,5 @@
 import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
 import './App.css';
-import CreateUser from './components/CreateUser';
-import EditUser from './components/EditUser';
-import ListUser from './components/ListUser'; // - Não está sendo usado porque troquei pelo Home temporariamente.
 import NavBar from './components/NavBar';
 import Home from './pages/Home.jsx';
 import Sobre from "./pages/Sobre.jsx";
@@ -32,7 +29,7 @@ function App() {
         location.pathname === "/administrador")) {
       navigate('/login');
     }
-  }, []);
+  }, [location.pathname, usuario]);
 
   useEffect(() => {
     handleThemeLocalState();
@@ -84,10 +81,6 @@ function App() {
           <Route path="/configuracoes" element={<Configuracoes/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
-
-          <Route path="user/create" element={<CreateUser/>}/>
-          <Route path="user/:id/edit" element={<EditUser/>}/>
-          <Route path="user/list" element={<ListUser/>}/>
         </Routes>
       </main>
   );

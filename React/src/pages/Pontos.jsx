@@ -75,7 +75,7 @@ export default function Pontos() {
                 const pontos = response.data
                     .filter(ponto => {
                         const pontoDate = new Date(ponto.data_hora);
-                        return pontoDate.toDateString() === today.toDateString();
+                        return pontoDate.toDateString() === today.toDateString() && ponto.funcionario_fk === usuario.cpf;
                     })
                     .map(ponto => ({
                         nome: ponto.nome_tipo,
