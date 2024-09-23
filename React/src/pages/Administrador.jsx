@@ -24,11 +24,11 @@ export default function Administrador() {
         event.preventDefault();
 
         if (funcionarioSelecionado) {
-            axios.put(`http://localhost:80/api/user/${funcionarioSelecionado}/edit`, inputs).then(function(response){
+            axios.put(`http://localhost:80/api/funcionario/${funcionarioSelecionado}/edit`, inputs).then(function(response){
                 console.log(response.data);
             });
         } else {
-            axios.post('http://localhost:80/api/user/save', inputs).then(function(response){
+            axios.post('http://localhost:80/api/funcionario/save', inputs).then(function(response){
                 console.log(response.data);
             });
         }
@@ -56,14 +56,14 @@ export default function Administrador() {
     }, []);
 
     function getUsers() {
-        axios.get(`http://localhost:80/api/users/`).then(function(response) {
+        axios.get(`http://localhost:80/api/funcionario/`).then(function(response) {
             console.log(response.data);
             setFuncionarios(response.data);
         });
     }
 
     const deleteUser = (cpf) => {
-        axios.delete(`http://localhost:80/api/user/${cpf}/delete`).then(function(response){
+        axios.delete(`http://localhost:80/apifuncionario/${cpf}/delete`).then(function(response){
             console.log(response.data);
             getUsers();
         });

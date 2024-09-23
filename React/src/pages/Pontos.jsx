@@ -8,7 +8,7 @@ import {GeneratePoints} from "../systems/PointSystems.jsx";
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
     const [locked, setLocked] = useState(true);
-    const { tema } = useContext(UserContext);
+    const { tema, usuario } = useContext(UserContext);
 
     const registrosComuns = [
         "Entrada",
