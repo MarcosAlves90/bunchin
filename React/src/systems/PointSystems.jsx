@@ -1,10 +1,13 @@
 import PropTypes from "prop-types";
 import {useContext, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
+import { useLocation } from "react-router-dom";
 
-export function GeneratePoints(props) {
+export function GeneratePoints({ registros, deletePonto }) {
 
     const { tema, usuario } = useContext(UserContext);
+
+    const location = useLocation();
 
     return (
         <article className={`article-registro-itens ${tema}`}>
@@ -13,7 +16,7 @@ export function GeneratePoints(props) {
                 return (
                     <div key={registro.id} className="registro-item">
                         <div className={"display-flex-center"}>
-                            {usuario.funcao === "administrador" && <i className="bi bi-trash" onClick={() => deletePonto(registro.id)}></i>}
+                            {location.pathname !== "/pontos" && usuario.funcao === "administrador" && <i className="bi bi-trash" onClick={() => deletePonto(registro.id)}></i>}
                             <p className={"nome"}>{registro.nome}</p>
                             <i className="bi bi-pen"></i>
                         </div>
