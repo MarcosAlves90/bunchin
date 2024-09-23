@@ -31,7 +31,8 @@ export default function Pontos() {
             }, 5000);
         } else if (!locked && registros.length < 4) {
             setLocked(true);
-            setRegistros([...registros, {nome: registrosComuns[registros.length], id: uuidv4(), data: new Date()}]);
+            const id = uuidv4();
+            setRegistros([...registros, {nome: registrosComuns[registros.length], id: id, data: new Date()}]);
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = null;

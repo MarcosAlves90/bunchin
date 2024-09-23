@@ -2,10 +2,14 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
+import {GeneratePoints} from "../systems/PointSystems.jsx";
 
 export default function Administrador() {
 
     const [indexFuncionario, setindexFuncionario] = useState(0);
+
+    // Pegar do banco de dados os registros
+    const [registros, setRegistros] = useState([]);
 
     const [funcionarios, setFuncionarios] = useState([]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
@@ -171,6 +175,7 @@ export default function Administrador() {
                     </div>
                 </form>
                 <button onClick={() => deleteUser(funcionarioSelecionado)}>Delete</button>
+                <GeneratePoints registros={registros}/>
             </article>
         </main>
     )

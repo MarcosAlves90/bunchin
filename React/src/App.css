@@ -401,6 +401,66 @@ body.root-dark {
     }
 }
 
+.article-registro-itens {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    .registro-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        margin-right: 25px;
+        padding: 10px 20px;
+        .display-flex-center {
+            width: 100%;
+            justify-content: space-around;
+        }
+        p {
+            font-weight: bold;
+            text-align: start;
+            margin-bottom: 0;
+        }
+        .horario {
+            font-weight: 700;
+            margin: 10px 0 10px 0;
+            font-size: 1.5em;
+        }
+        .container-data {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .icon-calendar {
+                margin-right: 5px;
+            }
+            .data {
+                font-size: 0.9em;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+.article-registro-itens.light {
+    .registro-item {
+        color: var(--background-color-light-theme);
+        background-color: var(--background-color-dark-theme);
+    }
+}
+
+.article-registro-itens.dark {
+    .registro-item {
+        color: var(--background-color-dark-theme);
+        background-color: var(--background-color-light-theme);
+        .container-data {
+            .icon-calendar {
+                filter: invert(1);
+            }
+        }
+    }
+}
+
 .mainCommon.registros {
     font-size: 20px;
     .card-registros {
@@ -425,39 +485,6 @@ body.root-dark {
         }
         .card-registros-bottom-title:hover {
             cursor: pointer;
-        }
-        .article-registro-itens {
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            .registro-item {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                border-radius: 10px;
-                margin-right: 25px;
-                padding: 10px 20px;
-                p {
-                    margin-bottom: 0;
-                }
-                .horario {
-                    font-weight: 700;
-                    margin: 10px 0 10px 0;
-                    font-size: 1.5em;
-                }
-                .container-data {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    .icon-calendar {
-                        margin-right: 5px;
-                    }
-                    .data {
-                        font-size: 0.9em;
-                        font-weight: 500;
-                    }
-                }
-            }
         }
     }
     .card-horario {
@@ -536,12 +563,6 @@ body.root-dark {
         .card-registros-bottom-title:hover {
             color: var(--background-color-dark-theme);
         }
-        .article-registro-itens {
-            .registro-item {
-                color: var(--background-color-light-theme);
-                background-color: var(--background-color-dark-theme);
-            }
-        }
     }
 }
 
@@ -574,17 +595,6 @@ body.root-dark {
         }
         .card-registros-bottom-title:hover {
             color: var(--background-color-light-theme);
-        }
-        .article-registro-itens {
-            .registro-item {
-                color: var(--background-color-dark-theme);
-                background-color: var(--background-color-light-theme);
-                .container-data {
-                    .icon-calendar {
-                        filter: invert(1);
-                    }
-                }
-            }
         }
     }
 }

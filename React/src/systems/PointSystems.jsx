@@ -1,18 +1,30 @@
 import PropTypes from "prop-types";
+import {useContext} from "react";
+import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 
-export function GeneratePoints({registros}) {
+export function GeneratePoints({ registros }) {
+
+    const { tema } = useContext(UserContext);
+
     return (
-        <article className={"article-registro-itens"}>
-            {registros.map(registro => (
-                <div key={registro.id} className="registro-item">
-                    <p className={"nome"}>{registro.nome}</p>
-                    <p className={"horario"}>{registro.data.toLocaleTimeString()}</p>
-                    <div className={"container-data"}>
-                        <img className={"icon-calendar"} src={"/Calendar_Days.svg"} alt={"Ícone de calendário"}/>
-                        <p className={"data"}>{`${registro.data.getDate()}/${(registro.data.getMonth() + 1).toString().padStart(2, '0')}/${registro.data.getFullYear().toString().slice(-2)}`}</p>
+        <article className={`article-registro-itens ${tema}`}>
+            {registros.map(registro => {
+                const date = new Date(registro.data);
+                return (
+                    <div key={registro.id} className="registro-item">
+                        <div className={"display-flex-center"}>
+                            <i className="bi bi-trash3"></i>
+                            <p className={"nome"}>{registro.nome}</p>
+                            <i className="bi bi-pen"></i>
+                        </div>
+                        <p className={"horario"}>{date.toLocaleTimeString()}</p>
+                        <div className={"container-data"}>
+                            <img className={"icon-calendar"} src={"/Calendar_Days.svg"} alt={"Ícone de calendário"} />
+                            <p className={"data"}>{`${date.getDate()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`}</p>
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </article>
     );
 }
