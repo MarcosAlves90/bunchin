@@ -54,7 +54,14 @@ switch($path[2]) {
 
             case "PUT":
                 $user = json_decode(file_get_contents('php://input'));
-                $sql = "UPDATE tb_funcionario SET n_registro= :n_registro, nome =:nome, email =:email, funcao =:funcao, cargo =:cargo, departamento =:departamento WHERE cpf = :cpf";
+                $sql = "UPDATE tb_funcionario SET n_registro= :n_registro, 
+                          nome =:nome, 
+                          email =:email, 
+                          funcao =:funcao, 
+                          cargo =:cargo, 
+                          departamento =:departamento,
+                          senha =:senha
+                      WHERE cpf = :cpf";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':n_registro', $user->n_registro);
                 $stmt->bindParam(':nome', $user->nome);
@@ -63,6 +70,7 @@ switch($path[2]) {
                 $stmt->bindParam(':funcao', $user->funcao);
                 $stmt->bindParam(':cargo', $user->cargo);
                 $stmt->bindParam(':departamento', $user->departamento);
+                $stmt->bindParam(':senha', $user->senha);
 
                 if($stmt->execute()) {
                     $response = ['status' => 1, 'message' => 'Record updated successfully.'];

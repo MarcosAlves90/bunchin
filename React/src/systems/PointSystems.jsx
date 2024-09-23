@@ -4,19 +4,19 @@ import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import { useLocation } from "react-router-dom";
 
 export function GeneratePoints({ registros, deletePonto }) {
-
     const { tema, usuario } = useContext(UserContext);
-
     const location = useLocation();
+
+    const sortedRegistros = registros.sort((a, b) => new Date(a.data) - new Date(b.data));
 
     return (
         <article className={`article-registro-itens ${tema}`}>
-            {registros.map(registro => {
+            {sortedRegistros.map(registro => {
                 const date = new Date(registro.data);
                 return (
                     <div key={registro.id} className="registro-item">
                         <div className={"display-flex-center"}>
-                            {location.pathname !== "/pontos" && usuario.funcao === "administrador" && <i className="bi bi-trash" onClick={() => deletePonto(registro.id)}></i>}
+                            {location.pathname !== "/pontos" && usuario.funcao === "administrador" && <i className="bi bi-trash3 icon-delete" onClick={() => deletePonto(registro.id)}></i>}
                             <p className={"nome"}>{registro.nome}</p>
                             {location.pathname !== "/pontos" && usuario.funcao === "administrador" && <i className="bi bi-pen"></i>}
                         </div>

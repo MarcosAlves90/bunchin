@@ -2,7 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useContext} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario";
-import {toggleClassOnBody} from "../systems/ThemeSystems.jsx";
+import {changeTheme} from "../systems/ThemeSystems.jsx";
 
 export default function NavBar() {
 
@@ -11,15 +11,7 @@ export default function NavBar() {
     const { tema, setTema, usuario } = useContext(UserContext);
 
     function handleThemeChange() {
-        if (tema === "light") {
-            setTema("dark");
-            toggleClassOnBody("root-light", "root-dark");
-            localStorage.setItem("tema", "dark");
-        } else {
-            setTema("light");
-            toggleClassOnBody("root-dark", "root-light");
-            localStorage.setItem("tema", "light");
-        }
+        changeTheme(tema, setTema);
     }
 
     function handleLogoClick() {
@@ -55,9 +47,9 @@ export default function NavBar() {
                 {usuario !== null &&
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/perfil">Perfil</Link>
-                        </li>
+                        {/*<li className="nav-item">*/}
+                        {/*    <Link className='nav-link' to="/perfil">Perfil</Link>*/}
+                        {/*</li>*/}
                         <li className="nav-item">
                             <Link className='nav-link' to="/pontos">Pontos</Link>
                         </li>

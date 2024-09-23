@@ -183,7 +183,6 @@ body.root-dark {
             text-align: start;
         }
         input {
-            min-width: 35vw;
             font-weight: bold;
             padding: 13px;
             outline: none;
@@ -191,28 +190,38 @@ body.root-dark {
         input:focus {
             outline: none;
         }
-        .button-login {
-            transition: all 0.2s ease-in-out;
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-            font-size: 1.5rem;
-            border: none;
-            padding: 10px;
-            i::before {
-                rotate: -30deg;
-            }
-            i.right {
-                margin-right: 10px;
-            }
-            i.left {
-                margin-left: 10px;
-            }
-        }
         .button-login:hover {
             outline: none;
             border: none;
+        }
+        .form-login {
+            min-width: 35vw;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .button-login {
+                transition: all 0.2s ease-in-out;
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-between;
+                width: 80%;
+                font-size: 1.5rem;
+                border: none;
+                padding: 10px;
+                i::before {
+                    rotate: -30deg;
+                }
+                i.right {
+                    margin-right: 10px;
+                }
+                i.left {
+                    margin-left: 10px;
+                }
+            }
+            .error-message {
+                margin-bottom: 0 !important;
+            }
         }
     }
 }
@@ -268,6 +277,9 @@ body.root-dark {
         .button-login:hover {
             background-color: var(--background-color-light-dark-theme);
         }
+        .error-message {
+            color: red;
+        }
     }
 }
 
@@ -307,11 +319,15 @@ body.root-dark {
         .button-login:hover {
             background-color: var(--background-color-dark-light-theme);
         }
+        .error-message {
+            color: #df7979;
+        }
     }
 }
 
 .mainCommon {
     max-width: 100%;
+    padding-top: 90px;
     p {
         transition: var(--common-transition);
     }
@@ -321,6 +337,7 @@ body.root-dark {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 0;
     .titulo-svg {
         margin-top: 100px;
         height: 120px;
@@ -416,6 +433,9 @@ body.root-dark {
         .display-flex-center {
             width: 100%;
             justify-content: space-around;
+            .icon-delete:hover {
+                cursor: pointer;
+            }
         }
         p {
             font-weight: bold;
@@ -446,6 +466,11 @@ body.root-dark {
     .registro-item {
         color: var(--background-color-light-theme);
         background-color: var(--background-color-dark-theme);
+        .display-flex-center {
+            .icon-delete:hover {
+                color: red;
+            }
+        }
     }
 }
 
@@ -453,6 +478,11 @@ body.root-dark {
     .registro-item {
         color: var(--background-color-dark-theme);
         background-color: var(--background-color-light-theme);
+        .display-flex-center {
+            .icon-delete:hover {
+                color: #df7979;
+            }
+        }
         .container-data {
             .icon-calendar {
                 filter: invert(1);
@@ -613,11 +643,22 @@ body.root-dark {
         width: 20%;
         height: 100%;
         .div-title {
-            margin: 90px 20px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 20px 0 20px;
             .title {
                 text-align: start;
                 font-size: 20px;
                 margin-bottom: 5px;
+            }
+            .bi {
+                transition: var(--common-transition);
+                font-size: 20px;
+            }
+            .bi:hover {
+                cursor: pointer;
+                filter: invert(1);
             }
         }
         .div-search {
@@ -634,12 +675,20 @@ body.root-dark {
         .article-employees {
             margin-top: 20px;
             .employee-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 transition: var(--common-transition);
                 margin-left: 20px;
                 text-align: start;
-                padding: 8px;
                 p {
+                    padding: 8px;
+                    width: 90%;
                     margin: 0;
+                }
+                .bi {
+                    width: 10%;
+                    margin-right: 20px;
                 }
             }
             .employee-item:hover {
@@ -652,13 +701,25 @@ body.root-dark {
         width: 80%;
         height: 100%;
         .div-title {
-            margin-top: 90px;
-            margin-bottom: 50px;
+            transition: var(--common-transition);
+            margin: 50px 0 50px 0;
+            display: flex;
+            justify-content: start;
+            align-items: start;
             .title {
-                padding-top: 50px;
                 text-align: start;
                 font-family: "Montserrat Subrayada", sans-serif;
                 font-size: 2.6em;
+            }
+            .bi {
+                transition: var(--common-transition);
+                margin-left: 35px;
+                font-size: 2.6em;
+                line-height: 24px;
+            }
+            .bi:hover {
+                cursor: pointer;
+                color: red;
             }
         }
         .article-inputs {
@@ -701,6 +762,19 @@ body.root-dark {
                 grid-column: span 3;
             }
         }
+        .container-save-button {
+            padding: 45px 0 45px 0;
+            border-bottom: 1px solid;
+            .save-button {
+                transition: var(--common-transition);
+                font-size: 20px;
+                border: none;
+                padding-left: 90px;
+                padding-right: 90px;
+            }
+            .save-button:hover {
+            }
+        }
     }
 }
 
@@ -713,9 +787,7 @@ body.root-dark {
     .sidebar {
         background-color: var(--background-color-navbar-light);
         .div-title {
-            .title {
-                color: var(--background-color-dark-theme);
-            }
+            color: var(--background-color-dark-theme);
         }
         .div-search {
             border-color: var(--background-color-dark-theme);
@@ -729,11 +801,14 @@ body.root-dark {
         .employee-item.ativo {
             background-color: var(--background-color-light-theme);
             color: var(--background-color-dark-theme);
+            .bi {
+                color: var(--background-color-navbar-light);
+            }
         }
     }
     .page {
         background-color: var(--background-color-light-theme);
-        .title {
+        .div-title {
             color: var(--background-color-dark-theme);
         }
         .article-inputs {
@@ -745,6 +820,16 @@ body.root-dark {
                     border-color: var(--background-color-light-dark-theme);
                     color: var(--background-color-light-dark-theme);
                 }
+            }
+        }
+        .container-save-button {
+            border-color: var(--background-color-dark-theme);
+            .save-button {
+                background-color: var(--background-color-navbar-light);
+                color: var(--background-color-light-theme);
+            }
+            .save-button:hover {
+                background-color: var(--background-color-dark-theme);
             }
         }
     }
@@ -759,9 +844,7 @@ body.root-dark {
     .sidebar {
         background-color: var(--background-color-navbar-dark);
         .div-title {
-            .title {
-                color: var(--background-color-light-theme);
-            }
+            color: var(--background-color-light-theme);
         }
         .div-search {
             border-color: var(--background-color-light-theme);
@@ -775,11 +858,14 @@ body.root-dark {
         .employee-item.ativo {
             background-color: var(--background-color-dark-theme);
             color: var(--background-color-light-theme);
+            .bi {
+                color: var(--background-color-navbar-dark);
+            }
         }
     }
     .page {
         background-color: var(--background-color-dark-theme);
-        .title {
+        .div-title {
             color: var(--background-color-light-theme);
         }
         .article-inputs {
@@ -793,6 +879,16 @@ body.root-dark {
                 }
             }
         }
+        .container-save-button {
+            border-color: var(--background-color-light-theme);
+            .save-button {
+                background-color: var(--background-color-navbar-dark);
+                color: var(--background-color-dark-theme);
+            }
+            .save-button:hover {
+                background-color: var(--background-color-light-theme);
+            }
+        }
     }
 }
 
@@ -801,6 +897,7 @@ body.root-dark {
         transition: var(--common-transition);
         padding: 40px;
         border-radius: 10px;
+        width: 70vw;
         .sobre-title {
             transition: var(--common-transition);
             font-size: 4.5em;
@@ -809,7 +906,6 @@ body.root-dark {
         .sobre-description {
             margin-top: 30px;
             font-size: 1.5em;
-            width: 70vw;
             margin-bottom: 60px;
             text-align: justify;
         }
@@ -858,6 +954,87 @@ body.root-dark {
             color: var(--background-color-dark-theme);
         }
         .button-home:hover {
+            background-color: var(--background-color-dark-theme);
+            color: var(--background-color-light-theme);
+        }
+    }
+}
+
+.mainCommon.configuracoes {
+    transition: var(--common-transition);
+    .card-configuracoes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .configuracoes-title {
+            transition: var(--common-transition);
+            font-size: 4.5em;
+            font-family: "Montserrat Subrayada", sans-serif;
+        }
+        .button-logout {
+            transition: var(--common-transition);
+            margin-top: 30px;
+            border: none;
+            width: 10vw;
+        }
+        .button-theme {
+            transition: var(--common-transition);
+            margin-top: 30px;
+            border: none;
+            width: 10vw;
+        }
+
+        padding: 40px;
+        width: 70vw;
+        border-radius: 10px;
+    }
+}
+
+.mainCommon.configuracoes.light {
+    .card-configuracoes {
+        background-color: var(--background-color-dark-light-theme);
+        .configuracoes-title {
+            color: var(--background-color-dark-theme);
+        }
+        .button-logout {
+            background-color: red;
+            color: var(--background-color-light-theme);
+        }
+        .button-logout:hover {
+            background-color: var(--background-color-light-theme);
+            color: red;
+        }
+        .button-theme {
+            background-color: var(--background-color-dark-theme);
+            color: var(--background-color-light-theme);
+        }
+        .button-theme:hover {
+            background-color: var(--background-color-light-theme);
+            color: var(--background-color-dark-theme);
+        }
+    }
+}
+
+.mainCommon.configuracoes.dark {
+    .card-configuracoes {
+        background-color: var(--background-color-light-dark-theme);
+        .configuracoes-title {
+            color: var(--background-color-light-theme);
+        }
+        .button-logout {
+            background-color: #df7979;
+            color: var(--background-color-dark-theme);
+        }
+        .button-logout:hover {
+            background-color: var(--background-color-dark-theme);
+            color: #df7979;
+        }
+        .button-theme {
+            background-color: var(--background-color-light-theme);
+            color: var(--background-color-dark-theme);
+        }
+        .button-theme:hover {
             background-color: var(--background-color-dark-theme);
             color: var(--background-color-light-theme);
         }
