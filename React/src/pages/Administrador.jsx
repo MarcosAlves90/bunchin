@@ -37,7 +37,6 @@ export default function Administrador() {
             });
         }
 
-        
     }
 
     useEffect(() => {
@@ -95,13 +94,6 @@ export default function Administrador() {
             }
         }).catch(error => {
             console.error("Erro ao carregar pontos do dia:", error);
-        });
-    }
-    
-    const deletePonto = (id) => {
-        axios.delete(`http://localhost:80/api/ponto/${id}/delete`).then(function(response){
-            console.log(response.data);
-            getPontosDoDia();
         });
     }
 
