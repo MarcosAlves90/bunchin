@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import { useLocation } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export function GeneratePoints({ registros, deletePonto }) {
                         <div className={"display-flex-center"}>
                             {location.pathname !== "/pontos" && usuario.funcao === "administrador" && <i className="bi bi-trash" onClick={() => deletePonto(registro.id)}></i>}
                             <p className={"nome"}>{registro.nome}</p>
-                            <i className="bi bi-pen"></i>
+                            {location.pathname !== "/pontos" && usuario.funcao === "administrador" && <i className="bi bi-pen"></i>}
                         </div>
                         <p className={"horario"}>{date.toLocaleTimeString()}</p>
                         <div className={"container-data"}>

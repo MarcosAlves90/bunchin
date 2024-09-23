@@ -1,4 +1,4 @@
-import {Routes, Route, useLocation} from 'react-router-dom';
+import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
 import './App.css';
 import CreateUser from './components/CreateUser';
 import EditUser from './components/EditUser';
@@ -21,8 +21,18 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const { tema, setTema } = useContext(UserContext);
+  const { tema, setTema, usuario } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!usuario && (location.pathname === "/perfil" ||
+        location.pathname === "/pontos" ||
+        location.pathname === "/configuracoes" ||
+        location.pathname === "/administrador")) {
+      navigate('/login');
+    }
+  }, []);
 
   useEffect(() => {
     handleThemeLocalState();
@@ -56,19 +66,7 @@ function App() {
 
   return (
       <main className={`appMain display-flex-center ${tema}`}>
-        {/* <h5>React CRUD operations using PHP API and MySQL</h5> */}
 
-
-        {/* <nav>
-        <ul>
-          <li>
-            <Link to="/">List Users</Link>
-          </li>
-          <li>
-            <Link to="user/create">Create User</Link>
-          </li>
-        </ul>
-      </nav> */}
         <div>
           {(loading) && (
               <div id="loader">
