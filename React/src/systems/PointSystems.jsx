@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 
 export function GeneratePoints(props) {
@@ -8,12 +8,12 @@ export function GeneratePoints(props) {
 
     return (
         <article className={`article-registro-itens ${tema}`}>
-            {props.registros.map(registro => {
+            {registros.map(registro => {
                 const date = new Date(registro.data);
                 return (
                     <div key={registro.id} className="registro-item">
                         <div className={"display-flex-center"}>
-                            {usuario.funcao === "administrador" && <i className="bi bi-trash" onClick={() => props.deletePonto(registro.id)}></i>}
+                            {usuario.funcao === "administrador" && <i className="bi bi-trash" onClick={() => deletePonto(registro.id)}></i>}
                             <p className={"nome"}>{registro.nome}</p>
                             <i className="bi bi-pen"></i>
                         </div>

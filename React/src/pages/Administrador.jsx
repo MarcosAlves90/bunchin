@@ -1,47 +1,38 @@
-import {useContext, useEffect, useState} from "react";
-import {UserContext} from "../assets/ContextoDoUsuario.jsx";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
-import {GeneratePoints} from "../systems/PointSystems.jsx";
+import { GeneratePoints } from "../systems/PointSystems.jsx";
 
 export default function Administrador() {
-
-    const [indexFuncionario, setindexFuncionario] = useState(0);
-
-    // Pegar do banco de dados os registros
+    const [indexFuncionario, setIndexFuncionario] = useState(0);
     const [registros, setRegistros] = useState([]);
-
     const [funcionarios, setFuncionarios] = useState([]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
-
     const { tema } = useContext(UserContext);
-
     const [inputs, setInputs] = useState([]);
 
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        setInputs(values => ({...values, [name]: value}));
-    }
+        setInputs(values => ({ ...values, [name]: value }));
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
         if (funcionarioSelecionado) {
-            axios.put(`http://localhost:80/api/funcionario/${funcionarioSelecionado}/edit`, inputs).then(function(response){
+            axios.put(`http://localhost:80/api/funcionario/${funcionarioSelecionado}/edit`, inputs).then(response => {
                 console.log(response.data);
             });
         } else {
-            axios.post('http://localhost:80/api/funcionario/save', inputs).then(function(response){
+            axios.post('http://localhost:80/api/funcionario/save', inputs).then(response => {
                 console.log(response.data);
             });
         }
-
-    }
+    };
 
     useEffect(() => {
         getUsers();
-
         const defaultValues = {
             n_registro: "",
             nome: "",
@@ -52,37 +43,36 @@ export default function Administrador() {
             cargo: "estagiario",
             departamento: "administrativo"
         };
-
         for (const [name, value] of Object.entries(defaultValues)) {
             handleChange({ target: { name, value } });
         }
     }, []);
 
     function getUsers() {
-        axios.get(`http://localhost:80/api/funcionario/`).then(function(response) {
+        axios.get(`http://localhost:80/api/funcionario/`).then(response => {
             console.log(response.data);
             setFuncionarios(response.data);
         });
     }
 
     const deleteUser = (cpf) => {
-        axios.delete(`http://localhost:80/api/funcionario/${cpf}/delete`).then(function(response){
+        axios.delete(`http://localhost:80/api/funcionario/${cpf}/delete`).then(response => {
             console.log(response.data);
             getUsers();
         });
-    }
+    };
 
     useEffect(() => {
-        getPontosDoDia();
-    }, []);
+        if (funcionarioSelecionado) {
+            getPontosDoDia();
+        }
+    }, [funcionarioSelecionado]);
 
     function getPontosDoDia() {
-        axios.get(`http://localhost:80/api/ponto/`).then(function(response) {
+        axios.get(`http://localhost:80/api/ponto/`).then(response => {
             if (Array.isArray(response.data)) {
                 const pontos = response.data
-                    .filter(ponto => {
-                        return ponto.funcionario_fk === inputs.cpf;
-                    })
+                    .filter(ponto => ponto.funcionario_fk === funcionarioSelecionado)
                     .map(ponto => ({
                         nome: ponto.nome_tipo,
                         id: ponto.id_ponto,
@@ -97,29 +87,33 @@ export default function Administrador() {
         });
     }
 
-    function GenerateEmployeesButtons({funcionarios}) {
+    const deletePonto = (id) => {
+        axios.delete(`http://localhost:80/api/ponto/${id}/delete`).then(response => {
+            console.log(response.data);
+            getPontosDoDia();
+        });
+    };
 
+    function GenerateEmployeesButtons({ funcionarios }) {
         return (
             <article className={"article-employees"}>
                 {funcionarios.map(funcionario => (
-                    <div key={funcionario.cpf} className={`employee-item ${funcionarioSelecionado === funcionario.nome ? "ativo" : ""}`}
+                    <div key={funcionario.cpf} className={`employee-item ${funcionarioSelecionado === funcionario.cpf ? "ativo" : ""}`}
                          onClick={() => handleEmployeeButtonClick(funcionario)}>
                         <p className={"nome"}>{funcionario.nome}</p>
                     </div>
                 ))}
             </article>
-        )
-
+        );
     }
 
     GenerateEmployeesButtons.propTypes = {
         funcionarios: PropTypes.array.isRequired,
-    }
+    };
 
     function handleEmployeeButtonClick(funcionario) {
         setFuncionarioSelecionado(funcionario.cpf);
-        setindexFuncionario(funcionarios.findIndex(f => f.cpf === funcionario.cpf));
-        getPontosDoDia();
+        setIndexFuncionario(funcionarios.findIndex(f => f.cpf === funcionario.cpf));
     }
 
     useEffect(() => {
@@ -135,39 +129,35 @@ export default function Administrador() {
                     <p className={"title"}>Funcionários</p>
                 </div>
                 <div className={"div-search"}>
-                    <input className={"search"}>
-
-                    </input>
+                    <input className={"search"} />
                 </div>
-                <GenerateEmployeesButtons funcionarios={funcionarios}/>
+                <GenerateEmployeesButtons funcionarios={funcionarios} />
             </article>
             <article className={"page"}>
                 <div className={"div-title"}>
-                    <h1 className={"title"}>
-                        DADOS DO PERFIL
-                    </h1>
+                    <h1 className={"title"}>DADOS DO PERFIL</h1>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <article className={"article-inputs"}>
                         <div className={"article-inputs-input nome"}>
                             <label>NOME COMPLETO</label>
-                            <input value={inputs.nome || ""} placeholder={"exemplo da silva paiva"} type={"text"} name={"nome"} onChange={handleChange}></input>
+                            <input value={inputs.nome || ""} placeholder={"exemplo da silva paiva"} type={"text"} name={"nome"} onChange={handleChange} />
                         </div>
                         <div className={"article-inputs-input email"}>
                             <label>EMAIL</label>
-                            <input value={inputs.email || ""} placeholder={"exemplo@gmail.com"} type={"email"} name={"email"} onChange={handleChange}></input>
+                            <input value={inputs.email || ""} placeholder={"exemplo@gmail.com"} type={"email"} name={"email"} onChange={handleChange} />
                         </div>
                         <div className={"article-inputs-input n-registro"}>
                             <label>REGISTRO</label>
-                            <input value={inputs.n_registro || ""} placeholder={"1234567890"} type={"number"} name={"n_registro"} onChange={handleChange}></input>
+                            <input value={inputs.n_registro || ""} placeholder={"1234567890"} type={"number"} name={"n_registro"} onChange={handleChange} />
                         </div>
                         <div className={"article-inputs-input senha"}>
                             <label>SENHA</label>
-                            <input value={inputs.senha || ""} placeholder={"senhasegura1234"} type={"text"} name={"senha"} onChange={handleChange}></input>
+                            <input value={inputs.senha || ""} placeholder={"senhasegura1234"} type={"text"} name={"senha"} onChange={handleChange} />
                         </div>
                         <div className={"article-inputs-input cpf"}>
                             <label>CPF</label>
-                            <input value={inputs.cpf || ""} placeholder={"123.456.789-00"} type={"number"} name={"cpf"} onChange={handleChange}></input>
+                            <input value={inputs.cpf || ""} placeholder={"123.456.789-00"} type={"number"} name={"cpf"} onChange={handleChange} />
                         </div>
                         <div className={"article-inputs-input funcao"}>
                             <label>FUNÇÃO</label>
@@ -200,8 +190,8 @@ export default function Administrador() {
                     </div>
                 </form>
                 <button onClick={() => deleteUser(funcionarioSelecionado)}>Delete</button>
-                <GeneratePoints deletePonto={deletePonto} registros={registros}/>
+                <GeneratePoints deletePonto={deletePonto} registros={registros} />
             </article>
         </main>
-    )
+    );
 }
