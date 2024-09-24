@@ -4,7 +4,7 @@
 	*/
 	class DbConnect {
 		private $server = 'localhost';
-		private $dbname = 'react-crud';
+		private $dbname = 'bunchin_bd';
 		private $user = 'root';
 		private $pass = '';
 

@@ -1,0 +1,13 @@
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="60" height="60" rx="5" fill="#FF9900"/>
+<rect x="30.5084" y="10" width="1.41437" height="4.66667" fill="white"/>
+<rect x="30.5084" y="45.3333" width="1.41437" height="4.66667" fill="white"/>
+<rect width="1.39455" height="4.73917" transform="matrix(0.878333 -0.47805 0.522276 0.852777 19.9006 13)" fill="white"/>
+<rect width="1.39455" height="4.73917" transform="matrix(0.878333 -0.47805 0.522276 0.852777 38.641 43.6667)" fill="white"/>
+<rect x="10" y="30.6667" width="1.33333" height="4.9503" transform="rotate(-90 10 30.6667)" fill="white"/>
+<rect width="1.39455" height="4.73917" transform="matrix(0.878333 0.47805 -0.522276 0.852777 22.3757 43)" fill="white"/>
+<rect width="1.35405" height="4.88094" transform="matrix(0.522276 -0.852777 0.878333 0.47805 12.4751 20.488)" fill="white"/>
+<rect width="1.35405" height="4.88094" transform="matrix(0.522276 0.852777 -0.878333 0.47805 16.7622 37)" fill="white"/>
+<rect width="1.35405" height="4.88094" transform="matrix(0.522276 -0.852777 0.878333 0.47805 45.0057 38.1547)" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36.0437 22.3008L36.0397 22.3104L41.746 17.6667H48.1882L42.6934 22.0808C42.7496 22.669 42.7632 23.2919 42.7309 23.9502C42.7309 29.3943 39.5231 33.4541 32.7327 33.4541C31.696 33.4541 30.7523 33.3865 29.8951 33.2571L19.1935 35.8209L36.0437 22.3008Z" fill="white"/>
+</svg>

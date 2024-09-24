@@ -1,13 +1,14 @@
 import Clock from "react-live-clock";
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
-import { useRef } from "react";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
+import { GeneratePoints } from "../systems/PointSystems.jsx";
+import axios from "axios";
 
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
     const [locked, setLocked] = useState(true);
-    const { tema } = useContext(UserContext);
+    const { tema, usuario } = useContext(UserContext);
 
     const registrosComuns = [
         "Entrada",
@@ -30,7 +31,10 @@ export default function Pontos() {
             }, 5000);
         } else if (!locked && registros.length < 4) {
             setLocked(true);
-            setRegistros([...registros, {nome: registrosComuns[registros.length], id: uuidv4(), data: new Date()}]);
+            const id = uuidv4();
+            const novoRegistro = { nome: registrosComuns[registros.length], id: id, data: new Date() };
+            setRegistros([...registros, novoRegistro]);
+            salvarPonto(novoRegistro);
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = null;
@@ -47,32 +51,49 @@ export default function Pontos() {
         }
     }
 
-    useEffect(() => {
-        //Colocar aqui pra pegar os pontos batidos HOJE
-        // do banco de dados toda vez que a tela carregar
+    function salvarPonto(registro) {
+        axios.post('http://localhost:80/api/ponto', {
+            id_ponto: registro.id,
+            funcionario_fk: usuario.cpf,
+            nome_tipo: registro.nome,
+            data_hora: registro.data
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.error("Erro ao salvar ponto:", error);
+        });
+    }
 
+    useEffect(() => {
+        getPontosDoDia();
     }, []);
 
-    function GeneratePoints() {
-        return (
-            <article className={"article-registro-itens"}>
-                {registros.map(registro => (
-                    <div key={registro.id} className="registro-item">
-                        <p className={"nome"}>{registro.nome}</p>
-                        <p className={"horario"}>{registro.data.toLocaleTimeString()}</p>
-                        <div className={"container-data"}>
-                            <img className={"icon-calendar"} src={"/Calendar_Days.svg"} alt={"Ícone de calendário"}/>
-                            <p className={"data"}>{`${registro.data.getDate()}/${(registro.data.getMonth() + 1).toString().padStart(2, '0')}/${registro.data.getFullYear().toString().slice(-2)}`}</p>
-                        </div>
-                    </div>
-                ))}
-            </article>
-        );
+    function getPontosDoDia() {
+        axios.get(`http://localhost:80/api/ponto/`).then(function(response) {
+            if (Array.isArray(response.data)) {
+                const today = new Date();
+                const pontos = response.data
+                    .filter(ponto => {
+                        const pontoDate = new Date(ponto.data_hora);
+                        return pontoDate.toDateString() === today.toDateString() && ponto.funcionario_fk === usuario.cpf;
+                    })
+                    .map(ponto => ({
+                        nome: ponto.nome_tipo,
+                        id: ponto.id_ponto,
+                        data: new Date(ponto.data_hora)
+                    }));
+                setRegistros(pontos);
+            } else {
+                console.error("Resposta inesperada da API:", response.data);
+            }
+        }).catch(error => {
+            console.error("Erro ao carregar pontos do dia:", error);
+        });
     }
 
     return (
         <main className={`mainCommon registros ${tema}`}>
-        <article className={"card-horario"}>
+            <article className={"card-horario"}>
                 <div className={"clock"}>
                     <i className="bi bi-clock"></i>
                     <Clock
@@ -86,7 +107,7 @@ export default function Pontos() {
             </article>
             <article className={"card-registros"}>
                 <p className={"card-registros-title"}>Registros recentes</p>
-                <GeneratePoints/>
+                <GeneratePoints registros={registros} />
                 <p className={"card-registros-bottom-title"}>Mais registros</p>
             </article>
         </main>

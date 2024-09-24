@@ -1,26 +1,17 @@
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {Link} from 'react-router-dom';
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario";
-import {toggleClassOnBody} from "../systems/ThemeSystems.jsx";
+import {changeTheme} from "../systems/ThemeSystems.jsx";
 
 export default function NavBar() {
 
-    const location = useLocation();
     const navigate = useNavigate();
 
-    const { tema, setTema } = useContext(UserContext);
+    const { tema, setTema, usuario } = useContext(UserContext);
 
     function handleThemeChange() {
-        if (tema === "light") {
-            setTema("dark");
-            toggleClassOnBody("root-light", "root-dark");
-            localStorage.setItem("tema", "dark");
-        } else {
-            setTema("light");
-            toggleClassOnBody("root-dark", "root-light");
-            localStorage.setItem("tema", "light");
-        }
+        changeTheme(tema, setTema);
     }
 
     function handleLogoClick() {
@@ -39,7 +30,7 @@ export default function NavBar() {
                         aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
                 </button> 
-                {location.pathname === '/' && 
+                {usuario === null &&
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
@@ -53,23 +44,23 @@ export default function NavBar() {
                         </li>
                     </ul>
                 </div>}
-                {location.pathname !== '/' && 
+                {usuario !== null &&
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/perfil">Perfil</Link>
-                        </li>
+                        {/*<li className="nav-item">*/}
+                        {/*    <Link className='nav-link' to="/perfil">Perfil</Link>*/}
+                        {/*</li>*/}
                         <li className="nav-item">
                             <Link className='nav-link' to="/pontos">Pontos</Link>
                         </li>
                         <li className="nav-item">
                             <Link className='nav-link' to="/configuracoes">Configurações</Link>
                         </li>
-                        {<li className="nav-item">
+                        {usuario.funcao === "administrador" && <li className="nav-item">
                             <Link className='nav-link' to="/administrador">Painel de Controle</Link>
                         </li>}
-                            </ul>
-                            </div>}
+                    </ul>
+                </div>}
                         <img className='navbar-theme-icon'
                              onClick={handleThemeChange}
                              src={tema === "light" ? "/light_theme_icon.svg" : "/dark_theme_icon.svg"}
