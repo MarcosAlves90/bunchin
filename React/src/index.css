@@ -2,6 +2,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 16px;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -65,11 +66,7 @@ body {
 }
 
 @keyframes color-change {
-  0% { border-top-color: #3498db; }
-  25% { border-top-color: #e74c3c; }
-  50% { border-top-color: #f1c40f; }
-  75% { border-top-color: #2ecc71; }
-  100% { border-top-color: #3498db; }
+  0% { border-top-color: #FF9900; }
 }
 
 /*// - Fim da animação do Loader -*/

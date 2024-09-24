@@ -1,37 +1,27 @@
-import {useLocation} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {Link} from 'react-router-dom';
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario";
+import {changeTheme} from "../systems/ThemeSystems.jsx";
 
 export default function NavBar() {
 
-    const location = useLocation();
+    const navigate = useNavigate();
 
-    const { tema, setTema } = useContext(UserContext);
-
-    useEffect(() => {
-
-    }, []);
+    const { tema, setTema, usuario } = useContext(UserContext);
 
     function handleThemeChange() {
-        if (tema === "light") {
-            setTema("dark");
-            toggleClassOnBody("root-light", "root-dark");
-        } else {
-            setTema("light");
-            toggleClassOnBody("root-dark", "root-light");
-        }
+        changeTheme(tema, setTema);
     }
 
-    function toggleClassOnBody(removeClass, addClass) {
-        document.body.classList.remove(removeClass);
-        document.body.classList.add(addClass);
+    function handleLogoClick() {
+        navigate('/');
     }
 
     return (
         <nav className={`navbar navbar-expand-lg ${tema}`}>
             <div className="container-fluid">
-                <img className='navbar-logo' src='/logo.svg' alt={"Logo do site"}/>
+                <img className='navbar-logo' onClick={handleLogoClick} src='/logo.svg' alt={"Logo do site"}/>
                 <button className="navbar-toggler" type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#navbarNav"
@@ -40,7 +30,7 @@ export default function NavBar() {
                         aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
                 </button> 
-                {location.pathname === '/' && 
+                {usuario === null &&
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
@@ -54,23 +44,26 @@ export default function NavBar() {
                         </li>
                     </ul>
                 </div>}
-                {location.pathname !== '/' && 
+                {usuario !== null &&
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
+                        {/*<li className="nav-item">*/}
+                        {/*    <Link className='nav-link' to="/perfil">Perfil</Link>*/}
+                        {/*</li>*/}
                         <li className="nav-item">
-                            <Link className='nav-link' to="/perfil">Perfil</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/registros">Registros</Link>
+                            <Link className='nav-link' to="/pontos">Pontos</Link>
                         </li>
                         <li className="nav-item">
                             <Link className='nav-link' to="/configuracoes">Configurações</Link>
                         </li>
+                        {usuario.funcao === "administrador" && <li className="nav-item">
+                            <Link className='nav-link' to="/administrador">Painel de Controle</Link>
+                        </li>}
                     </ul>
                 </div>}
-                <img className='navbar-theme-icon'
-                     onClick={handleThemeChange}
-                     src={tema === "light" ? "/light_theme_icon.svg" : "/dark_theme_icon.svg"}
+                        <img className='navbar-theme-icon'
+                             onClick={handleThemeChange}
+                             src={tema === "light" ? "/light_theme_icon.svg" : "/dark_theme_icon.svg"}
                      alt={"Botão para mudança de tema"}/>
             </div>
         </nav>
