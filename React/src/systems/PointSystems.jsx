@@ -2,6 +2,34 @@ import PropTypes from "prop-types";
 import {useContext} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+
+export const getPoints = async (cpf, todayBool) => {
+    try {
+        const response = await axios.get(`http://localhost:80/api/ponto/`);
+        if (Array.isArray(response.data)) {
+            const today = new Date();
+            const pontos = response.data
+                .filter(ponto => {
+                    const pointDate = new Date(ponto.data_hora);
+                    const validatePoint = todayBool ? pointDate.toDateString() === today.toDateString() : true;
+                    return validatePoint && ponto.funcionario_fk === cpf;
+                })
+                .map(ponto => ({
+                    nome: ponto.nome_tipo,
+                    id: ponto.id_ponto,
+                    data: new Date(ponto.data_hora)
+                }));
+            return pontos;
+        } else {
+            console.error("Resposta inesperada da API:", response.data);
+            return [];
+        }
+    } catch (error) {
+        console.error("Erro ao carregar pontos do dia:", error);
+        return [];
+    }
+}
 
 export function GeneratePoints({ registros, deletePonto }) {
     const { tema, usuario } = useContext(UserContext);

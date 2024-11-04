@@ -2,7 +2,7 @@ import Clock from "react-live-clock";
 import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { v4 as uuidv4 } from 'uuid';
-import { GeneratePoints } from "../systems/PointSystems.jsx";
+import { GeneratePoints, getPoints } from "../systems/PointSystems.jsx";
 import axios from "axios";
 
 export default function Pontos() {
@@ -65,31 +65,12 @@ export default function Pontos() {
     }
 
     useEffect(() => {
-        getPontosDoDia();
-    }, []);
-
-    function getPontosDoDia() {
-        axios.get(`http://localhost:80/api/ponto/`).then(function(response) {
-            if (Array.isArray(response.data)) {
-                const today = new Date();
-                const pontos = response.data
-                    .filter(ponto => {
-                        const pontoDate = new Date(ponto.data_hora);
-                        return pontoDate.toDateString() === today.toDateString() && ponto.funcionario_fk === usuario.cpf;
-                    })
-                    .map(ponto => ({
-                        nome: ponto.nome_tipo,
-                        id: ponto.id_ponto,
-                        data: new Date(ponto.data_hora)
-                    }));
-                setRegistros(pontos);
-            } else {
-                console.error("Resposta inesperada da API:", response.data);
-            }
-        }).catch(error => {
-            console.error("Erro ao carregar pontos do dia:", error);
-        });
-    }
+        const fetchPoints = async () => {
+            const pontos = await getPoints(usuario.cpf, true);
+            setRegistros(pontos);
+        };
+        fetchPoints();
+    }, [usuario.cpf]);
 
     return (
         <main className={`mainCommon registros ${tema}`}>

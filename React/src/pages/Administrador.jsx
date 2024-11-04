@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { GeneratePoints } from "../systems/PointSystems.jsx";
+import { GeneratePoints, getPoints } from "../systems/PointSystems.jsx";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
@@ -67,28 +67,14 @@ export default function Administrador() {
 
     useEffect(() => {
         if (funcionarioSelecionado) {
-            getPontosDoDia();
+            const fetchPoints = async () => {
+                const pontos = await getPoints(funcionarioSelecionado, false);
+                setRegistros(pontos);
+            };
+            fetchPoints();
         }
     }, [funcionarioSelecionado]);
 
-    function getPontosDoDia() {
-        axios.get(`http://localhost:80/api/ponto/`).then(response => {
-            if (Array.isArray(response.data)) {
-                const pontos = response.data
-                    .filter(ponto => ponto.funcionario_fk === funcionarioSelecionado)
-                    .map(ponto => ({
-                        nome: ponto.nome_tipo,
-                        id: ponto.id_ponto,
-                        data: new Date(ponto.data_hora)
-                    }));
-                setRegistros(pontos);
-            } else {
-                console.error("Resposta inesperada da API:", response.data);
-            }
-        }).catch(error => {
-            console.error("Erro ao carregar pontos do dia:", error);
-        });
-    }
 
     const deletePonto = (id) => {
         axios.delete(`http://localhost:80/api/ponto/${id}/delete`).then(response => {
