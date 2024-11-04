@@ -2,8 +2,9 @@ import Clock from "react-live-clock";
 import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { v4 as uuidv4 } from 'uuid';
-import { GeneratePoints, getPoints } from "../systems/PointSystems.jsx";
+import { GeneratePoints } from "../systems/PointSystems.jsx";
 import axios from "axios";
+import {getPoints} from "../systems/api.jsx";
 
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
@@ -65,11 +66,10 @@ export default function Pontos() {
     }
 
     useEffect(() => {
-        const fetchPoints = async () => {
-            const pontos = await getPoints(usuario.cpf, true);
+        (async () => {
+            const pontos = await getPoints(usuario.cpf, false);
             setRegistros(pontos);
-        };
-        fetchPoints();
+        })();
     }, [usuario.cpf]);
 
     return (

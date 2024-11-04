@@ -65,11 +65,19 @@ body {
     padding: 18px 0 18px 0;
     &.light {
         background-color: var(--background-color-navbar-light);
+        .navbar-logo {
+            &:hover {
+                filter: invert(1);
+            }
+        }
     }
     &.dark {
         background-color: var(--background-color-navbar-dark);
         .navbar-logo {
             filter: invert(1);
+            &:hover {
+                filter: invert(0);
+            }
         }
         #navbarNav {
             .navbar-nav {
@@ -86,14 +94,28 @@ body {
         margin-left: 40px;
         height: 50px;
         &:hover {
+            transform: scale(1.1);
             cursor: pointer;
         }
     }
-    .navbar-theme-icon {
+    .theme-icon-box {
+        height: 50px;
+        width: 50px;
         margin-right: 40px;
-        height: 40px;
-        &:hover {
-            cursor: pointer;
+        .navbar-theme-icon {
+            transition: var(--common-transition);
+            height: 40px;
+            &:hover {
+                cursor: pointer;
+                transform: scale(1.2) rotate(20deg);
+                filter: invert(1);
+            }
+            &.dark {
+                height: 35px;
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
         }
     }
     #navbarNav {
@@ -102,12 +124,20 @@ body {
         justify-content: center;
         align-items: center;
         .navbar-nav {
+            gap: calc(var(--common-margin-link) * 2);
             .nav-item {
-                margin-right: var(--common-margin-link);
-                margin-left: var(--common-margin-link);
                 .nav-link {
                     font-size: 20px;
                     color: var(--background-color-light-theme);
+                    transition: var(--common-transition);
+                    border-radius: 3rem;
+                    &:hover {
+                        filter: invert(1);
+                        transform: scale(1.1);
+                    }
+                    &.active {
+                        filter: invert(1);
+                    }
                 }
             }
         }
@@ -634,46 +664,6 @@ body {
                     color: red;
                 }
             }
-            .article-inputs {
-                display: grid;
-                gap: 35px;
-                grid-template-columns: repeat(6, 1fr);
-                .article-inputs-input {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: start;
-                    label {
-                        font-family: "Montserrat Subrayada", sans-serif;
-                    }
-                    input,select {
-                        width: 100%;
-                        padding: 10px;
-                        border: 3px solid;
-                    }
-                    input[type="number"]::-webkit-outer-spin-button,
-                    input[type="number"]::-webkit-inner-spin-button {
-                        -webkit-appearance: none;
-                        margin: 0;
-                    }
-
-                    input[type="number"] {
-                        -moz-appearance: textfield;
-                    }
-                }
-                .article-inputs-input.nome {
-                    grid-column: span 3;
-                }
-                .article-inputs-input.email,
-                .article-inputs-input.senha,
-                .article-inputs-input.cpf,
-                .article-inputs-input.funcao {
-                    grid-column: span 2;
-                }
-                .article-inputs-input.cargo,
-                .article-inputs-input.departamento {
-                    grid-column: span 3;
-                }
-            }
             .container-save-button {
                 padding: 45px 0 45px 0;
                 border-bottom: 1px solid;
@@ -796,6 +786,93 @@ body {
                     }
                     .save-button:hover {
                         background-color: var(--background-color-light-theme);
+                    }
+                }
+            }
+        }
+    }
+    &.perfil {
+        margin: 0 60px 0 60px;
+        .article-inputs {
+            padding: 0 0 45px 0;
+            border-bottom: 1px solid;
+        }
+        .article-registro-itens {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .div-title {
+            transition: var(--common-transition);
+            margin: 50px 0 50px 0;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            .title {
+                text-align: start;
+                font-family: "Montserrat Subrayada", sans-serif;
+                font-size: 2.6em;
+            }
+            .icon {
+                transition: var(--common-transition);
+            }
+            .icon:hover {
+                cursor: pointer;
+                transform: scale(1.2);
+            }
+            &.first {
+                margin-top: 0;
+            }
+            &.last {
+                justify-content: space-between;
+            }
+        }
+        &.light {
+            .div-title {
+                color: var(--background-color-dark-theme);
+                .icon {
+                    color: var(--background-color-dark-theme);
+                }
+            }
+            input,select {
+                border-color: var(--background-color-dark-theme);
+                background-color: var(--background-color-light-theme);
+                color: var(--background-color-dark-theme);
+            }
+            .article-inputs {
+                border-color: var(--background-color-dark-theme);
+                .article-inputs-input {
+                    label {
+                        color: var(--background-color-light-dark-theme);
+                    }
+                    input, select {
+                        border-color: var(--background-color-light-dark-theme);
+                        color: var(--background-color-light-dark-theme);
+                    }
+                }
+            }
+        }
+        &.dark {
+            .div-title {
+                color: var(--background-color-light-theme);
+                .icon {
+                    color: var(--background-color-light-theme);
+                }
+            }
+            input,select {
+                border-color: var(--background-color-light-theme);
+                background-color: var(--background-color-dark-theme);
+                color: var(--background-color-light-theme);
+            }
+            .article-inputs {
+                border-color: var(--background-color-light-theme);
+                .article-inputs-input {
+                    label {
+                        color: var(--background-color-dark-light-theme);
+                    }
+                    input, select {
+                        border-color: var(--background-color-dark-light-theme) !important;
+                        color: var(--background-color-dark-light-theme);
                     }
                 }
             }
@@ -1014,6 +1091,46 @@ body {
                 }
             }
         }
+    }
+}
+.article-inputs {
+    display: grid;
+    gap: 35px;
+    grid-template-columns: repeat(6, 1fr);
+    .article-inputs-input {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        label {
+            font-family: "Montserrat Subrayada", sans-serif;
+        }
+        input,select {
+            width: 100%;
+            padding: 10px;
+            border: 3px solid;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    }
+    .article-inputs-input.nome {
+        grid-column: span 3;
+    }
+    .article-inputs-input.email,
+    .article-inputs-input.senha,
+    .article-inputs-input.cpf,
+    .article-inputs-input.funcao {
+        grid-column: span 2;
+    }
+    .article-inputs-input.cargo,
+    .article-inputs-input.departamento {
+        grid-column: span 3;
     }
 }
 

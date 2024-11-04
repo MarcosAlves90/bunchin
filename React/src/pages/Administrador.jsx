@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { GeneratePoints, getPoints } from "../systems/PointSystems.jsx";
+import { GeneratePoints } from "../systems/PointSystems.jsx";
+import {getPoints} from "../systems/api.jsx";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
@@ -65,21 +66,24 @@ export default function Administrador() {
         });
     };
 
-    useEffect(() => {
+    const getPontos = () => {
         if (funcionarioSelecionado) {
-            const fetchPoints = async () => {
+            (async () => {
                 const pontos = await getPoints(funcionarioSelecionado, false);
                 setRegistros(pontos);
-            };
-            fetchPoints();
+            })();
         }
+    }
+
+    useEffect(() => {
+        getPontos();
     }, [funcionarioSelecionado]);
 
 
     const deletePonto = (id) => {
         axios.delete(`http://localhost:80/api/ponto/${id}/delete`).then(response => {
             console.log(response.data);
-            getPontosDoDia();
+            getPontos();
         });
     };
 
