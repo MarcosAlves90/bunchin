@@ -21,8 +21,19 @@ export default function Login() {
         event.preventDefault();
         setLoading(true);
         setError("");
+
         try {
-            const response = await axios.post('https://7zbcjxjz.infinityfree.com/api/login', { email, senha });
+            const response = await axios.post(
+                'https://7zbcjxjz.infinityfree.com/api/login',
+                { email, senha },
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true
+                }
+            );
+
             if (response.data.status === 1) {
                 setUsuario(response.data.funcionario);
                 localStorage.setItem("usuario", JSON.stringify(response.data.funcionario));
@@ -37,6 +48,7 @@ export default function Login() {
             setLoading(false);
         }
     };
+
 
     return (
         <div className={`login-form ${tema}`}>
