@@ -1,4 +1,3 @@
-import Clock from "react-live-clock";
 import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { v4 as uuidv4 } from 'uuid';
@@ -77,12 +76,12 @@ export default function Pontos() {
             <article className={"card-horario"}>
                 <div className={"clock"}>
                     <i className="bi bi-clock"></i>
-                    <Clock
-                        className={"horario"}
-                        format={'HH:mm:ss'}
-                        ticking={true}
-                        timezone={'America/Sao_Paulo'}
-                    />
+                    {/*<Clock*/}
+                    {/*    className={"horario"}*/}
+                    {/*    format={'HH:mm:ss'}*/}
+                    {/*    ticking={true}*/}
+                    {/*    timezone={'America/Sao_Paulo'}*/}
+                    {/*/>*/}
                 </div>
                 <button className={`button-ponto ${locked === null ? "indefinido" : !locked ? "bloqueado" : ""}`} onClick={handleBaterPontoClick}>{locked === null ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
             </article>
