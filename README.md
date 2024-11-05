@@ -1,8 +1,20 @@
-# React + Vite
+# Bunchin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![GitHub repo size](https://img.shields.io/github/repo-size/MarcosAlves90/bunchin?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/MarcosAlves90/bunchin?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/MarcosAlves90/bunchin?style=for-the-badge)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/MarcosAlves90/bunchin?style=for-the-badge)
+![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/MarcosAlves90/bunchin?style=for-the-badge)
 
-Currently, two official plugins are available:
+<img src="readme_details/bunchin_tela_inicial.png" alt="Página inicial da plataforma">
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> Online time tracking platform project.
+
+### Adjustments and improvements
+
+The project is still under development and the next updates will focus on the following tasks:
+
+- [ ] Add profile page
+- [ ] Add projects page
+- [ ] Add tasks page
+- [ ] Encrypt passwords in the database
