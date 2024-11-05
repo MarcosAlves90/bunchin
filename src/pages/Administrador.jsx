@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { GeneratePoints } from "../systems/PointSystems.jsx";
 import {getPoints} from "../systems/api.jsx";
-import {ChevronRight, X} from "lucide-react";
+import {ChevronRight, X, Trash, Search, Pencil} from "lucide-react";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
@@ -119,10 +119,21 @@ export default function Administrador() {
                         <p className={"nome"}
                            onClick={() => handleEmployeeButtonClick(funcionario)}>{funcionario.nome}</p>
                         {funcionarioSelecionado === funcionario.cpf &&
-                            <X strokeWidth={2.5} size={16} absoluteStrokeWidth={true} onClick={handleUnselectEmployee} />}
+                            <X strokeWidth={2.5}
+                               size={16}
+                               absoluteStrokeWidth={true}
+                               onClick={handleUnselectEmployee}
+                               color={tema === "dark" ?
+                                   "var(--background-color-navbar-dark)" :
+                                   "var(--background-color-navbar-light)"}
+                            />}
                         {!(funcionarioSelecionado === funcionario.cpf) &&
                             <div className={"box display-flex-center"} onClick={() => handleEmployeeButtonClick(funcionario)}>
-                                <ChevronRight strokeWidth={2.5} size={16} absoluteStrokeWidth={true}/>
+                                <ChevronRight
+                                    strokeWidth={2.5}
+                                    size={16}
+                                    absoluteStrokeWidth={true}
+                                />
                             </div>
                         }
                     </div>
@@ -156,13 +167,29 @@ export default function Administrador() {
                 </div>
                 <div className={"div-search"}>
                     <input className={"search"} value={searchTerm} onChange={handleSearchChange} placeholder="Pesquisar funcionários" />
+                    <Search
+                        className="search-icon"
+                        color={tema === "light" ? "var(--background-color-dark-theme)" : "var(--background-color-light-theme)"}
+                    />
                 </div>
                 <GenerateEmployeesButtons funcionarios={funcionarios} />
             </article>
             <article className={"page"}>
                 <div className={"div-title"}>
                     <h1 className={"title"}>DADOS DO PERFIL</h1>
-                    {funcionarioSelecionado && <i className="bi bi-trash3 icon-delete" onClick={() => deleteUser(funcionarioSelecionado)}></i>}
+                    {funcionarioSelecionado &&
+                        <Trash
+                            strokeWidth={1}
+                            size={43}
+                            onClick={() => deleteUser(funcionarioSelecionado)}
+                        />
+                    }
+                    {funcionarioSelecionado &&
+                        <Pencil
+                            strokeWidth={1}
+                            size={43}
+                        />
+                    }
                 </div>
                 <form onSubmit={handleSubmit}>
                     <article className={"article-inputs"}>

@@ -611,18 +611,28 @@ body {
                 margin: 0 20px 0 20px;
                 border-bottom: 1px solid;
                 border-top: 1px solid;
+                position: relative;
                 .search {
-                    padding: 5px;
+                    padding: 5px 2.2rem 5px 5px;
                     width: 100%;
                     border: 2px solid;
                     margin: 20px 0 20px 0;
+                }
+                .search-icon {
+                    position: absolute;
+                    right: 9px;
+                    top: 26px;
+                    transition: var(--common-transition);
+                    &:hover {
+                        transform: scale(1.2);
+                    }
                 }
             }
             .article-employees {
                 margin-top: 20px;
                 .employee-item {
                     display: grid;
-                    grid-template-columns: repeat(4, 1fr);
+                    grid-template-columns: repeat(5, 1fr);
                     transition: var(--common-transition);
                     margin-left: 20px;
                     text-align: start;
@@ -636,7 +646,7 @@ body {
                         display: flex;
                         justify-content: start;
                         align-items: center;
-                        grid-column: span 3;
+                        grid-column: span 4;
                     }
                     .box {
                         width: 100%;
@@ -669,13 +679,13 @@ body {
                     font-family: "Montserrat Subrayada", sans-serif;
                     font-size: 2.6em;
                 }
-                .bi {
+                .lucide {
                     transition: var(--common-transition);
                     margin-left: 35px;
                     font-size: 2.6em;
                     line-height: 24px;
                 }
-                .bi:hover {
+                .lucide-trash:hover {
                     cursor: pointer;
                     color: red;
                 }
