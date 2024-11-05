@@ -27,12 +27,12 @@ export default function Administrador() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (funcionarioSelecionado) {
-            axios.put(`http://localhost:80/api/funcionario/${funcionarioSelecionado}/edit`, inputs).then(response => {
+            axios.put(`https://7zbcjxjz.infinityfree.com/api/funcionario/${funcionarioSelecionado}/edit`, inputs).then(response => {
                 console.log(response.data);
                 getUsers();
             });
         } else {
-            axios.post('http://localhost:80/api/funcionario/save', inputs).then(response => {
+            axios.post('https://7zbcjxjz.infinityfree.com/api/funcionario/save', inputs).then(response => {
                 console.log(response.data);
                 getUsers();
                 handleUnselectEmployee();
@@ -41,7 +41,7 @@ export default function Administrador() {
     };
 
     function handleAddEmployee() {
-        axios.post('http://localhost:80/api/funcionario/save', inputs).then(response => {
+        axios.post('https://7zbcjxjz.infinityfree.com/api/funcionario/save', inputs).then(response => {
             console.log(response.data);
         });
     }
@@ -52,14 +52,14 @@ export default function Administrador() {
     }, []);
 
     function getUsers() {
-        axios.get(`http://localhost:80/api/funcionario/`).then(response => {
+        axios.get(`https://7zbcjxjz.infinityfree.com/api/funcionario/`).then(response => {
             console.log(response.data);
             setFuncionarios(response.data);
         });
     }
 
     const deleteUser = (cpf) => {
-        axios.delete(`http://localhost:80/api/funcionario/${cpf}/delete`).then(response => {
+        axios.delete(`https://7zbcjxjz.infinityfree.com/api/funcionario/${cpf}/delete`).then(response => {
             console.log(response.data);
             getUsers();
             handleUnselectEmployee();
@@ -81,7 +81,7 @@ export default function Administrador() {
 
 
     const deletePonto = (id) => {
-        axios.delete(`http://localhost:80/api/ponto/${id}/delete`).then(response => {
+        axios.delete(`https://7zbcjxjz.infinityfree.com/api/ponto/${id}/delete`).then(response => {
             console.log(response.data);
             getPontos();
         });

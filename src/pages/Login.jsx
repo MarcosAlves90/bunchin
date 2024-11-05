@@ -22,7 +22,7 @@ export default function Login() {
         setLoading(true);
         setError("");
         try {
-            const response = await axios.post('http://localhost:80/api/login', { email, senha });
+            const response = await axios.post('https://7zbcjxjz.infinityfree.com/api/login', { email, senha });
             if (response.data.status === 1) {
                 setUsuario(response.data.funcionario);
                 localStorage.setItem("usuario", JSON.stringify(response.data.funcionario));
