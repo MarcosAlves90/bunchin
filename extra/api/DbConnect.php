@@ -1,17 +1,14 @@
 <?php
 
-namespace extra\api;
-use api\PDO;
-
 /**
  * Database Connection
  */
 class DbConnect
 {
-    private $server = 'localhost';
-    private $dbname = 'bunchin_bd';
-    private $user = 'root';
-    private $pass = '';
+    private $server = 'sql106.infinityfree.com';
+    private $dbname = 'if0_37653813_bunchin_bd';
+    private $user = 'if0_37653813';
+    private $pass = ' Smqy7AZAxcRS0YR';
 
     public function connect()
     {
@@ -23,7 +20,6 @@ class DbConnect
             echo "Database Error: " . $e->getMessage();
         }
     }
-
 }
 
 ?>
