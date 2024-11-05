@@ -625,6 +625,7 @@ body {
                     transition: var(--common-transition);
                     &:hover {
                         transform: scale(1.2);
+                        cursor: pointer;
                     }
                 }
             }
