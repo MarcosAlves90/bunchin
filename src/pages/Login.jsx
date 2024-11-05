@@ -24,7 +24,7 @@ export default function Login() {
 
         try {
             const response = await axios.post(
-                'https://7zbcjxjz.infinityfree.com/api/login',
+                'https://bunchin.infy.uk/api/login',
                 { email, senha },
                 {
                     headers: {
