@@ -574,7 +574,7 @@ body {
     &.administrador {
         transition: var(--common-transition);
         display: flex;
-        justify-content: center;
+        justify-content: end;
         align-items: center;
         width: 100%;
         height: 100%;
@@ -582,7 +582,11 @@ body {
             outline: none;
         }
         .sidebar {
-            width: 20%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            margin-top: 90px;
+            width: 19vw;
             height: 100%;
             .div-title {
                 display: flex;
@@ -617,20 +621,32 @@ body {
             .article-employees {
                 margin-top: 20px;
                 .employee-item {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
                     transition: var(--common-transition);
                     margin-left: 20px;
                     text-align: start;
+                    min-height: 2.5rem;
+                    place-items: center;
                     p {
                         padding: 8px;
-                        width: 90%;
+                        width: 100%;
                         margin: 0;
+                        height: 100%;
+                        display: flex;
+                        justify-content: start;
+                        align-items: center;
+                        grid-column: span 3;
                     }
-                    .bi {
-                        width: 10%;
-                        margin-right: 20px;
+                    .box {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .lucide {
+                        height: 100%;
+                    }
+                    .box, .lucide {
+                        grid-column: span 1;
                     }
                 }
                 .employee-item:hover {
@@ -639,8 +655,8 @@ body {
             }
         }
         .page {
-            margin: 0 60px 0 60px;
-            width: 80%;
+            margin: 0 60px 0 calc(19vw + 60px);
+            width: calc(100% - 19vw); /* Ajuste a largura para ocupar o espaço restante */
             height: 100%;
             .div-title {
                 transition: var(--common-transition);
@@ -674,8 +690,9 @@ body {
                     padding-left: 90px;
                     padding-right: 90px;
                 }
-                .save-button:hover {
-                }
+            }
+            .article-registro-itens {
+                margin-bottom: 1rem;
             }
         }
         &.light {
@@ -1025,15 +1042,13 @@ body {
 
 .article-registro-itens {
     font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));    gap: 25px;
     .registro-item {
         display: flex;
         flex-direction: column;
         align-items: center;
         border-radius: 10px;
-        margin-right: 25px;
         padding: 10px 20px;
         .display-flex-center {
             width: 100%;

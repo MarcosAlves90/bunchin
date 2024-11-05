@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { GeneratePoints } from "../systems/PointSystems.jsx";
 import {getPoints} from "../systems/api.jsx";
+import {ChevronRight, X} from "lucide-react";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
@@ -115,8 +116,15 @@ export default function Administrador() {
                 {filteredFuncionarios.map(funcionario => (
                     <div key={funcionario.cpf}
                          className={`employee-item ${funcionarioSelecionado === funcionario.cpf ? "ativo" : ""}`}>
-                        <p className={"nome"} onClick={() => handleEmployeeButtonClick(funcionario)}>{funcionario.nome}</p>
-                        {funcionarioSelecionado === funcionario.cpf && <i className="bi bi-x-lg" onClick={handleUnselectEmployee}></i>}
+                        <p className={"nome"}
+                           onClick={() => handleEmployeeButtonClick(funcionario)}>{funcionario.nome}</p>
+                        {funcionarioSelecionado === funcionario.cpf &&
+                            <X strokeWidth={2.5} size={16} absoluteStrokeWidth={true} onClick={handleUnselectEmployee} />}
+                        {!(funcionarioSelecionado === funcionario.cpf) &&
+                            <div className={"box display-flex-center"} onClick={() => handleEmployeeButtonClick(funcionario)}>
+                                <ChevronRight strokeWidth={2.5} size={16} absoluteStrokeWidth={true}/>
+                            </div>
+                        }
                     </div>
                 ))}
             </article>
