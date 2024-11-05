@@ -5,10 +5,10 @@
  */
 class DbConnect
 {
-    private $server = 'sql106.infinityfree.com';
-    private $dbname = 'if0_37653813_bunchin_bd';
-    private $user = 'if0_37653813';
-    private $pass = 'Smqy7AZAxcRS0YR';
+    private $server = 'localhost';
+    private $dbname = 'bunchin_bd';
+    private $user = 'root';
+    private $pass = '';
 
     public function connect()
     {
@@ -20,6 +20,7 @@ class DbConnect
             echo "Database Error: " . $e->getMessage();
         }
     }
+
 }
 
 ?>

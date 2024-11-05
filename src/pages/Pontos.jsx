@@ -53,7 +53,7 @@ export default function Pontos() {
     }
 
     function salvarPonto(registro) {
-        axios.post('https://7zbcjxjz.infinityfree.com/api/ponto', {
+        axios.post('http://localhost:80/api/ponto', {
             id_ponto: registro.id,
             funcionario_fk: usuario.cpf,
             nome_tipo: registro.nome,
