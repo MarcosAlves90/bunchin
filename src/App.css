@@ -150,9 +150,18 @@ body {
     justify-content: center;
     padding-bottom: 50px;
     height: 600px;
-
     float: left;
     position: relative;
+
+    .bird-icon {
+        position: absolute;
+        left: -2.1rem;
+        top: -3.3rem;
+        z-index: -1;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 
     .penas-left, .penas-right {
         transition: var(--common-transition);
@@ -168,9 +177,6 @@ body {
         right: -155px;
     }
 
-    input {
-        margin-bottom: 40px;
-    }
     .left-side {
         padding: 0 20px 0 20px;
         display: flex;
@@ -198,6 +204,29 @@ body {
         align-self: flex-start;
         height: 100%;
         padding: 0 50px 50px 50px;
+        .input-box {
+            width: 100%;
+            position: relative;
+            margin-bottom: 40px;
+            input {
+                width: 100%;
+                padding-left: 3rem;
+            }
+            .lucide {
+                position: absolute;
+                top: 1.1rem;
+                left: 1rem;
+            }
+            .eye {
+                left: unset;
+                right: 1rem;
+                transition: var(--common-transition);
+                &:hover {
+                    cursor: pointer;
+                    transform: scale(1.2);
+                }
+            }
+        }
         .title-sessao {
             margin-top: 50px;
             margin-bottom: 70px;
@@ -307,6 +336,9 @@ body {
     }
     &.dark {
         background-color: var(--background-color-navbar-dark);
+        .bird-icon {
+            filter: invert(1);
+        }
         .penas-left, .penas-right {
             filter: invert(1);
         }
@@ -397,43 +429,43 @@ body {
             cursor: pointer;
             animation: bounce 1s;
         }
-    }
-    &.home.dark {
-        .titulo-svg {
-            filter: invert(1);
+        &.dark {
+            .titulo-svg {
+                filter: invert(1);
+            }
+            .subtitulo {
+                color: var(--background-color-dark-light-theme);
+            }
+            .button-session {
+                background-color: var(--background-color-navbar-dark);
+                color: black;
+            }
+            .button-session:hover {
+                background-color: var(--background-color-light-theme);
+                color: var(--background-color-dark-theme);
+            }
+            .seta-baixo {
+                color: var(--background-color-light-theme);
+            }
         }
-        .subtitulo {
-            color: var(--background-color-dark-light-theme);
-        }
-        .button-session {
-            background-color: var(--background-color-navbar-dark);
-            color: black;
-        }
-        .button-session:hover {
-            background-color: var(--background-color-light-theme);
-            color: var(--background-color-dark-theme);
-        }
-        .seta-baixo {
-            color: var(--background-color-light-theme);
-        }
-    }
-    &.home.light {
-        .penas-left, .penas-right {
-            filter: invert(1);
-        }
-        .subtitulo {
-            color: var(--background-color-light-dark-theme);
-        }
-        .button-session {
-            background-color: var(--background-color-navbar-light);
-            color: white;
-        }
-        .button-session:hover {
-            background-color: var(--background-color-dark-theme);
-            color: var(--background-color-light-theme);
-        }
-        .seta-baixo {
-            color: var(--background-color-dark-theme);
+        &.light {
+            .penas-left, .penas-right {
+                filter: invert(1);
+            }
+            .subtitulo {
+                color: var(--background-color-light-dark-theme);
+            }
+            .button-session {
+                background-color: var(--background-color-navbar-light);
+                color: white;
+                &:hover {
+                    background-color: var(--background-color-dark-theme);
+                    color: var(--background-color-light-theme);
+                }
+            }
+            .seta-baixo {
+                color: var(--background-color-dark-theme);
+            }
         }
     }
     &.registros {
@@ -703,7 +735,7 @@ body {
                 }
             }
             .article-registro-itens {
-                margin-bottom: 1rem;
+                padding-bottom: 1rem;
             }
         }
         &.light {
