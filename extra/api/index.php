@@ -39,7 +39,7 @@ switch($path[2]) {
                 $stmt->bindParam(':n_registro', $user->n_registro);
                 $stmt->bindParam(':nome', $user->nome);
                 $stmt->bindParam(':email', $user->email);
-                $stmt->bindParam(':senha', $user->senha);
+                $stmt->bindParam(':senha', password_hash($user->senha, PASSWORD_DEFAULT));
                 $stmt->bindParam(':cpf', $user->cpf);
                 $stmt->bindParam(':funcao', $user->funcao);
                 $stmt->bindParam(':cargo', $user->cargo);
@@ -71,7 +71,7 @@ switch($path[2]) {
                 $stmt->bindParam(':funcao', $user->funcao);
                 $stmt->bindParam(':cargo', $user->cargo);
                 $stmt->bindParam(':departamento', $user->departamento);
-                $stmt->bindParam(':senha', $user->senha);
+                $stmt->bindParam(':senha', password_hash($user->senha, PASSWORD_DEFAULT));
 
                 if($stmt->execute()) {
                     $response = ['status' => 1, 'message' => 'Record updated successfully.'];
@@ -159,15 +159,14 @@ switch($path[2]) {
         break;
     case "login":
         $user = json_decode(file_get_contents('php://input'));
-        $sql = "SELECT * FROM tb_funcionario WHERE (email = :email OR cpf = :cpf) AND senha = :senha";
+        $sql = "SELECT * FROM tb_funcionario WHERE email = :email OR cpf = :cpf";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':email', $user->email);
-        $stmt->bindParam(':cpf', $user->email); // Usando o mesmo campo para email ou CPF
-        $stmt->bindParam(':senha', $user->senha);
+        $stmt->bindParam(':cpf', $user->email);
         $stmt->execute();
         $funcionario = $stmt->fetch(PDO::FETCH_ASSOC);
     
-        if ($funcionario) {
+        if ($funcionario && password_verify($user->senha, $funcionario['senha'])) {
             $response = ['status' => 1, 'message' => 'Login successful.', 'funcionario' => $funcionario];
         } else {
             $response = ['status' => 0, 'message' => 'Invalid email or password.'];
