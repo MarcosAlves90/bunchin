@@ -12,6 +12,7 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./assets/ContextoDoUsuario.jsx";
 import {toggleClassOnBody} from "./systems/ThemeSystems.jsx";
 import Administrador from "./pages/Administrador.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
 
@@ -62,9 +63,9 @@ function App() {
   }
 
   return (
-      <main className={`appMain display-flex-center ${tema}`}>
+      <main className={`appMain display-flex-center ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
 
-        <div>
+        <div className={"page-loader"}>
           {(loading) && (
               <div id="loader">
                 <div className="loader"/>
@@ -82,6 +83,7 @@ function App() {
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
         </Routes>
+        {location.pathname !== "/login" && <Footer/>}
       </main>
   );
 }
