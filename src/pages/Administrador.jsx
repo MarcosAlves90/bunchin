@@ -210,7 +210,7 @@ export default function Administrador() {
                         </div>
                         <div className={"article-inputs-input senha"}>
                             <label>SENHA</label>
-                            <input value={inputs.senha || ""} placeholder={"senhasegura1234"} type={"text"}
+                            <input placeholder={"senhasegura1234"} type={"text"}
                                    name={"senha"} onChange={handleChange}/>
                         </div>
                         <div className={"article-inputs-input cpf"}>
