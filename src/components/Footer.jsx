@@ -1,12 +1,22 @@
 import {useContext} from "react";
 import {UserContext} from "../assets/ContextoDoUsuario.jsx";
 import {useNavigate} from "react-router-dom";
+import {SendEmail} from "../systems/SendEmail.jsx";
 
 export default function Footer() {
 
     const navigate = useNavigate();
 
     const { tema } = useContext(UserContext);
+
+    
+    function handleSendEmailClick() {
+        var templateParams = {
+            email: document.getElementById("email-input").value,
+            message: 'Teste de envio de email',
+        };
+        SendEmail(templateParams);
+    };
 
     return (
         <footer className={`${tema}`}>
@@ -39,9 +49,9 @@ export default function Footer() {
                         primeiro a saber de melhorias e recursos exclusivos.</p>
                     <div className={"input-wrapper"}>
                         <input className={`${tema === "dark" ? "common-input dark" : "common-input light"}`}
-                               placeholder={"Seu email"}
+                               placeholder={"Seu email"} id={"email-input"}
                         ></input>
-                        <p className={"absolute"}>Inscrever-se</p>
+                        <p className={"absolute"} onClick={handleSendEmailClick}>Inscrever-se</p>
                     </div>
                 </div>
             </div>

@@ -41,7 +41,7 @@ export default function Perfil() {
                 </div>
                 <div className={"article-inputs-input senha"}>
                     <label>SENHA</label>
-                    <input value={usuario.senha || ""} placeholder={"senhasegura1234"} type={"text"} name={"senha"}
+                    <input placeholder={"senhasegura1234"} type={"text"} name={"senha"}
                            readOnly/>
                 </div>
                 <div className={"article-inputs-input cpf"}>
