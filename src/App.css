@@ -565,7 +565,7 @@ footer {
     bottom: 0;
     z-index: 2;
     backdrop-filter: blur(0.06rem);
-    background-color: rgba(0, 0, 0, 0.07);
+    background-color: rgba(0, 0, 0, 0.25);
     .Modal {
         position: absolute;
         top: 50%;
@@ -1012,8 +1012,8 @@ footer {
             }
         }
         .page {
-            margin: 0 0 0 calc(19vw + 60px);
-            padding: 0 60px 0 0;
+            margin-left: auto;
+            padding: 0 60px 0 60px;
             width: calc(100% - 19vw);
             height: 100%;
             overflow: auto;
@@ -1034,9 +1034,21 @@ footer {
                     font-size: 2.6em;
                     line-height: 24px;
                 }
-                .lucide-trash:hover {
+                .lucide-pen:hover, .lucide-trash:hover, .lucide-pen-off:hover {
                     cursor: pointer;
+                    transform: scale(1.2);
+                }
+                .lucide-trash:hover {
                     color: red;
+                }
+                &.colapse {
+                    justify-content: space-between;
+                    &:hover {
+                        cursor: pointer;
+                        .lucide {
+                            transform: scale(1.2);
+                        }
+                    }
                 }
             }
             .container-save-button {
@@ -1083,7 +1095,6 @@ footer {
                 }
             }
             .page {
-                background-color: var(--background-color-light-theme);
                 .div-title {
                     color: var(--background-color-dark-theme);
                 }
@@ -1103,6 +1114,13 @@ footer {
                     .save-button {
                         background-color: var(--background-color-navbar-light);
                         color: var(--background-color-light-theme);
+                        &.locked {
+                            background-color: var(--background-color-light-dark-theme);
+                            &:hover {
+                                cursor: default;
+                                background-color: var(--background-color-light-dark-theme);
+                            }
+                        }
                     }
                     .save-button:hover {
                         background-color: var(--background-color-dark-theme);
@@ -1139,7 +1157,6 @@ footer {
                 }
             }
             .page {
-                background-color: var(--background-color-dark-theme);
                 .div-title {
                     color: var(--background-color-light-theme);
                 }
@@ -1159,6 +1176,13 @@ footer {
                     .save-button {
                         background-color: var(--background-color-navbar-dark);
                         color: var(--background-color-dark-theme);
+                        &.locked {
+                            background-color: var(--background-color-dark-light-theme);
+                            &:hover {
+                                cursor: default;
+                                background-color: var(--background-color-dark-light-theme);
+                            }
+                        }
                     }
                     .save-button:hover {
                         background-color: var(--background-color-light-theme);
@@ -1489,6 +1513,9 @@ footer {
             padding: 10px;
             border: 3px solid;
         }
+        select {
+            height: 100%;
+        }
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -1498,18 +1525,31 @@ footer {
         input[type="number"] {
             -moz-appearance: textfield;
         }
-    }
-    .article-inputs-input.nome {
-        grid-column: span 3;
+        &.locked {
+            position: relative;
+            input, select {
+                padding-right: 2.3rem;
+            }
+            select {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            }
+            .lucide {
+                position: absolute;
+                right: 15px;
+                bottom: 13px;
+            }
+        }
     }
     .article-inputs-input.email,
-    .article-inputs-input.senha,
-    .article-inputs-input.cpf,
-    .article-inputs-input.funcao {
+    .article-inputs-input.senha {
         grid-column: span 2;
     }
     .article-inputs-input.cargo,
-    .article-inputs-input.departamento {
+    .article-inputs-input.departamento,
+    .article-inputs-input.cpf,
+    .article-inputs-input.funcao,
+    .article-inputs-input.nome {
         grid-column: span 3;
     }
 }

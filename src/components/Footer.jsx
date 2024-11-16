@@ -13,9 +13,10 @@ export default function Footer() {
 
     function handleSendEmailClick() {
         if (validator.isEmail(validator.normalizeEmail(email))) {
-            SendEmail(import.meta.env.VITE_TEMPLATE_API_KEY_1, {
+            SendEmail(import.meta.env.VITE_PUBLIC_API_KEY,
+                import.meta.env.VITE_SERVICE_API_KEY,
+                import.meta.env.VITE_TEMPLATE_API_KEY_1, {
                 email: email,
-                message: 'Teste de envio de email',
             });
         } else {
             console.log('Email inválido');
