@@ -1,9 +1,9 @@
 import emailjs from '@emailjs/browser';
 
-export const SendEmail = (templateParameters) => {
+export const SendEmail = (templateId, templateParameters) => {
 
     emailjs
-        .send(import.meta.env.VITE_SERVICE_API_KEY, import.meta.env.VITE_TEMPLATE_API_KEY, templateParameters, {
+        .send(import.meta.env.VITE_SERVICE_API_KEY, templateId, templateParameters, {
             publicKey: import.meta.env.VITE_PUBLIC_API_KEY,
         })
         .then(

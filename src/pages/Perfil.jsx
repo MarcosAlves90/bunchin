@@ -63,12 +63,12 @@ export default function Perfil() {
                            name={"departamento"} readOnly/>
                 </div>
             </article>
-            <div className={"div-title last"}>
+            <div className={"div-title last"} onClick={handleColapse}>
                 <h1 className={"title"}>REGISTRO DE HORAS</h1>
                 {colapsed ? (
-                    <ChevronDown strokeWidth={0.7} className="icon" size={50} onClick={handleColapse} />
+                    <ChevronDown strokeWidth={0.7} className="icon" size={50} />
                 ) : (
-                    <ChevronUp strokeWidth={0.7} className="icon" size={50} onClick={handleColapse} />
+                    <ChevronUp strokeWidth={0.7} className="icon" size={50} />
                 )}
             </div>
             {!colapsed && <GeneratePoints registros={registros} />}

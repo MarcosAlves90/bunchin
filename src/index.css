@@ -46,6 +46,21 @@ body {
   z-index: 9999;
 }
 
+body {
+  --common-transition: all 0.2s ease-in-out;
+
+  --background-color-light-theme: #F4F4F4;
+  --background-color-light-dark-theme: #5b5b5b;
+  --background-color-dark-light-theme: #C6C6C6;
+
+  --background-color-dark-theme: #0F0F0F;
+
+  --background-color-navbar-light: #FF9900;
+  --background-color-navbar-dark: #FFAE11;
+
+  --footer-navbar-vertical-padding: 6vw;
+}
+
 .loader {
   border: 16px solid #fff2e7;
   border-top: 16px solid #3498db;
