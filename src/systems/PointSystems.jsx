@@ -24,6 +24,7 @@ export function GeneratePoints({ registros, deletePonto }) {
     const handleCloseModal = useCallback(() => {
         setSelectedItem(null);
         setShowModal(false);
+        setCharCount(0);
     }, []);
 
     const handleTextareaChange = (event) => {
