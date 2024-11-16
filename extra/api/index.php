@@ -169,7 +169,7 @@ switch($path[2]) {
         if ($funcionario && password_verify($user->senha, $funcionario['senha'])) {
             $response = ['status' => 1, 'message' => 'Login successful.', 'funcionario' => $funcionario];
         } else {
-            $response = ['status' => 0, 'message' => 'Invalid email or password.'];
+            $response = ['status' => 0, 'message' => 'Email, CPF ou senha incorretos.'];
         }
         echo json_encode($response);
         break;
