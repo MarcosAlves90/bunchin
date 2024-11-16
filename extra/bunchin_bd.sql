@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16/11/2024 às 04:47
+-- Tempo de geração: 16/11/2024 às 21:35
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -31,7 +31,7 @@ CREATE TABLE `tb_funcionario` (
   `n_registro` int(11) NOT NULL,
   `nome` varchar(40) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `senha` varchar(60) NOT NULL,
+  `senha` varchar(255) NOT NULL,
   `cpf` varchar(11) NOT NULL,
   `funcao` varchar(40) NOT NULL,
   `cargo` varchar(40) NOT NULL,
@@ -47,7 +47,7 @@ INSERT INTO `tb_funcionario` (`n_registro`, `nome`, `email`, `senha`, `cpf`, `fu
 (3, 'Kolovol da Silva Paiva Junior J', 'kolovolpaiva@gmail.com', '$2y$10$ZaR9u484jQ5AQX.lfgP9n.rQ67l.iarOloAmS5ZpwVcrM50nLlwcm', '73956473892', 'administrador', 'gerente', 'financeiro'),
 (4, 'Marcos Alves Lopes Paiva', 'marcoslopes@gmail.com', '$2y$10$vQXZXvfK5Z.ykBmAgJG3kOMyYz9vhSSZFu3tM2uzkemQNRMb5juZe', '75647856234', 'administrador', 'diretor', 'marketing'),
 (5, 'Matheus Souza Paiva', 'matheus@gmail.com', '$2y$10$tjwhbUib0iRAMYu6zoeqRuDoO2Mj0WXNqZUuTPcuQji4yw23uvhN.', '86956478362', 'comum', 'estagiario', 'producao'),
-(6, 'gaviota', 'gaviota@gmail.com', '$2y$10$BA5UgHtKvlEKFpwhMvKga.JWHsVET9KjxzqNEFGPG9ZX5ymrzSk9i', '212512', 'administrador', 'gerente', 'producao');
+(6, 'gaviota', 'gaviota@gmail.com', '$2y$10$H/GUIv9XivRkW7DPVmhwpO9yM1MjTjee65goP3Hf13Cgox2lrswqq', '212512', 'administrador', 'gerente', 'producao');
 
 -- --------------------------------------------------------
 
