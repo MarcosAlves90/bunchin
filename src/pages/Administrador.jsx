@@ -149,7 +149,7 @@ export default function Administrador() {
 
         return (
             <article className={"article-employees"}>
-                {filteredFuncionarios.filter((funcionario) => usuario.n_registro != funcionario.n_registro).map(funcionario => (
+                {filteredFuncionarios.filter((funcionario) => usuario.n_registro !== funcionario.n_registro).map(funcionario => (
                     <div key={funcionario.cpf}
                          className={`employee-item ${funcionarioSelecionado === funcionario.cpf ? "ativo" : ""}`}>
                         <p className={"nome"}
