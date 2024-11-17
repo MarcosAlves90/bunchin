@@ -74,12 +74,6 @@ export default function Administrador() {
         }
     };
 
-    function handleAddEmployee() {
-        axios.post('http://localhost:80/api/funcionario/save', inputs).then(response => {
-            console.log(response.data);
-        });
-    }
-
     useEffect(() => {
         getUsers();
         handleUnselectEmployee();
@@ -216,7 +210,7 @@ export default function Administrador() {
             <article className={"sidebar"}>
                 <div className={"div-title"}>
                     <p className={"title"}>Funcionários</p>
-                    {/*<i className="bi bi-person-plus" onClick={handleAddEmployee}></i>*/}
+                    <i className="bi bi-person-plus" onClick={handleUnselectEmployee}></i>
                 </div>
                 <div className={"div-search"}>
                     <input className={"search"} value={searchTerm} onChange={handleSearchChange} placeholder="Pesquisar funcionários" />

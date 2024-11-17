@@ -5,11 +5,13 @@ import { GeneratePoints } from "../systems/PointSystems.jsx";
 import axios from "axios";
 import {getPoints} from "../systems/api.jsx";
 import LiveClock from "../components/LiveClock.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
     const [locked, setLocked] = useState(true);
     const { tema, usuario } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const registrosComuns = [
         "Entrada",
@@ -65,6 +67,10 @@ export default function Pontos() {
         });
     }
 
+    const handleMorePointsButtonClick = () => {
+        navigate("/perfil");
+    }
+
     useEffect(() => {
         (async () => {
             const pontos = await getPoints(usuario.cpf, true);
@@ -84,7 +90,7 @@ export default function Pontos() {
             <article className={"card-registros"}>
                 <p className={"card-registros-title"}>Registros recentes</p>
                 <GeneratePoints registros={registros} />
-                <p className={"card-registros-bottom-title"}>Mais registros</p>
+                <p className={"card-registros-bottom-title"} onClick={handleMorePointsButtonClick}>Mais registros</p>
             </article>
         </main>
     );
