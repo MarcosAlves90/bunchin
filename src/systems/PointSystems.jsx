@@ -15,6 +15,8 @@ export function GeneratePoints({ registros, deletePonto }) {
     const [charCount, setCharCount] = useState(0);
     const [message, setMessage] = useState("");
     const [reason, setReason] = useState("");
+    const [selectedPoint, setSelectedPoint] = useState(null);
+    const [selectedPointsInfo, setSelectedPointsInfo] = useState({});
 
     const handleOpenModal = useCallback((registro) => {
         setSelectedItem(registro);
@@ -52,6 +54,10 @@ export function GeneratePoints({ registros, deletePonto }) {
         } else {
             console.log('Email inválido');
         }
+    };
+
+    const handlePenButtonClick = (id) => {
+        setSelectedPoint(id === selectedPoint ? null : id);
     };
 
     const sortedRegistros = useMemo(() => {
@@ -104,14 +110,14 @@ export function GeneratePoints({ registros, deletePonto }) {
                         <div key={registro.id} className="registro-item">
                             {!isAdmin && <i className="bi bi-exclamation-circle-fill icon-warning" onClick={() => handleOpenModal(registro)}></i>}
                             {isAdmin && <i className="bi bi-trash3-fill icon-delete" onClick={() => deletePonto(registro.id)}></i>}
-                            {isAdmin && <i className="bi bi-pen-fill icon-edit"></i>}
+                            {isAdmin && <i className="bi bi-pen-fill icon-edit" onClick={() => handlePenButtonClick(registro.id)}></i>}
                             <div className="display-flex-center">
                                 <p className="nome">{registro.nome}</p>
                             </div>
-                            <p className="horario">{date.toLocaleTimeString()}</p>
+                            <p className="horario" name="hours" contentEditable={selectedPoint === registro.id} onChange={handlePointChange}>{date.toLocaleTimeString()}</p>
                             <div className="container-data">
                                 <img className="icon-calendar" src="/Calendar_Days.svg" alt="Ícone de calendário" />
-                                <p className="data">{`${date.getDate()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`}</p>
+                                <p className="data" name="date" contentEditable={selectedPoint === registro.id} onChange={handlePointChange}>{`${date.getDate()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`}</p>
                             </div>
                         </div>
                     );
