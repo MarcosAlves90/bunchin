@@ -1,14 +1,17 @@
-import Clock from "react-live-clock";
 import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { v4 as uuidv4 } from 'uuid';
 import { GeneratePoints } from "../systems/PointSystems.jsx";
 import axios from "axios";
+import {getPoints} from "../systems/api.jsx";
+import LiveClock from "../components/LiveClock.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
     const [locked, setLocked] = useState(true);
     const { tema, usuario } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const registrosComuns = [
         "Entrada",
@@ -64,51 +67,30 @@ export default function Pontos() {
         });
     }
 
-    useEffect(() => {
-        getPontosDoDia();
-    }, []);
-
-    function getPontosDoDia() {
-        axios.get(`http://localhost:80/api/ponto/`).then(function(response) {
-            if (Array.isArray(response.data)) {
-                const today = new Date();
-                const pontos = response.data
-                    .filter(ponto => {
-                        const pontoDate = new Date(ponto.data_hora);
-                        return pontoDate.toDateString() === today.toDateString() && ponto.funcionario_fk === usuario.cpf;
-                    })
-                    .map(ponto => ({
-                        nome: ponto.nome_tipo,
-                        id: ponto.id_ponto,
-                        data: new Date(ponto.data_hora)
-                    }));
-                setRegistros(pontos);
-            } else {
-                console.error("Resposta inesperada da API:", response.data);
-            }
-        }).catch(error => {
-            console.error("Erro ao carregar pontos do dia:", error);
-        });
+    const handleMorePointsButtonClick = () => {
+        navigate("/perfil");
     }
+
+    useEffect(() => {
+        (async () => {
+            const pontos = await getPoints(usuario.cpf, true);
+            setRegistros(pontos);
+        })();
+    }, [usuario.cpf]);
 
     return (
         <main className={`mainCommon registros ${tema}`}>
             <article className={"card-horario"}>
                 <div className={"clock"}>
                     <i className="bi bi-clock"></i>
-                    <Clock
-                        className={"horario"}
-                        format={'HH:mm:ss'}
-                        ticking={true}
-                        timezone={'America/Sao_Paulo'}
-                    />
+                    <LiveClock/>
                 </div>
                 <button className={`button-ponto ${locked === null ? "indefinido" : !locked ? "bloqueado" : ""}`} onClick={handleBaterPontoClick}>{locked === null ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
             </article>
             <article className={"card-registros"}>
                 <p className={"card-registros-title"}>Registros recentes</p>
                 <GeneratePoints registros={registros} />
-                <p className={"card-registros-bottom-title"}>Mais registros</p>
+                <p className={"card-registros-bottom-title"} onClick={handleMorePointsButtonClick}>Mais registros</p>
             </article>
         </main>
     );

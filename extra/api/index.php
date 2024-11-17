@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header("Access-Control-Allow-Origin: *");
@@ -16,20 +17,26 @@ switch($path[2]) {
     case "funcionario":
         switch($method) {
             case "GET":
-                $sql = "SELECT * FROM tb_funcionario";
+                $sql = "SELECT n_registro, nome, email, cpf, funcao, cargo, departamento FROM tb_funcionario";
                 if(isset($path[3]) && is_numeric($path[3])) {
                     $sql .= " WHERE cpf = :cpf";
                     $stmt = $conn->prepare($sql);
                     $stmt->bindParam(':cpf', $path[3]);
                     $stmt->execute();
-                    $users = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($user) {
+                        unset($user['senha']);
+                    }
+                    echo json_encode($user);
                 } else {
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($users as &$user) {
+                        unset($user['senha']);
+                    }
+                    echo json_encode($users);
                 }
-                
-                echo json_encode($users);
                 break;
             case "POST":
                 $user = json_decode(file_get_contents('php://input'));
@@ -38,7 +45,7 @@ switch($path[2]) {
                 $stmt->bindParam(':n_registro', $user->n_registro);
                 $stmt->bindParam(':nome', $user->nome);
                 $stmt->bindParam(':email', $user->email);
-                $stmt->bindParam(':senha', $user->senha);
+                $stmt->bindParam(':senha', password_hash($user->senha, PASSWORD_DEFAULT));
                 $stmt->bindParam(':cpf', $user->cpf);
                 $stmt->bindParam(':funcao', $user->funcao);
                 $stmt->bindParam(':cargo', $user->cargo);
@@ -51,17 +58,25 @@ switch($path[2]) {
                 }
                 echo json_encode($response);
                 break;
-
             case "PUT":
                 $user = json_decode(file_get_contents('php://input'));
-                $sql = "UPDATE tb_funcionario SET n_registro= :n_registro, 
-                          nome =:nome, 
-                          email =:email, 
-                          funcao =:funcao, 
-                          cargo =:cargo, 
-                          departamento =:departamento,
-                          senha =:senha
-                      WHERE cpf = :cpf";
+                
+                // Base da consulta SQL
+                $sql = "UPDATE tb_funcionario SET 
+                            n_registro = :n_registro, 
+                            nome = :nome, 
+                            email = :email, 
+                            funcao = :funcao, 
+                            cargo = :cargo, 
+                            departamento = :departamento";
+                
+                // Adicionar a senha se ela estiver presente
+                if (!empty($user->senha)) {
+                    $sql .= ", senha = :senha";
+                }
+                
+                $sql .= " WHERE cpf = :cpf";
+                
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':n_registro', $user->n_registro);
                 $stmt->bindParam(':nome', $user->nome);
@@ -70,8 +85,13 @@ switch($path[2]) {
                 $stmt->bindParam(':funcao', $user->funcao);
                 $stmt->bindParam(':cargo', $user->cargo);
                 $stmt->bindParam(':departamento', $user->departamento);
-                $stmt->bindParam(':senha', $user->senha);
-
+                
+                // Vincular a senha se ela estiver presente
+                if (!empty($user->senha)) {
+                    $hashedPassword = password_hash($user->senha, PASSWORD_DEFAULT);
+                    $stmt->bindParam(':senha', $hashedPassword);
+                }
+            
                 if($stmt->execute()) {
                     $response = ['status' => 1, 'message' => 'Record updated successfully.'];
                 } else {
@@ -158,18 +178,17 @@ switch($path[2]) {
         break;
     case "login":
         $user = json_decode(file_get_contents('php://input'));
-        $sql = "SELECT * FROM tb_funcionario WHERE (email = :email OR cpf = :cpf) AND senha = :senha";
+        $sql = "SELECT * FROM tb_funcionario WHERE email = :email OR cpf = :cpf";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':email', $user->email);
-        $stmt->bindParam(':cpf', $user->email); // Usando o mesmo campo para email ou CPF
-        $stmt->bindParam(':senha', $user->senha);
+        $stmt->bindParam(':cpf', $user->email);
         $stmt->execute();
         $funcionario = $stmt->fetch(PDO::FETCH_ASSOC);
     
-        if ($funcionario) {
+        if ($funcionario && password_verify($user->senha, $funcionario['senha'])) {
             $response = ['status' => 1, 'message' => 'Login successful.', 'funcionario' => $funcionario];
         } else {
-            $response = ['status' => 0, 'message' => 'Invalid email or password.'];
+            $response = ['status' => 0, 'message' => 'Email, CPF ou senha incorretos.'];
         }
         echo json_encode($response);
         break;

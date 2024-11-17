@@ -18,13 +18,13 @@ export default function Sobre() {
                     Se você tiver alguma dúvida ou precisar de assistência, entre em contato conosco através das
                     seguintes opções:
                 </p>
-                <div className="contact-info">
+                <div className="sobre-description contact-info">
                     <p><strong>Endereço:</strong> Rua Exemplo, 123, Cidade, Estado, CEP 12345-678</p>
                     <p><strong>Telefone:</strong> (11) 1234-5678</p>
                     <p><strong>Email:</strong> contato@bunchin.com</p>
                 </div>
                 <button className="button-home" onClick={handleHomeButtonClick}>
-                    Voltar para Home
+                    Voltar para a página inicial
                 </button>
             </div>
         </main>
