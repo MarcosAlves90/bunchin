@@ -778,7 +778,7 @@ footer {
             .third-title {
                 font-size: 64px;
                 margin-top: 7rem;
-                margin-bottom: 5rem;
+                margin-bottom: 3rem;
             }
             .second-subtle {
                 margin-top: 0;
@@ -833,6 +833,32 @@ footer {
                     }
                 }
             }
+            .box-stories {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5.5vw;
+                padding: 0 5.5vw;
+                .story {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: start;
+                    padding: 1rem;
+                    border-radius: 10px;
+                    p {
+                        text-align: start;
+                    }
+                    .story-p {
+                        font-weight: 300;
+                        font-size: 20px;
+                        flex-grow: 1;
+                    }
+                    .story-author {
+                        margin: 0;
+                        width: 100%;
+                    }
+                }
+            }
         }
 
         &.dark {
@@ -875,6 +901,14 @@ footer {
                         }
                     }
                 }
+                .box-stories {
+                    .story {
+                        background-color: var(--background-color-light-theme);
+                        p {
+                            color: var(--background-color-dark-theme);
+                        }
+                    }
+                }
             }
         }
         &.light {
@@ -911,6 +945,14 @@ footer {
                         }
                         .line {
                             stroke: var(--background-color-dark-light-theme);
+                        }
+                    }
+                }
+                .box-stories {
+                    .story {
+                        background-color: var(--background-color-dark-theme);
+                        p {
+                            color: var(--background-color-light-theme);
                         }
                     }
                 }

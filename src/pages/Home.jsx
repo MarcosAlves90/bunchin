@@ -94,6 +94,26 @@ export default function Home() {
                     </div>
                 </div>
                 <p className={"third-title"}>HISTÓRIAS DE SUCESSO</p>
+                <div className={"box-stories"}>
+                    <div className={"story"}>
+                        <p className={"story-p"}>"Desde que implementamos a plataforma, a motivação do time
+                            disparou! As metas são claras e as recompensas são um incentivo constante para todos.
+                            Acredito que estamos mais alinhados e engajados como nunca!"</p>
+                        <p className={"story-author"}>— Ana L., Gerente de RH da [Empresa ABC]</p>
+                    </div>
+                    <div className={"story"}>
+                        <p className={"story-p"}>"A plataforma nos ajudou a acompanhar o desempenho de todos os
+                            colaboradores em tempo real. Agora, temos relatórios precisos e podemos dar feedbacks
+                            rápidos. Está facilitando muito nosso trabalho!"</p>
+                        <p className={"story-author"}>— Carlos M., Diretor de Operações da [Empresa XYZ]</p>
+                    </div>
+                    <div className={"story"}>
+                        <p className={"story-p"}>"Ficamos surpresos com a facilidade de implementação. A
+                            integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa.
+                            O uso da plataforma no dia a dia também é muito intuitivo!"</p>
+                        <p className={"story-author"}>— Juliana S., CEO da [Empresa DEF]</p>
+                    </div>
+                </div>
             </article>
         </main>
     );

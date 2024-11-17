@@ -8,7 +8,7 @@ import axios from "axios";
 
 ReactModal.setAppElement('#root');
 
-export function GeneratePoints({ registros, deletePonto }) {
+export function GeneratePoints({ registros, deletePonto, getPonto }) {
     const { tema, usuario } = useContext(UserContext);
     const location = useLocation();
     const [showModal, setShowModal] = useState(false);
@@ -34,9 +34,8 @@ export function GeneratePoints({ registros, deletePonto }) {
     }, []);
 
     const handleTextareaChange = (event) => {
-        const { value } = event.target;
-        setCharCount(value.length);
-        setMessage(value);
+        setCharCount(event.target.value.length);
+        setMessage(event.target.value);
     };
 
     const handleReasonChange = (event) => setReason(event.target.value);
@@ -58,39 +57,21 @@ export function GeneratePoints({ registros, deletePonto }) {
         }
     };
 
-    const handleTimeKeyDown = (event) => {
-        const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', ':'];
-        const timeValue = event.target.value;
-        if (event.key === 'Backspace' && timeValue[event.target.selectionStart - 1] === ':') {
+    const handleKeyDown = (event, separator) => {
+        const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', separator];
+        const value = event.target.value;
+        if (event.key === 'Backspace' && value[event.target.selectionStart - 1] === separator) {
             event.preventDefault();
         } else if (!allowedKeys.includes(event.key) && !/^\d$/.test(event.key)) {
             event.preventDefault();
         }
     };
 
-    const handleDateKeyDown = (event) => {
-        const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', '/'];
-        const dateValue = event.target.value;
-        if (event.key === 'Backspace' && dateValue[event.target.selectionStart - 1] === '/') {
-            event.preventDefault();
-        } else if (!allowedKeys.includes(event.key) && !/^\d$/.test(event.key)) {
-            event.preventDefault();
-        }
-    };
-
-    const handleTimeChange = (event) => {
-        const timeValue = event.target.value;
-        setEditedTime(timeValue);
-    };
-
-    const handleDateChange = (event) => {
-        const dateValue = event.target.value;
-        setEditedDate(dateValue);
-    };
+    const handleChange = (setter) => (event) => setter(event.target.value);
 
     const getUpdatedDate = (originalDate) => {
         const [day, month, year] = (editedDate || originalDate.toLocaleDateString('pt-BR')).split('/').map(Number);
-        const fullYear = year < 100 ? 2000 + year : year; // Convert two-digit year to four-digit year
+        const fullYear = year < 100 ? 2000 + year : year;
         const [hours, minutes, seconds] = (editedTime || originalDate.toLocaleTimeString('pt-BR')).split(':').map(Number);
         return new Date(fullYear, month - 1, day, hours, minutes, seconds);
     };
@@ -104,18 +85,12 @@ export function GeneratePoints({ registros, deletePonto }) {
             data_hora: updatedDate.toISOString()
         };
 
-        console.log(updatedData);
-
-        axios.put('http://localhost:80/api/ponto', {
-            id_ponto: updatedData.id_ponto,
-            funcionario_fk: updatedData.funcionario_fk,
-            nome_tipo: updatedData.nome_tipo,
-            data_hora: updatedData.data_hora
-        }).then(response => {
-            console.log(response.data);
-        }).catch(error => {
+        try {
+            await axios.put('http://localhost:80/api/ponto', updatedData);
+            getPonto();
+        } catch (error) {
             console.error("Erro ao salvar ponto:", error);
-        });
+        }
     };
 
     const handlePenButtonClick = (registro) => {
@@ -127,7 +102,7 @@ export function GeneratePoints({ registros, deletePonto }) {
         } else {
             setSelectedPoint(registro.id);
             const originalDate = new Date(registro.data);
-            setEditedDate(originalDate.toLocaleDateString('pt-BR').replace(/(\d{4})$/, (match) => match.slice(-2))); // Display two-digit year
+            setEditedDate(originalDate.toLocaleDateString('pt-BR').replace(/(\d{4})$/, (match) => match.slice(-2)));
             setEditedTime(originalDate.toLocaleTimeString('pt-BR'));
         }
     };
@@ -138,10 +113,7 @@ export function GeneratePoints({ registros, deletePonto }) {
             const dateA = new Date(a.data);
             const dateB = new Date(b.data);
             if (isPerfilOrAdmin) {
-                if (dateA.toDateString() === dateB.toDateString()) {
-                    return dateA - dateB;
-                }
-                return dateB - dateA;
+                return dateA.toDateString() === dateB.toDateString() ? dateA - dateB : dateB - dateA;
             } else {
                 return dateA - dateB;
             }
@@ -152,7 +124,6 @@ export function GeneratePoints({ registros, deletePonto }) {
         <>
             <ReactModal
                 isOpen={showModal}
-                contentLabel="onRequestClose Example"
                 onRequestClose={handleCloseModal}
                 className={`Modal ${tema}`}
                 overlayClassName="Overlay"
@@ -177,16 +148,12 @@ export function GeneratePoints({ registros, deletePonto }) {
             <article className={`article-registro-itens ${tema}`}>
                 {sortedRegistros.map(registro => {
                     const originalDate = new Date(registro.data);
-                    const updatedDate = selectedPoint === registro.id ? getUpdatedDate(originalDate) : originalDate;
                     const isAdmin = location.pathname !== "/pontos" && location.pathname !== "/perfil" && usuario.funcao === "administrador";
                     return (
                         <div key={registro.id} className="registro-item">
-                            {!isAdmin && <i className="bi bi-exclamation-circle-fill icon-warning"
-                                            onClick={() => handleOpenModal(registro)}></i>}
-                            {isAdmin && <i className="bi bi-trash3-fill icon-delete"
-                                           onClick={() => deletePonto(registro.id)}></i>}
-                            {isAdmin && <i className="bi bi-pen-fill icon-edit"
-                                           onClick={() => handlePenButtonClick(registro)}></i>}
+                            {!isAdmin && <i className="bi bi-exclamation-circle-fill icon-warning" onClick={() => handleOpenModal(registro)}></i>}
+                            {isAdmin && <i className="bi bi-trash3-fill icon-delete" onClick={() => deletePonto(registro.id)}></i>}
+                            {isAdmin && <i className={`bi ${selectedPoint === registro.id ? "bi-pen" : "bi-pen-fill"} icon-edit`} onClick={() => handlePenButtonClick(registro)}></i>}
                             <div className="display-flex-center">
                                 <p className="nome">{registro.nome}</p>
                             </div>
@@ -194,8 +161,8 @@ export function GeneratePoints({ registros, deletePonto }) {
                                 className="horario"
                                 name="hours"
                                 disabled={selectedPoint !== registro.id}
-                                onChange={handleTimeChange}
-                                onKeyDown={handleTimeKeyDown}
+                                onChange={handleChange(setEditedTime)}
+                                onKeyDown={(e) => handleKeyDown(e, ':')}
                                 value={selectedPoint === registro.id ? editedTime : originalDate.toLocaleTimeString('pt-BR')}
                             />
                             <div className="container-data">
@@ -204,8 +171,8 @@ export function GeneratePoints({ registros, deletePonto }) {
                                     className="data"
                                     name="date"
                                     disabled={selectedPoint !== registro.id}
-                                    onChange={handleDateChange}
-                                    onKeyDown={handleDateKeyDown}
+                                    onChange={handleChange(setEditedDate)}
+                                    onKeyDown={(e) => handleKeyDown(e, '/')}
                                     value={selectedPoint === registro.id ? editedDate : originalDate.toLocaleDateString('pt-BR').replace(/(\d{4})$/, (match) => match.slice(-2))}
                                 />
                             </div>
@@ -219,5 +186,6 @@ export function GeneratePoints({ registros, deletePonto }) {
 
 GeneratePoints.propTypes = {
     registros: PropTypes.array.isRequired,
-    deletePonto: PropTypes.func.isRequired
+    deletePonto: PropTypes.func.isRequired,
+    getPonto: PropTypes.func.isRequired
 };

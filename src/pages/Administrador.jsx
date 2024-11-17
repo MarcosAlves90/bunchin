@@ -321,7 +321,7 @@ export default function Administrador() {
                         )
                     )}
                 </div>
-                {!colapsed && <GeneratePoints deletePonto={deletePonto} registros={registros}/>}
+                {!colapsed && <GeneratePoints deletePonto={deletePonto} registros={registros} getPonto={getPontos}/>}
             </article>
         </main>
     );
