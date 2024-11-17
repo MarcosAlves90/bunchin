@@ -32,10 +32,12 @@ export default function Home() {
     return (
         <main className={`mainCommon home display-flex-center ${tema}`}>
             <article className={"part-1"}>
-                <img className={`titulo-svg`} src={"/bunchin_title.svg"} alt={"Título do site"} />
+                <img className={`titulo-svg`} src={"/bunchin_title.svg"} alt={"Título do site"}/>
                 <p className={"subtitulo"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>
-                <img className={`penas-left ${isDown ? "down" : ""}`} src={"/penas_esquerda_home.svg"} alt={"Penas à esquerda"} />
-                <img className={`penas-right ${isDown ? "down" : ""}`} src={"/penas_direita_home.svg"} alt={"Penas à direita"} />
+                <img className={`penas-left ${isDown ? "down" : ""}`} src={"/penas_esquerda_home.svg"}
+                     alt={"Penas à esquerda"}/>
+                <img className={`penas-right ${isDown ? "down" : ""}`} src={"/penas_direita_home.svg"}
+                     alt={"Penas à direita"}/>
                 <button className={"button-session"} onClick={handleLoginButtonClick}>
                     Iniciar sessão
                 </button>
@@ -96,25 +98,50 @@ export default function Home() {
                 <p className={"third-title"}>HISTÓRIAS DE SUCESSO</p>
                 <div className={"box-stories"}>
                     <div className={"story"}>
+                        <div className={"box-star"}>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                        </div>
                         <p className={"story-p"}>"Desde que implementamos a plataforma, a motivação do time
                             disparou! As metas são claras e as recompensas são um incentivo constante para todos.
                             Acredito que estamos mais alinhados e engajados como nunca!"</p>
                         <p className={"story-author"}>— Ana L., Gerente de RH da [Empresa ABC]</p>
                     </div>
                     <div className={"story"}>
+                        <div className={"box-star"}>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                        </div>
                         <p className={"story-p"}>"A plataforma nos ajudou a acompanhar o desempenho de todos os
                             colaboradores em tempo real. Agora, temos relatórios precisos e podemos dar feedbacks
                             rápidos. Está facilitando muito nosso trabalho!"</p>
                         <p className={"story-author"}>— Carlos M., Diretor de Operações da [Empresa XYZ]</p>
                     </div>
                     <div className={"story"}>
+                        <div className={"box-star"}>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                        </div>
                         <p className={"story-p"}>"Ficamos surpresos com a facilidade de implementação. A
                             integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa.
                             O uso da plataforma no dia a dia também é muito intuitivo!"</p>
                         <p className={"story-author"}>— Juliana S., CEO da [Empresa DEF]</p>
                     </div>
                 </div>
+                <button className={"button-session last"}>
+                    Registre sua empresa
+                </button>
             </article>
+            <div className={"gradient"}/>
         </main>
     );
 }

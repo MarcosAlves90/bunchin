@@ -707,6 +707,17 @@ footer {
         flex-direction: column;
         justify-content: start;
 
+        .button-session {
+            border: none;
+            transition: var(--common-transition);
+            font-size: 20px;
+            margin-top: 100px;
+            padding-right: 2rem;
+            padding-left: 2rem;
+            &.last {
+                margin-top: 3rem;
+            }
+        }
         .part-1  {
             display: flex;
             flex-direction: column;
@@ -748,13 +759,6 @@ footer {
                     rotate: -70deg;
                 }
             }
-            .button-session {
-                border: none;
-                transition: var(--common-transition);
-                font-size: 20px;
-                margin-top: 100px;
-                width: 23%;
-            }
             .seta-baixo {
                 margin-top: 17.5vh;
                 transition: var(--common-transition);
@@ -765,7 +769,6 @@ footer {
                 animation: bounce 1s;
             }
         }
-
         .part-2 {
             .second-title, .third-title {
                 font-family: "Montserrat Subrayada", sans-serif;
@@ -845,25 +848,56 @@ footer {
                     justify-content: start;
                     padding: 1rem;
                     border-radius: 10px;
+                    transition: var(--common-transition);
                     p {
                         text-align: start;
                     }
+                    .box-star {
+                        width: 100%;
+                        display: flex;
+                        gap: 0.4rem;
+                        margin: 0.5rem 0 1rem 0;
+                    }
                     .story-p {
-                        font-weight: 300;
+                        font-weight: 270;
                         font-size: 20px;
                         flex-grow: 1;
                     }
                     .story-author {
-                        margin: 0;
+                        margin: 0 0 0.5rem 0;
                         width: 100%;
+                        font-size: 14px;
                     }
+                    &:hover {
+                        transform: scale(1.1);
+                        cursor: pointer;
+                    }
+                }
+                &:hover > :not(:hover) {
+                    opacity: 0.5;
                 }
             }
         }
+        .gradient {
+            margin-top: 3rem;
+            width: 100%;
+            height: 15rem;
+        }
 
         &.dark {
+            .gradient {
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, var(--background-color-navbar-dark) 100%);
+            }
             .seta-baixo, p {
                 color: var(--background-color-light-theme);
+            }
+            .button-session {
+                background-color: var(--background-color-navbar-dark);
+                color: black;
+                &:hover {
+                    background-color: var(--background-color-light-theme);
+                    color: var(--background-color-dark-theme);
+                }
             }
             .part-1 {
                 .titulo-svg {
@@ -871,14 +905,6 @@ footer {
                 }
                 .subtitulo {
                     color: var(--background-color-dark-light-theme);
-                }
-                .button-session {
-                    background-color: var(--background-color-navbar-dark);
-                    color: black;
-                }
-                .button-session:hover {
-                    background-color: var(--background-color-light-theme);
-                    color: var(--background-color-dark-theme);
                 }
             }
             .part-2 {
@@ -907,13 +933,27 @@ footer {
                         p {
                             color: var(--background-color-dark-theme);
                         }
+                        .box-star {
+                            color: var(--background-color-navbar-dark);
+                        }
                     }
                 }
             }
         }
         &.light {
+            .gradient {
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, var(--background-color-navbar-light) 100%);
+            }
             .seta-baixo, p {
                 color: var(--background-color-dark-theme);
+            }
+            .button-session {
+                background-color: var(--background-color-navbar-light);
+                color: white;
+                &:hover {
+                    background-color: var(--background-color-dark-theme);
+                    color: var(--background-color-light-theme);
+                }
             }
             .part-1 {
                 .penas-left, .penas-right {
@@ -921,14 +961,6 @@ footer {
                 }
                 .subtitulo {
                     color: var(--background-color-light-dark-theme);
-                }
-                .button-session {
-                    background-color: var(--background-color-navbar-light);
-                    color: white;
-                    &:hover {
-                        background-color: var(--background-color-dark-theme);
-                        color: var(--background-color-light-theme);
-                    }
                 }
             }
             .part-2 {
@@ -950,9 +982,12 @@ footer {
                 }
                 .box-stories {
                     .story {
-                        background-color: var(--background-color-dark-theme);
+                        background-color: var(--background-color-light-dark-theme);
                         p {
                             color: var(--background-color-light-theme);
+                        }
+                        .box-star {
+                            color: var(--background-color-navbar-light);
                         }
                     }
                 }
@@ -1467,6 +1502,9 @@ footer {
                 font-size: 1.5em;
                 margin-bottom: 60px;
                 text-align: justify;
+                &.contact-info {
+                    text-align: center;
+                }
             }
             .button-home {
                 border: none;

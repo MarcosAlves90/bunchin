@@ -23,7 +23,7 @@ export default function Sobre() {
                     vida da sua empresa e de seus colaboradores.
                 </p>
                 <button className="button-home" onClick={handleHomeButtonClick}>
-                    Voltar para Home
+                    Voltar para a página inicial
                 </button>
             </div>
         </main>

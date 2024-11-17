@@ -1,7 +1,7 @@
 {
   "name": "bunchin_v2",
   "private": true,
-  "version": "1.1.2",
+  "version": "1.2.0",
   "homepage": "https://bunchin.vercel.app",
   "type": "module",
   "scripts": {
