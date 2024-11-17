@@ -123,7 +123,6 @@ export default function Administrador() {
             n_registro: "",
             nome: "",
             email: "",
-            senha: "",
             cpf: "",
             funcao: "comum",
             cargo: "estagiario",

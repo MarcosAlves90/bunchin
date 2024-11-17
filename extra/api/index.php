@@ -17,20 +17,26 @@ switch($path[2]) {
     case "funcionario":
         switch($method) {
             case "GET":
-                $sql = "SELECT * FROM tb_funcionario";
+                $sql = "SELECT n_registro, nome, email, cpf, funcao, cargo, departamento FROM tb_funcionario";
                 if(isset($path[3]) && is_numeric($path[3])) {
                     $sql .= " WHERE cpf = :cpf";
                     $stmt = $conn->prepare($sql);
                     $stmt->bindParam(':cpf', $path[3]);
                     $stmt->execute();
-                    $users = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($user) {
+                        unset($user['senha']);
+                    }
+                    echo json_encode($user);
                 } else {
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($users as &$user) {
+                        unset($user['senha']);
+                    }
+                    echo json_encode($users);
                 }
-                
-                echo json_encode($users);
                 break;
             case "POST":
                 $user = json_decode(file_get_contents('php://input'));
@@ -52,17 +58,25 @@ switch($path[2]) {
                 }
                 echo json_encode($response);
                 break;
-
             case "PUT":
                 $user = json_decode(file_get_contents('php://input'));
-                $sql = "UPDATE tb_funcionario SET n_registro= :n_registro, 
-                          nome =:nome, 
-                          email =:email, 
-                          funcao =:funcao, 
-                          cargo =:cargo, 
-                          departamento =:departamento,
-                          senha =:senha
-                      WHERE cpf = :cpf";
+                
+                // Base da consulta SQL
+                $sql = "UPDATE tb_funcionario SET 
+                            n_registro = :n_registro, 
+                            nome = :nome, 
+                            email = :email, 
+                            funcao = :funcao, 
+                            cargo = :cargo, 
+                            departamento = :departamento";
+                
+                // Adicionar a senha se ela estiver presente
+                if (!empty($user->senha)) {
+                    $sql .= ", senha = :senha";
+                }
+                
+                $sql .= " WHERE cpf = :cpf";
+                
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':n_registro', $user->n_registro);
                 $stmt->bindParam(':nome', $user->nome);
@@ -71,8 +85,13 @@ switch($path[2]) {
                 $stmt->bindParam(':funcao', $user->funcao);
                 $stmt->bindParam(':cargo', $user->cargo);
                 $stmt->bindParam(':departamento', $user->departamento);
-                $stmt->bindParam(':senha', password_hash($user->senha, PASSWORD_DEFAULT));
-
+                
+                // Vincular a senha se ela estiver presente
+                if (!empty($user->senha)) {
+                    $hashedPassword = password_hash($user->senha, PASSWORD_DEFAULT);
+                    $stmt->bindParam(':senha', $hashedPassword);
+                }
+            
                 if($stmt->execute()) {
                     $response = ['status' => 1, 'message' => 'Record updated successfully.'];
                 } else {

@@ -15,8 +15,6 @@ export function GeneratePoints({ registros, deletePonto }) {
     const [charCount, setCharCount] = useState(0);
     const [message, setMessage] = useState("");
     const [reason, setReason] = useState("");
-    const [selectedPoint, setSelectedPoint] = useState(null);
-    const [selectedPointsInfo, setSelectedPointsInfo] = useState({});
 
     const handleOpenModal = useCallback((registro) => {
         setSelectedItem(registro);
@@ -56,25 +54,7 @@ export function GeneratePoints({ registros, deletePonto }) {
         }
     };
 
-    const handlePenButtonClick = (id) => {
-        setSelectedPoint(id === selectedPoint ? null : id);
-    };
-
-    const sortedRegistros = useMemo(() => {
-        const isPerfilOrAdmin = location.pathname === "/perfil" || usuario.funcao === "administrador";
-        return registros.sort((a, b) => {
-            const dateA = new Date(a.data);
-            const dateB = new Date(b.data);
-            if (isPerfilOrAdmin) {
-                if (dateA.toDateString() === dateB.toDateString()) {
-                    return dateA - dateB;
-                }
-                return dateB - dateA;
-            } else {
-                return dateA - dateB;
-            }
-        });
-    }, [registros, location.pathname, usuario.funcao]);
+    const sortedRegistros = useMemo(() => registros.sort((a, b) => new Date(a.data) - new Date(b.data)), [registros]);
 
     return (
         <>
@@ -109,15 +89,15 @@ export function GeneratePoints({ registros, deletePonto }) {
                     return (
                         <div key={registro.id} className="registro-item">
                             {!isAdmin && <i className="bi bi-exclamation-circle-fill icon-warning" onClick={() => handleOpenModal(registro)}></i>}
-                            {isAdmin && <i className="bi bi-trash3-fill icon-delete" onClick={() => deletePonto(registro.id)}></i>}
-                            {isAdmin && <i className="bi bi-pen-fill icon-edit" onClick={() => handlePenButtonClick(registro.id)}></i>}
+                            {isAdmin && <i className="bi bi-trash3 icon-delete" onClick={() => deletePonto(registro.id)}></i>}
+                            {isAdmin && <i className="bi bi-pen icon-edit"></i>}
                             <div className="display-flex-center">
                                 <p className="nome">{registro.nome}</p>
                             </div>
-                            <p className="horario" name="hours" contentEditable={selectedPoint === registro.id} onChange={handlePointChange}>{date.toLocaleTimeString()}</p>
+                            <p className="horario">{date.toLocaleTimeString()}</p>
                             <div className="container-data">
                                 <img className="icon-calendar" src="/Calendar_Days.svg" alt="Ícone de calendário" />
-                                <p className="data" name="date" contentEditable={selectedPoint === registro.id} onChange={handlePointChange}>{`${date.getDate()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`}</p>
+                                <p className="data">{`${date.getDate()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`}</p>
                             </div>
                         </div>
                     );
