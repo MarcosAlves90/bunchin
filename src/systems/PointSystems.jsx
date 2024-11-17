@@ -4,6 +4,7 @@ import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { useLocation } from "react-router-dom";
 import ReactModal from 'react-modal';
 import { SendEmail } from "./SendEmail.jsx";
+import axios from "axios";
 
 ReactModal.setAppElement('#root');
 
@@ -16,7 +17,8 @@ export function GeneratePoints({ registros, deletePonto }) {
     const [message, setMessage] = useState("");
     const [reason, setReason] = useState("");
     const [selectedPoint, setSelectedPoint] = useState(null);
-    const [selectedPointsInfo, setSelectedPointsInfo] = useState({});
+    const [editedDate, setEditedDate] = useState("");
+    const [editedTime, setEditedTime] = useState("");
 
     const handleOpenModal = useCallback((registro) => {
         setSelectedItem(registro);
@@ -44,20 +46,90 @@ export function GeneratePoints({ registros, deletePonto }) {
             SendEmail(import.meta.env.VITE_PUBLIC_API_KEY,
                 import.meta.env.VITE_SERVICE_API_KEY,
                 import.meta.env.VITE_TEMPLATE_API_KEY_2, {
-                email: usuario.email,
-                complaint: message,
-                to_name: usuario.nome,
-                datePoint: data,
-                reason: reason,
-            });
+                    email: usuario.email,
+                    complaint: message,
+                    to_name: usuario.nome,
+                    datePoint: data,
+                    reason: reason,
+                });
             handleCloseModal();
         } else {
             console.log('Email inválido');
         }
     };
 
-    const handlePenButtonClick = (id) => {
-        setSelectedPoint(id === selectedPoint ? null : id);
+    const handleTimeKeyDown = (event) => {
+        const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', ':'];
+        const timeValue = event.target.value;
+        if (event.key === 'Backspace' && timeValue[event.target.selectionStart - 1] === ':') {
+            event.preventDefault();
+        } else if (!allowedKeys.includes(event.key) && !/^\d$/.test(event.key)) {
+            event.preventDefault();
+        }
+    };
+
+    const handleDateKeyDown = (event) => {
+        const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', '/'];
+        const dateValue = event.target.value;
+        if (event.key === 'Backspace' && dateValue[event.target.selectionStart - 1] === '/') {
+            event.preventDefault();
+        } else if (!allowedKeys.includes(event.key) && !/^\d$/.test(event.key)) {
+            event.preventDefault();
+        }
+    };
+
+    const handleTimeChange = (event) => {
+        const timeValue = event.target.value;
+        setEditedTime(timeValue);
+    };
+
+    const handleDateChange = (event) => {
+        const dateValue = event.target.value;
+        setEditedDate(dateValue);
+    };
+
+    const getUpdatedDate = (originalDate) => {
+        const [day, month, year] = (editedDate || originalDate.toLocaleDateString('pt-BR')).split('/').map(Number);
+        const fullYear = year < 100 ? 2000 + year : year; // Convert two-digit year to four-digit year
+        const [hours, minutes, seconds] = (editedTime || originalDate.toLocaleTimeString('pt-BR')).split(':').map(Number);
+        return new Date(fullYear, month - 1, day, hours, minutes, seconds);
+    };
+
+    const updatePonto = async (registro) => {
+        const updatedDate = getUpdatedDate(new Date(registro.data));
+        const updatedData = {
+            id_ponto: registro.id,
+            funcionario_fk: registro.funcionario_fk,
+            nome_tipo: registro.nome,
+            data_hora: updatedDate.toISOString()
+        };
+
+        console.log(updatedData);
+
+        axios.put('http://localhost:80/api/ponto', {
+            id_ponto: updatedData.id_ponto,
+            funcionario_fk: updatedData.funcionario_fk,
+            nome_tipo: updatedData.nome_tipo,
+            data_hora: updatedData.data_hora
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.error("Erro ao salvar ponto:", error);
+        });
+    };
+
+    const handlePenButtonClick = (registro) => {
+        if (selectedPoint === registro.id) {
+            updatePonto(registro);
+            setSelectedPoint(null);
+            setEditedDate("");
+            setEditedTime("");
+        } else {
+            setSelectedPoint(registro.id);
+            const originalDate = new Date(registro.data);
+            setEditedDate(originalDate.toLocaleDateString('pt-BR').replace(/(\d{4})$/, (match) => match.slice(-2))); // Display two-digit year
+            setEditedTime(originalDate.toLocaleTimeString('pt-BR'));
+        }
     };
 
     const sortedRegistros = useMemo(() => {
@@ -104,20 +176,38 @@ export function GeneratePoints({ registros, deletePonto }) {
             </ReactModal>
             <article className={`article-registro-itens ${tema}`}>
                 {sortedRegistros.map(registro => {
-                    const date = new Date(registro.data);
+                    const originalDate = new Date(registro.data);
+                    const updatedDate = selectedPoint === registro.id ? getUpdatedDate(originalDate) : originalDate;
                     const isAdmin = location.pathname !== "/pontos" && location.pathname !== "/perfil" && usuario.funcao === "administrador";
                     return (
                         <div key={registro.id} className="registro-item">
-                            {!isAdmin && <i className="bi bi-exclamation-circle-fill icon-warning" onClick={() => handleOpenModal(registro)}></i>}
-                            {isAdmin && <i className="bi bi-trash3-fill icon-delete" onClick={() => deletePonto(registro.id)}></i>}
-                            {isAdmin && <i className="bi bi-pen-fill icon-edit" onClick={() => handlePenButtonClick(registro.id)}></i>}
+                            {!isAdmin && <i className="bi bi-exclamation-circle-fill icon-warning"
+                                            onClick={() => handleOpenModal(registro)}></i>}
+                            {isAdmin && <i className="bi bi-trash3-fill icon-delete"
+                                           onClick={() => deletePonto(registro.id)}></i>}
+                            {isAdmin && <i className="bi bi-pen-fill icon-edit"
+                                           onClick={() => handlePenButtonClick(registro)}></i>}
                             <div className="display-flex-center">
                                 <p className="nome">{registro.nome}</p>
                             </div>
-                            <p className="horario" name="hours" contentEditable={selectedPoint === registro.id} onChange={handlePointChange}>{date.toLocaleTimeString()}</p>
+                            <input
+                                className="horario"
+                                name="hours"
+                                disabled={selectedPoint !== registro.id}
+                                onChange={handleTimeChange}
+                                onKeyDown={handleTimeKeyDown}
+                                value={selectedPoint === registro.id ? editedTime : originalDate.toLocaleTimeString('pt-BR')}
+                            />
                             <div className="container-data">
-                                <img className="icon-calendar" src="/Calendar_Days.svg" alt="Ícone de calendário" />
-                                <p className="data" name="date" contentEditable={selectedPoint === registro.id} onChange={handlePointChange}>{`${date.getDate()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().slice(-2)}`}</p>
+                                <img className="icon-calendar" src="/Calendar_Days.svg" alt="Ícone de calendário"/>
+                                <input
+                                    className="data"
+                                    name="date"
+                                    disabled={selectedPoint !== registro.id}
+                                    onChange={handleDateChange}
+                                    onKeyDown={handleDateKeyDown}
+                                    value={selectedPoint === registro.id ? editedDate : originalDate.toLocaleDateString('pt-BR').replace(/(\d{4})$/, (match) => match.slice(-2))}
+                                />
                             </div>
                         </div>
                     );

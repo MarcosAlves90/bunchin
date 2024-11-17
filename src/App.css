@@ -1567,6 +1567,7 @@ footer {
         border-radius: 10px;
         padding: 10px 20px;
         position: relative;
+        width: 100%;
         .bi {
             transition: var(--common-transition);
             &:hover {
@@ -1592,6 +1593,14 @@ footer {
             text-align: start;
             margin-bottom: 0;
         }
+        input {
+            background-color: transparent !important;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            width: 100%;
+            text-align: center;
+        }
         .horario {
             font-weight: 700;
             margin: 10px 0 10px 0;
@@ -1601,27 +1610,29 @@ footer {
             display: flex;
             justify-content: center;
             align-items: center;
-            .icon-calendar {
-                margin-right: 5px;
-            }
             .data {
                 font-size: 0.9em;
                 font-weight: 500;
+                width: 5vw;
+                flex-wrap: wrap;
             }
         }
     }
     &.light {
         .registro-item {
-            color: var(--background-color-light-theme);
+            color: var(--background-color-light-theme) !important;
             background-color: var(--background-color-dark-theme);
             .icon-delete:hover {
                 color: red;
+            }
+            input {
+                color: var(--background-color-light-theme) !important;
             }
         }
     }
     &.dark {
         .registro-item {
-            color: var(--background-color-dark-theme);
+            color: var(--background-color-dark-theme) !important;
             background-color: var(--background-color-light-theme);
             .icon-delete:hover {
                 color: #df7979;
@@ -1630,6 +1641,9 @@ footer {
                 .icon-calendar {
                     filter: invert(1);
                 }
+            }
+            input {
+                color: var(--background-color-dark-theme) !important;
             }
         }
     }
