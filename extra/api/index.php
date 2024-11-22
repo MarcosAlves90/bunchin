@@ -48,7 +48,7 @@ switch($path[2]) {
         break;
     case "newPassword":
         $user = json_decode(file_get_contents('php://input'));
-        $sql = "UPDATE tb_funcionario SET senha = :senha WHERE n_registro = :n_registro";
+        $sql = "UPDATE tb_funcionario SET senha = :senha, status = 1 WHERE n_registro = :n_registro";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':n_registro', $user->n_registro);
         $stmt->bindParam(':senha', password_hash($user->senha, PASSWORD_DEFAULT));

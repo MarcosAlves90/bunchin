@@ -32,7 +32,6 @@ export default function Login() {
                 if (response.data.funcionario.status === "1") {
                     navigate('/pontos');
                 } else {
-                    console.log(response.data.funcionario);
                     navigate('/resetar-senha');
                 }
             } else {
