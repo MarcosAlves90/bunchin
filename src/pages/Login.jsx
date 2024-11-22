@@ -29,7 +29,12 @@ export default function Login() {
             if (response.data.status === 1) {
                 setUsuario(response.data.funcionario);
                 localStorage.setItem("usuario", JSON.stringify(response.data.funcionario));
-                navigate('/pontos');
+                if (response.data.funcionario.status === "1") {
+                    navigate('/pontos');
+                } else {
+                    console.log(response.data.funcionario);
+                    navigate('/resetar-senha');
+                }
             } else {
                 setError(response.data.message);
             }

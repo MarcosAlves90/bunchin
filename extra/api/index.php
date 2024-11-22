@@ -46,6 +46,19 @@ switch($path[2]) {
             echo json_encode($response);
         }
         break;
+    case "newPassword":
+        $user = json_decode(file_get_contents('php://input'));
+        $sql = "UPDATE tb_funcionario SET senha = :senha WHERE n_registro = :n_registro";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':n_registro', $user->n_registro);
+        $stmt->bindParam(':senha', password_hash($user->senha, PASSWORD_DEFAULT));
+        if($stmt->execute()) {
+            $response = ['status' => 1, 'message' => 'Senha alterada com sucesso.'];
+        } else {
+            $response = ['status' => 0, 'message' => 'Erro ao alterar a senha.'];
+        }
+        echo json_encode($response);
+        break;
     case "verifyResetCode":
         if ($method == "POST") {
             $data = json_decode(file_get_contents('php://input'));
@@ -253,6 +266,12 @@ switch($path[2]) {
         $funcionario = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($funcionario && password_verify($user->senha, $funcionario['senha'])) {
+            if ($funcionario['status'] == 0) {
+                $sql = "UPDATE tb_funcionario SET status = 1 WHERE n_registro = :n_registro";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':n_registro', $funcionario['n_registro']);
+                $stmt->execute();
+            }
             $response = ['status' => 1, 'message' => 'Login successful.', 'funcionario' => $funcionario];
         } else {
             $response = ['status' => 0, 'message' => 'Email, CPF ou senha incorretos.'];
