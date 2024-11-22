@@ -1,7 +1,7 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { useNavigate } from "react-router-dom";
-import {Clock, Shield, UsersRound, Clock3, Minus} from "lucide-react";
+import {Clock, Shield, UsersRound, Clock3} from "lucide-react";
 
 export default function Home() {
     const navigate = useNavigate();

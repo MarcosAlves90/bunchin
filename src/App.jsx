@@ -13,6 +13,7 @@ import {UserContext} from "./assets/ContextoDoUsuario.jsx";
 import {toggleClassOnBody} from "./systems/ThemeSystems.jsx";
 import Administrador from "./pages/Administrador.jsx";
 import Footer from "./components/Footer.jsx";
+import ResetarSenha from "./pages/ResetarSenha.jsx";
 
 function App() {
 
@@ -72,7 +73,7 @@ function App() {
               </div>
           )}
         </div>
-        {location.pathname !== "/login" && <NavBar/>}
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <NavBar/>}
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/sobre" element={<Sobre/>}/>
@@ -82,8 +83,9 @@ function App() {
           <Route path="/configuracoes" element={<Configuracoes/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
+          <Route path={"resetar-senha"} element={<ResetarSenha/>}/>
         </Routes>
-        {location.pathname !== "/login" && <Footer/>}
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <Footer/>}
       </main>
   );
 }

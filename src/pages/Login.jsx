@@ -47,6 +47,8 @@ export default function Login() {
 
     const handleBackButtonClick = () => navigate('/');
 
+    const handleResetPasswordButtonClick = () => navigate('/resetar-senha');
+
     return (
         <>
             <img className={`login-penas-left ${tema}`}
@@ -86,7 +88,7 @@ export default function Login() {
                                 color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"}/>
                         </div>
                         <label htmlFor="senha">SENHA</label>
-                        <div className={"input-box"}>
+                        <div className={"input-box last"}>
                             <input
                                 type={passwordVisibility ? "text" : "password"}
                                 id="senha"
@@ -112,11 +114,11 @@ export default function Login() {
                                 />
                             }
                         </div>
-                        {error && <p className="error-message">{error}</p>}
-                        <button type={"submit"} value={"Submit"} className="button-login"
+                        <p className={"reset-password"} onClick={handleResetPasswordButtonClick}>Esqueci a senha</p>
+                        <button type={"submit"} value={"Submit"} className={`button-login ${error ? "error" : ""}`}
                                 onClick={handleLoginButtonClick} disabled={loading}>
                             <i className="bi bi-feather2 left"></i>
-                            {!loading ? "Iniciar" : "Carregando..."}
+                            {loading ? "Carregando..." : error ? error : "Iniciar"}
                             <i className="bi bi-feather2 right"></i>
                         </button>
                     </form>
