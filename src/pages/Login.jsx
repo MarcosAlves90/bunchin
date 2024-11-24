@@ -39,7 +39,7 @@ export default function Login() {
             }
         } catch (error) {
             console.error("Erro com a requisição de login:", error);
-            setError("Erro ao tentar fazer login. Por favor, tente novamente.");
+            setError("Erro ao tentar fazer login.");
         } finally {
             setLoading(false);
         }

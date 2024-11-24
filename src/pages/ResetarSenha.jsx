@@ -103,16 +103,17 @@ export default function ResetarSenha() {
             return;
         }
 
-        const apiEndpoint = usuario && usuario.status === 0 ? 'newPassword' : 'resetPassword';
-        const payload = usuario && usuario.status === 0
-            ? { n_registro: usuario.n_registro, senha: newPassword }
+        const n_registro = usuario && usuario.status === "0" ? usuario.n_registro : null;
+        const apiEndpoint = usuario && usuario.status === "0" ? 'newPassword' : 'resetPassword';
+        const payload = usuario && usuario.status === "0"
+            ? { n_registro, senha: newPassword }
             : { codigo: resetCode, senha: newPassword };
 
         try {
             const response = await axios.put(`http://localhost:80/api/${apiEndpoint}`, payload);
             if (response.data.status === 1) {
                 setError("Senha alterada com sucesso.");
-                if (apiEndpoint === 'newPassword') {
+                if (usuario && usuario.status === "0") {
                     navigate("/pontos");
                 } else {
                     handleLogout();
@@ -120,8 +121,8 @@ export default function ResetarSenha() {
             } else {
                 setError("Erro ao alterar a senha.");
             }
-        } catch (error) {
-            setError("Erro ao alterar a senha.");
+        } catch (err) {
+            setError("Erro.");
         }
     };
 
@@ -188,7 +189,7 @@ export default function ResetarSenha() {
                     <button className={"backArrow"} onClick={handleBackButtonClick}><i className="bi bi-arrow-left"></i>
                     </button>
                     <h1>Recuperar conta</h1>
-                    {(resetCode && isValidCode) || (usuario && usuario.status === 0) ? (
+                    {(resetCode && isValidCode) || (usuario && usuario.status === "0") ? (
                         <>
                             <p className={"p-title"}>Nova Senha</p>
                             <input type="text" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}/>

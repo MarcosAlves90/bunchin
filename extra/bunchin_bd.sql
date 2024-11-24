@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 22/11/2024 às 03:13
+-- Tempo de geração: 24/11/2024 às 04:47
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -35,20 +35,20 @@ CREATE TABLE `tb_funcionario` (
   `cpf` varchar(11) NOT NULL,
   `funcao` varchar(40) NOT NULL,
   `cargo` varchar(40) NOT NULL,
-  `departamento` varchar(30) NOT NULL
+  `departamento` varchar(30) NOT NULL,
+  `status` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `tb_funcionario`
 --
 
-INSERT INTO `tb_funcionario` (`n_registro`, `nome`, `email`, `senha`, `cpf`, `funcao`, `cargo`, `departamento`) VALUES
-(1, 'Lyntter de Jesus Paiva', 'lyntter@gmail.com', '$2y$10$o5IxEkyO9Zcp6PJY9rTake7JFWsgSZlmJoH18/gqeRzRZHPpZr/Wq', '12415251', 'administrador', 'auxiliar-administrativo', 'marketing'),
-(3, 'Kolovol da Silva Paiva Junior JJ', 'kolovolpaiva@gmail.com', '$2y$10$ifHeTYanaGDlrVxYQERl0utN8krIK3YxMQY9k1KZBbvDNiC.DTuE2', '73956473892', 'administrador', 'gerente', 'financeiro'),
-(4, 'Marcos Alves Lopes Paiva', 'marcoslopes@gmail.com', '$2y$10$vQXZXvfK5Z.ykBmAgJG3kOMyYz9vhSSZFu3tM2uzkemQNRMb5juZe', '75647856234', 'administrador', 'diretor', 'marketing'),
-(5, 'Matheus Souza Paiva', 'matheus@gmail.com', '$2y$10$tjwhbUib0iRAMYu6zoeqRuDoO2Mj0WXNqZUuTPcuQji4yw23uvhN.', '86956478362', 'comum', 'estagiario', 'producao'),
-(6, 'gaviota', 'gaviota@gmail.com', '$2y$10$BA5UgHtKvlEKFpwhMvKga.JWHsVET9KjxzqNEFGPG9ZX5ymrzSk9i', '212512', 'administrador', 'gerente', 'producao'),
-(17, 'Maneus Goza Mendigos', 'matheussr2006@gmail.com', '$2y$10$4VJNatGFgyjlNIS1TxuYpOl1g/4Sr6A0Pr2exmPDdLGl2N.jB.CeW', '2345324242', 'administrador', 'estagiario', 'administrativo');
+INSERT INTO `tb_funcionario` (`n_registro`, `nome`, `email`, `senha`, `cpf`, `funcao`, `cargo`, `departamento`, `status`) VALUES
+(1, 'Lyntter de Jesus Paiva', 'lyntter@gmail.com', '$2y$10$IKLPDSiuLDkvAhohKZci5.H3uQDCbrZtX7mtrSxusoo.DJgTNZFzm', '12415251', 'administrador', 'auxiliar-administrativo', 'marketing', '1'),
+(3, 'Kolovol da Silva Paiva Junior JJ', 'kolovolpaiva@gmail.com', '$2y$10$ifHeTYanaGDlrVxYQERl0utN8krIK3YxMQY9k1KZBbvDNiC.DTuE2', '73956473892', 'administrador', 'gerente', 'financeiro', '1'),
+(4, 'Marcos Alves Lopes Paiva', 'marcoslopes@gmail.com', '$2y$10$vQXZXvfK5Z.ykBmAgJG3kOMyYz9vhSSZFu3tM2uzkemQNRMb5juZe', '75647856234', 'administrador', 'diretor', 'marketing', '1'),
+(5, 'Matheus Souza Paiva', 'matheus@gmail.com', '$2y$10$tjwhbUib0iRAMYu6zoeqRuDoO2Mj0WXNqZUuTPcuQji4yw23uvhN.', '86956478362', 'comum', 'estagiario', 'producao', '1'),
+(6, 'gaviota', 'gaviota@gmail.com', '$2y$10$BA5UgHtKvlEKFpwhMvKga.JWHsVET9KjxzqNEFGPG9ZX5ymrzSk9i', '212512', 'administrador', 'gerente', 'producao', '1');
 
 -- --------------------------------------------------------
 
@@ -63,6 +63,13 @@ CREATE TABLE `tb_links` (
   `funcionario_id` int(11) NOT NULL,
   `data_criacao` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `tb_links`
+--
+
+INSERT INTO `tb_links` (`id`, `email`, `codigo`, `funcionario_id`, `data_criacao`) VALUES
+(8, 'lyntter@gmail.com', '31506a3c-16a6-4c54-984b-6a070d73bdd7', 1, '2024-11-24 02:41:52');
 
 -- --------------------------------------------------------
 
@@ -136,7 +143,7 @@ ALTER TABLE `tb_funcionario`
 -- AUTO_INCREMENT de tabela `tb_links`
 --
 ALTER TABLE `tb_links`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restrições para tabelas despejadas
