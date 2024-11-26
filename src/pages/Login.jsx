@@ -29,13 +29,17 @@ export default function Login() {
             if (response.data.status === 1) {
                 setUsuario(response.data.funcionario);
                 localStorage.setItem("usuario", JSON.stringify(response.data.funcionario));
-                navigate('/pontos');
+                if (response.data.funcionario.status === "1") {
+                    navigate('/pontos');
+                } else {
+                    navigate('/resetar-senha');
+                }
             } else {
                 setError(response.data.message);
             }
         } catch (error) {
             console.error("Erro com a requisição de login:", error);
-            setError("Erro ao tentar fazer login. Por favor, tente novamente.");
+            setError("Erro ao tentar fazer login.");
         } finally {
             setLoading(false);
         }

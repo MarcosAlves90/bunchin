@@ -46,6 +46,20 @@ switch($path[2]) {
             echo json_encode($response);
         }
         break;
+    case "newPassword":
+        $user = json_decode(file_get_contents('php://input'));
+        $hashedPassword = password_hash($user->senha, PASSWORD_DEFAULT);
+        $sql = "UPDATE tb_funcionario SET senha = :senha, status = '1' WHERE n_registro = :n_registro";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':n_registro', $user->n_registro);
+        $stmt->bindParam(':senha', $hashedPassword);
+        if($stmt->execute()) {
+            $response = ['status' => 1, 'message' => 'Senha alterada com sucesso.'];
+        } else {
+            $response = ['status' => 0, 'message' => 'Erro ao alterar a senha.'];
+        }
+        echo json_encode($response);
+        break;
     case "verifyResetCode":
         if ($method == "POST") {
             $data = json_decode(file_get_contents('php://input'));
@@ -107,12 +121,13 @@ switch($path[2]) {
                 break;
             case "POST":
                 $user = json_decode(file_get_contents('php://input'));
-                $sql = "INSERT INTO tb_funcionario(n_registro, nome, email, senha, cpf, funcao, cargo, departamento) VALUES(:n_registro, :nome, :email, :senha, :cpf, :funcao, :cargo, :departamento)";
+                $hashedPassword = password_hash($user->senha, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO tb_funcionario(n_registro, nome, email, senha, cpf, funcao, cargo, departamento, status) VALUES(:n_registro, :nome, :email, :senha, :cpf, :funcao, :cargo, :departamento, '0')";
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':n_registro', $user->n_registro);
                 $stmt->bindParam(':nome', $user->nome);
                 $stmt->bindParam(':email', $user->email);
-                $stmt->bindParam(':senha', password_hash($user->senha, PASSWORD_DEFAULT));
+                $stmt->bindParam(':senha', $hashedPassword);
                 $stmt->bindParam(':cpf', $user->cpf);
                 $stmt->bindParam(':funcao', $user->funcao);
                 $stmt->bindParam(':cargo', $user->cargo);
@@ -251,7 +266,6 @@ switch($path[2]) {
         $stmt->bindParam(':cpf', $user->email);
         $stmt->execute();
         $funcionario = $stmt->fetch(PDO::FETCH_ASSOC);
-
         if ($funcionario && password_verify($user->senha, $funcionario['senha'])) {
             $response = ['status' => 1, 'message' => 'Login successful.', 'funcionario' => $funcionario];
         } else {

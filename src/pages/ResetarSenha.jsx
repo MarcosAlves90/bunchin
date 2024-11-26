@@ -16,7 +16,7 @@ export default function ResetarSenha() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
     const [passwordStrength, setPasswordStrength] = useState(0);
-    const { tema } = useContext(UserContext);
+    const { tema, usuario, setUsuario } = useContext(UserContext);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -91,22 +91,38 @@ export default function ResetarSenha() {
         return strength;
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("usuario");
+        setUsuario(null);
+        navigate('/login');
+    }
+
     const handlePasswordChange = async () => {
         if (newPassword !== confirmNewPassword) {
             setError("As senhas não coincidem.");
             return;
         }
 
+        const n_registro = usuario && usuario.status === "0" ? usuario.n_registro : null;
+        const apiEndpoint = usuario && usuario.status === "0" ? 'newPassword' : 'resetPassword';
+        const payload = usuario && usuario.status === "0"
+            ? { n_registro, senha: newPassword }
+            : { codigo: resetCode, senha: newPassword };
+
         try {
-            const response = await axios.put(`http://localhost:80/api/resetPassword`, { codigo: resetCode, senha: newPassword });
+            const response = await axios.put(`http://localhost:80/api/${apiEndpoint}`, payload);
             if (response.data.status === 1) {
                 setError("Senha alterada com sucesso.");
-                navigate("/login");
+                if (usuario && usuario.status === "0") {
+                    navigate("/pontos");
+                } else {
+                    handleLogout();
+                }
             } else {
                 setError("Erro ao alterar a senha.");
             }
-        } catch (error) {
-            setError("Erro ao alterar a senha.");
+        } catch (err) {
+            setError("Erro.");
         }
     };
 
@@ -173,7 +189,7 @@ export default function ResetarSenha() {
                     <button className={"backArrow"} onClick={handleBackButtonClick}><i className="bi bi-arrow-left"></i>
                     </button>
                     <h1>Recuperar conta</h1>
-                    {resetCode && isValidCode ? (
+                    {(resetCode && isValidCode) || (usuario && usuario.status === "0") ? (
                         <>
                             <p className={"p-title"}>Nova Senha</p>
                             <input type="text" value={newPassword} onChange={(e) => setNewPassword(e.target.value)}/>
