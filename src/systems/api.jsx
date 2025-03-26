@@ -1,8 +1,11 @@
 import axios from "axios";
+import { UserContext } from "../assets/ContextoDoUsuario.jsx";
+
 
 export async function getPoints(cpf, todayBool) {
+    const { API_URL } = useContext(UserContext);
     try {
-        const { data } = await axios.get(`http://localhost:80/api/ponto/`);
+        const { data } = await axios.get(`${API_URL}ponto/`);
         if (!Array.isArray(data)) {
             console.error("Unexpected API response:", data);
             return [];
