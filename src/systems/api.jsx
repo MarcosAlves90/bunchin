@@ -1,10 +1,6 @@
 import axios from "axios";
-import {useContext} from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 
-
-export async function getPoints(cpf, todayBool) {
-    const { API_URL } = useContext(UserContext);
+export async function getPoints(cpf, todayBool, API_URL) {
     try {
         const { data } = await axios.get(`${API_URL}ponto/`);
         if (!Array.isArray(data)) {

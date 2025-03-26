@@ -97,7 +97,7 @@ export default function Administrador() {
     const getPontos = () => {
         if (funcionarioSelecionado) {
             (async () => {
-                const pontos = await getPoints(funcionarioSelecionado, false);
+                const pontos = await getPoints(funcionarioSelecionado, false, API_URL);
                 setRegistros(pontos);
             })();
         }

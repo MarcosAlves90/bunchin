@@ -73,7 +73,7 @@ export default function Pontos() {
 
     useEffect(() => {
         (async () => {
-            const pontos = await getPoints(usuario.cpf, true);
+            const pontos = await getPoints(usuario.cpf, true, API_URL);
             setRegistros(pontos);
         })();
     }, [usuario.cpf]);

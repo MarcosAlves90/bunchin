@@ -5,13 +5,13 @@ import { getPoints } from "../systems/api.jsx";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function Perfil() {
-    const { usuario, tema } = useContext(UserContext);
+    const { usuario, tema, API_URL } = useContext(UserContext);
     const [registros, setRegistros] = useState([]);
     const [colapsed, setColapsed] = useState(true);
 
     useEffect(() => {
         const fetchPoints = async () => {
-            const pontos = await getPoints(usuario.cpf, false);
+            const pontos = await getPoints(usuario.cpf, false, API_URL);
             setRegistros(pontos);
         };
         fetchPoints();
