@@ -26,6 +26,7 @@ export default function Login() {
         setError("");
         try {
             const response = await axios.post(`${API_URL}login`, { email, senha });
+            console.log(response.data);
             if (response.data.status === 1) {
                 setUsuario(response.data.funcionario);
                 localStorage.setItem("usuario", JSON.stringify(response.data.funcionario));
