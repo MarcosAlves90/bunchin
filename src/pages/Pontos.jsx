@@ -55,7 +55,7 @@ export default function Pontos() {
     }
 
     function salvarPonto(registro) {
-        axios.post(`${API_URL}api/ponto`, {
+        axios.post(`${API_URL}ponto`, {
             id_ponto: registro.id,
             funcionario_fk: usuario.cpf,
             nome_tipo: registro.nome,
