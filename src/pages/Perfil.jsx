@@ -20,7 +20,7 @@ export default function Perfil() {
     const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
 
     const userFields = useMemo(() => [
-        { label: "NOME COMPLETO", value: usuario.nome, placeholder: "exemplo da silva paiva", type: "text", name: "nome" },
+        { label: "NOME COMPLETO", value: usuario.nome, placeholder: "Exemplo da Silva", type: "text", name: "nome" },
         { label: "EMAIL", value: usuario.email, placeholder: "exemplo@gmail.com", type: "email", name: "email" },
         { label: "REGISTRO", value: usuario.n_registro, placeholder: "1234567890", type: "number", name: "n_registro" },
         { label: "CPF", value: usuario.cpf, placeholder: "12345678900", type: "number", name: "cpf" },

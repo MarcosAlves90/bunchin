@@ -2,17 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../assets/ContextoDoUsuario.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {UserRound, Lock, Eye, EyeOff} from "lucide-react";
+import { UserRound, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
     const navigate = useNavigate();
-    const { tema, usuario, setUsuario } = useContext(UserContext);
+    const { tema, usuario, setUsuario, API_URL } = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const [passwordVisibility,  setPasswordVisibility] = useState(false);
+    const [passwordVisibility, setPasswordVisibility] = useState(false);
 
     useEffect(() => {
         if (usuario) {
@@ -25,7 +25,7 @@ export default function Login() {
         setLoading(true);
         setError("");
         try {
-            const response = await axios.post('http://localhost:80/api/login', { email, senha });
+            const response = await axios.post(`${API_URL}login`, { email, senha });
             if (response.data.status === 1) {
                 setUsuario(response.data.funcionario);
                 localStorage.setItem("usuario", JSON.stringify(response.data.funcionario));
@@ -56,14 +56,14 @@ export default function Login() {
     return (
         <>
             <img className={`login-penas-left ${tema}`}
-                 src={"/penas_esquerda_login.svg"}
-                 alt={"Penas à esquerda"}/>
+                src={"/penas_esquerda_login.svg"}
+                alt={"Penas à esquerda"} />
             <img className={`login-penas-right ${tema}`}
-                 src={"/penas_direita_login.svg"}
-                 alt={"Penas à direita"}/>
+                src={"/penas_direita_login.svg"}
+                alt={"Penas à direita"} />
             <div className={`login-form ${tema}`}>
                 <div className={"bird-icon-wrapper"}
-                     onClick={handleBackButtonClick}>
+                    onClick={handleBackButtonClick}>
                     <img
                         className="bird-icon"
                         src="/bunchin_bird_icon.svg"
@@ -72,12 +72,12 @@ export default function Login() {
                 </div>
                 <div className="left-side">
                     <h2 className={"left-side-h2"}>Não Possui um Cadastro?</h2>
-                    <img className={"left-side-crow"} src="/login_crow.svg" alt=""/>
+                    <img className={"left-side-crow"} src="/login_crow.svg" alt="" />
                     <p className={"left-side-p"}>Entre em contato com o departamento pessoal da sua
                         empresa para que eles criem seu acesso.</p>
                 </div>
                 <div className={"right-side"}>
-                    <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt=""/>
+                    <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt="" />
                     <form className={"form-login"}>
                         <label htmlFor="email">EMAIL OU CPF</label>
                         <div className={"input-box"}>
@@ -89,7 +89,7 @@ export default function Login() {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             <UserRound
-                                color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"}/>
+                                color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"} />
                         </div>
                         <label htmlFor="senha">SENHA</label>
                         <div className={"input-box last"}>
@@ -120,7 +120,7 @@ export default function Login() {
                         </div>
                         <p className={"reset-password"} onClick={handleResetPasswordButtonClick}>Esqueci a senha</p>
                         <button type={"submit"} value={"Submit"} className={`button-login ${error ? "error" : ""}`}
-                                onClick={handleLoginButtonClick} disabled={loading}>
+                            onClick={handleLoginButtonClick} disabled={loading}>
                             <i className="bi bi-feather2 left"></i>
                             {loading ? "Carregando..." : error ? error : "Iniciar"}
                             <i className="bi bi-feather2 right"></i>

@@ -10,7 +10,7 @@ import {useNavigate} from "react-router-dom";
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
     const [locked, setLocked] = useState(true);
-    const { tema, usuario } = useContext(UserContext);
+    const { tema, usuario, API_URL } = useContext(UserContext);
     const navigate = useNavigate();
 
     const registrosComuns = [
@@ -55,7 +55,7 @@ export default function Pontos() {
     }
 
     function salvarPonto(registro) {
-        axios.post('http://localhost:80/api/ponto', {
+        axios.post(`${API_URL}api/ponto`, {
             id_ponto: registro.id,
             funcionario_fk: usuario.cpf,
             nome_tipo: registro.nome,

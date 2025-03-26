@@ -10,9 +10,10 @@ export function UserProvider({ children }) {
 
     const [tema, setTema] = useState("light");
     const [usuario, setUsuario] = useState(localStorage.getItem("usuario") ? JSON.parse(localStorage.getItem("usuario")) : null);
+    const API_URL = process.env.VITE_APP_API_URL
 
     return (
-        <UserContext.Provider value={{ tema, setTema, usuario, setUsuario}}>
+        <UserContext.Provider value={{ tema, setTema, usuario, setUsuario, API_URL}}>
             {children}
         </UserContext.Provider>
     );

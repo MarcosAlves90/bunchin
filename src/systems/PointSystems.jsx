@@ -9,7 +9,7 @@ import axios from "axios";
 ReactModal.setAppElement('#root');
 
 export function GeneratePoints({ registros, deletePonto, getPonto }) {
-    const { tema, usuario } = useContext(UserContext);
+    const { tema, usuario, API_URL } = useContext(UserContext);
     const location = useLocation();
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -86,7 +86,7 @@ export function GeneratePoints({ registros, deletePonto, getPonto }) {
         };
 
         try {
-            await axios.put('http://localhost:80/api/ponto', updatedData);
+            await axios.put(`${API_URL}ponto`, updatedData);
             getPonto();
         } catch (error) {
             console.error("Erro ao salvar ponto:", error);

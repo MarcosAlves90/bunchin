@@ -16,7 +16,7 @@ export default function ResetarSenha() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
     const [passwordStrength, setPasswordStrength] = useState(0);
-    const { tema, usuario, setUsuario } = useContext(UserContext);
+    const { tema, usuario, setUsuario, API_URL } = useContext(UserContext);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -29,7 +29,7 @@ export default function ResetarSenha() {
 
     const verifyResetCode = async (codigo) => {
         try {
-            const { data } = await axios.post(`http://localhost:80/api/verifyResetCode`, { codigo });
+            const { data } = await axios.post(`${API_URL}verifyResetCode`, { codigo });
             if (data && data.valid) {
                 setIsValidCode(true);
             } else {
@@ -42,7 +42,7 @@ export default function ResetarSenha() {
 
     const checkEmailExists = async (email) => {
         try {
-            const { data } = await axios.post(`http://localhost:80/api/checkEmailExists`, { email });
+            const { data } = await axios.post(`${API_URL}checkEmailExists`, { email });
             return data && Object.keys(data).length > 0;
         } catch (error) {
             return false;
@@ -50,9 +50,9 @@ export default function ResetarSenha() {
     };
 
     const storeResetCode = async (email, code) => {
-        const { data } = await axios.post(`http://localhost:80/api/checkEmailExists`, { email });
+        const { data } = await axios.post(`${API_URL}checkEmailExists`, { email });
         const { n_registro: funcionarioId, nome: funcionarioNome } = data;
-        const responseLink = await axios.post(`http://localhost:80/api/storeResetCode`, {
+        const responseLink = await axios.post(`${API_URL}storeResetCode`, {
             email, codigo: code, funcionario_id: funcionarioId
         });
         return { ok: responseLink.status === 200, nome: funcionarioNome };
@@ -110,7 +110,7 @@ export default function ResetarSenha() {
             : { codigo: resetCode, senha: newPassword };
 
         try {
-            const response = await axios.put(`http://localhost:80/api/${apiEndpoint}`, payload);
+            const response = await axios.put(`${API_URL}${apiEndpoint}`, payload);
             if (response.data.status === 1) {
                 setError("Senha alterada com sucesso.");
                 if (usuario && usuario.status === "0") {
