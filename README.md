@@ -6,11 +6,13 @@
 ![Bitbucket open issues](https://img.shields.io/bitbucket/issues/MarcosAlves90/bunchin?style=for-the-badge)
 ![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/MarcosAlves90/bunchin?style=for-the-badge)
 
-<img src="readme_details/bunchin_tela_inicial.png" alt="Página inicial da plataforma">
+![Página inicial da plataforma](readme_details/bunchin_tela_inicial.png)
 
 > Online time tracking platform project.
+>
+> Site: [Bunchin](https://bunchin-project.onrender.com)
 
-### Adjustments and improvements
+## Adjustments and improvements
 
 The project is still under development and the next updates will focus on the following tasks:
 
