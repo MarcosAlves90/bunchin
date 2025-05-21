@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
+import { UserContext } from "../utils/userContext.jsx";
 import { v4 as uuidv4 } from 'uuid';
-import { GeneratePoints } from "../systems/PointSystems.jsx";
+import { GeneratePoints } from "../components/PointSystems.jsx";
 import axios from "axios";
-import {getPoints} from "../systems/api.jsx";
+import {getPoints} from "../utils/getPoints.jsx";
 import LiveClock from "../components/LiveClock.jsx";
 import {useNavigate} from "react-router-dom";
 

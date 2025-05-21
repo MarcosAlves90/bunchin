@@ -1,8 +1,8 @@
-import {useContext, useState} from "react";
-import {UserContext} from "../assets/ContextoDoUsuario.jsx";
-import {useNavigate} from "react-router-dom";
-import {SendEmail} from "../systems/SendEmail.jsx";
 import validator from 'validator';
+import {useContext, useState} from "react";
+import {UserContext} from "../utils/userContext.jsx";
+import {useNavigate} from "react-router-dom";
+import {SendEmail} from "../utils/sendEmail.jsx";
 
 export default function Footer() {
 
@@ -24,7 +24,7 @@ export default function Footer() {
     }
 
     return (
-        <footer className={`${tema}`}>
+        <footer className={`${tema} z-1 w-full py-2 px-0`}>
             <div className={"box-grid"}>
                 <div className={"title-wrapper span-3"}>
                     <img src={"/logo.svg"} alt={"Logo do site"}/>

@@ -1,12 +1,12 @@
-import {useCallback, useContext, useEffect, useState, useMemo} from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
-import PropTypes from "prop-types";
 import axios from "axios";
-import { GeneratePoints } from "../systems/PointSystems.jsx";
-import {getPoints} from "../systems/api.jsx";
-import {ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield} from "lucide-react";
+import PropTypes from "prop-types";
 import validator from "validator";
-import {SendEmail} from "../systems/SendEmail.jsx";
+import {useCallback, useContext, useEffect, useState, useMemo} from "react";
+import { UserContext } from "../utils/userContext.jsx";
+import { GeneratePoints } from "../components/PointSystems.jsx";
+import {getPoints} from "../utils/getPoints.jsx";
+import {ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield} from "lucide-react";
+import {SendEmail} from "../utils/sendEmail.jsx";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
