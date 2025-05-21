@@ -1,6 +1,6 @@
 
 import { useContext, useEffect } from "react";
-import { UserContext } from "../utils/context/userContext.jsx";
+import { UserContext } from "../utils/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { UserRound, Eye, EyeOff } from "lucide-react";
 import useLoginForm from "../utils/hooks/useLoginForm";

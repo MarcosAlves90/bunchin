@@ -1,9 +1,9 @@
 import axios from "axios";
 import validator from "validator";
 import { useEffect, useContext } from "react";
-import { SendEmail } from "../utils/services/sendEmail.js";
+import { SendEmail } from "../utils/sendEmail.jsx";
 import { v4 as uuidv4 } from 'uuid';
-import { UserContext } from "../utils/context/userContext.js";
+import { UserContext } from "../utils/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { useResetPasswordForm } from "../utils/hooks/useResetPasswordForm.js";
 import { Undo2 } from "lucide-react";

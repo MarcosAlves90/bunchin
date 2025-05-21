@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+import { useContext } from "react";
+import { UserContext } from "../utils/userContext.jsx";
+>>>>>>> cc6508f (feat: Add main application pages and user context management)
 import { useNavigate } from "react-router-dom";
 
 export default function Sobre() {
