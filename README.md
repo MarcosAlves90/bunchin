@@ -16,7 +16,6 @@
 
 The project is still under development and the next updates will focus on the following tasks:
 
-- [X] Add profile page
 - [ ] Add projects page
 - [ ] Add tasks page
-- [X] Encrypt passwords in the database
+
