@@ -1,6 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import validator from "validator";
+<<<<<<< HEAD
 import { useCallback, useContext, useEffect, useState, useMemo, useRef } from "react";
 import { UserContext } from "../utils/context/userContext.js";
 import { GeneratePoints } from "../components/organisms/PointSystems.jsx";
@@ -46,12 +47,37 @@ export default function Administrador() {
     }, []);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+=======
+import {useCallback, useContext, useEffect, useState, useMemo} from "react";
+import { UserContext } from "../utils/userContext.jsx";
+import { GeneratePoints } from "../components/PointSystems.jsx";
+import {getPoints} from "../utils/getPoints.jsx";
+import {ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield} from "lucide-react";
+import {SendEmail} from "../utils/sendEmail.jsx";
+
+export default function Administrador() {
+    const [indexFuncionario, setIndexFuncionario] = useState(0);
+    const [registros, setRegistros] = useState([]);
+    const [funcionarios, setFuncionarios] = useState([]);
+    const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const { tema, usuario, API_URL } = useContext(UserContext);
+    const [inputs, setInputs] = useState([]);
+    const [colapsed, setColapsed] = useState(true);
+    const [lockInputs, setLockInputs] = useState(true);
+
+    const handleChange = (event) => {
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }));
     };
 
+<<<<<<< HEAD
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+=======
+    const handleSearchChange = (event) => {
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         setSearchTerm(event.target.value);
     };
 
@@ -63,18 +89,32 @@ export default function Administrador() {
             password += charset.charAt(Math.floor(Math.random() * n));
         }
         return password;
+<<<<<<< HEAD
     }    function sendEmail(password: string) {
         // @ts-ignore
         SendEmail(import.meta.env.VITE_PUBLIC_API_KEY_S,
             // @ts-ignore
             import.meta.env.VITE_SERVICE_API_KEY_S,
             // @ts-ignore
+=======
+    }
+
+    function sendEmail(password) {
+        SendEmail(import.meta.env.VITE_PUBLIC_API_KEY_S,
+            import.meta.env.VITE_SERVICE_API_KEY_S,
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
             import.meta.env.VITE_TEMPLATE_API_KEY_1_S, {
             email: inputs.email,
             password: password,
             name: inputs.nome
         });
+<<<<<<< HEAD
     }    const handleSubmit = useCallback(async (event: React.FormEvent) => {
+=======
+    }
+
+    const handleSubmit = (event) => {
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         event.preventDefault();
         const isEmailValid = validator.isEmail(validator.normalizeEmail(inputs.email));
         if (funcionarioSelecionado) {
@@ -126,6 +166,7 @@ export default function Administrador() {
                 setRegistros(pontos);
             })();
         }
+<<<<<<< HEAD
     }, [API_URL]);
 
     useEffect(() => {
@@ -259,6 +300,25 @@ export default function Administrador() {
 
     const clearSelection = useCallback(() => {
         setFuncionarioSelecionado("");
+=======
+    }
+
+    useEffect(() => {
+        getPontos();
+    }, [funcionarioSelecionado]);
+
+
+    const deletePonto = (id) => {
+        axios.delete(`${API_URL}ponto/${id}/delete`).then(response => {
+            console.log(response.data);
+            getPontos();
+        });
+    };
+
+    function handleUnselectEmployee() {
+        setFuncionarioSelecionado("");
+        setRegistros([]);
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         setLockInputs(false);
         const defaultValues = {
             n_registro: "",
@@ -270,6 +330,7 @@ export default function Administrador() {
             departamento: "administrativo"
         };
         for (const [name, value] of Object.entries(defaultValues)) {
+<<<<<<< HEAD
             handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
         }
     }, []);
@@ -362,10 +423,82 @@ export default function Administrador() {
                 {funcionarioSelecionado && lockInputs &&
                     <Lock
                         className={"absolute right-0.5 top-1/2"}
+=======
+            handleChange({ target: { name, value } });
+        }
+    }
+
+    function GenerateEmployeesButtons({ funcionarios }) {
+        const filteredFuncionarios = useMemo(() => {
+            return funcionarios.filter(funcionario =>
+                funcionario.nome.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }, [funcionarios, searchTerm]);
+
+        return (
+            <article className={"article-employees"}>
+                {filteredFuncionarios.filter((funcionario) => usuario.n_registro !== funcionario.n_registro).map(funcionario => (
+                    <div key={funcionario.cpf}
+                         className={`employee-item ${funcionarioSelecionado === funcionario.cpf ? "ativo" : ""}`}>
+                        <p className={"nome"}
+                           onClick={() => handleEmployeeButtonClick(funcionario)}>{funcionario.nome}</p>
+                        {funcionarioSelecionado === funcionario.cpf &&
+                            <X strokeWidth={2.5}
+                               size={16}
+                               absoluteStrokeWidth={true}
+                               onClick={handleUnselectEmployee}
+                               color={tema === "dark" ?
+                                   "var(--background-color-navbar-dark)" :
+                                   "var(--background-color-navbar-light)"}
+                            />}
+                        {!(funcionarioSelecionado === funcionario.cpf) &&
+                            <div className={"box display-flex-center"} onClick={() => handleEmployeeButtonClick(funcionario)}>
+                                <ChevronRight
+                                    strokeWidth={2.5}
+                                    size={16}
+                                    absoluteStrokeWidth={true}
+                                />
+                            </div>
+                        }
+                    </div>
+                ))}
+            </article>
+        );
+    }
+
+    GenerateEmployeesButtons.propTypes = {
+        funcionarios: PropTypes.array.isRequired,
+    };
+
+    function handleEmployeeButtonClick(funcionario) {
+        setFuncionarioSelecionado(funcionario.cpf);
+        setIndexFuncionario(funcionarios.findIndex(f => f.cpf === funcionario.cpf));
+        setLockInputs(true);
+    }
+
+    useEffect(() => {
+        if (funcionarioSelecionado) {
+            setInputs(funcionarios[indexFuncionario]);
+        }
+        console.log(funcionarioSelecionado);
+    }, [funcionarioSelecionado]);
+
+    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
+
+    const handleLockInputs = useCallback(() => setLockInputs(prev => !prev), []);
+
+    function GenerateLockIcon() {
+        return (
+            <>
+                {lockInputs &&
+                    <Lock
+                        color={tema === "light" ? "var(--background-color-light-dark-theme)" : "var(--background-color-dark-light-theme)"}
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
                     />
                 }
             </>
         );
+<<<<<<< HEAD
     }    return (
         <div className={`flex`}>
             <article className={`sidebar pt-[90px] pb-2 flex items-center justify-center text-primary transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'max-w-0 pl-0 overflow-hidden' : 'max-w-[280px] pl-1'}`}>
@@ -498,5 +631,129 @@ export default function Administrador() {
                 )}
             </main>
         </div>
+=======
+    }
+
+    return (
+        <main className={`mainCommon administrador ${tema}`}>
+            <article className={"sidebar"}>
+                <div className={"div-title"}>
+                    <p className={"title"}>Funcionários</p>
+                    <i className="bi bi-person-plus" onClick={handleUnselectEmployee}></i>
+                </div>
+                <div className={"div-search"}>
+                    <input className={"search"} value={searchTerm} onChange={handleSearchChange} placeholder="Pesquisar funcionários" />
+                    <Search
+                        className="search-icon"
+                        color={tema === "light" ? "var(--background-color-dark-theme)" : "var(--background-color-light-theme)"}
+                    />
+                </div>
+                <GenerateEmployeesButtons funcionarios={funcionarios} />
+            </article>
+            <article className={"page"}>
+                <div className={"div-title"}>
+                    <h1 className={"title"}>DADOS DO PERFIL</h1>
+                    {funcionarioSelecionado &&
+                        <Trash
+                            strokeWidth={1}
+                            size={43}
+                            onClick={() => deleteUser(funcionarioSelecionado)}
+                        />
+                    }
+                    {funcionarioSelecionado &&
+                        (lockInputs ?
+                                <PenOff
+                                    strokeWidth={1}
+                                    size={43}
+                                    onClick={handleLockInputs}
+                                /> :
+                                <Pen
+                                    strokeWidth={1}
+                                    size={43}
+                                    onClick={handleLockInputs}
+                                />
+                        )
+                    }
+                </div>
+                <form onSubmit={handleSubmit}>
+                    <article className={"article-inputs"}>
+                        <div className={`article-inputs-input nome ${lockInputs ? "locked" : ""}`}>
+                            <label>NOME COMPLETO</label>
+                            <input value={inputs.nome || ""} placeholder={"exemplo da silva paiva"} type={"text"}
+                                   name={"nome"} onChange={handleChange} disabled={lockInputs}/>
+                            <GenerateLockIcon/>
+                        </div>
+                        <div className={`article-inputs-input email ${lockInputs ? "locked" : ""}`}>
+                            <label>EMAIL</label>
+                            <input value={inputs.email || ""} placeholder={"exemplo@gmail.com"} type={"email"}
+                                   name={"email"} onChange={handleChange} disabled={lockInputs}/>
+                            <GenerateLockIcon/>
+                        </div>
+                        <div className={"article-inputs-input n-registro locked"}>
+                            <label>REGISTRO</label>
+                            <input value={inputs.n_registro || ""} placeholder={"1234567890"} type={"number"}
+                                   name={"n_registro"} disabled/>
+                            <Shield
+                                color={tema === "light" ? "var(--background-color-light-dark-theme)" : "var(--background-color-dark-light-theme)"}
+                            />
+                        </div>
+                        <div className={`article-inputs-input cpf ${lockInputs ? "locked" : ""}`}>
+                            <label>CPF</label>
+                            <input value={inputs.cpf || ""} placeholder={"12345678900"} type={"number"} name={"cpf"}
+                                   onChange={handleChange} disabled={lockInputs}/>
+                            <GenerateLockIcon/>
+                        </div>
+                        <div className={`article-inputs-input funcao ${lockInputs ? "locked" : ""}`}>
+                            <label>FUNÇÃO</label>
+                            <select value={inputs.funcao} defaultValue={"comum"} name={"funcao"}
+                                    onChange={handleChange} disabled={lockInputs}>
+                                <option value={"comum"}>Comum</option>
+                                <option value={"administrador"}>Administrador</option>
+                            </select>
+                            <GenerateLockIcon/>
+                        </div>
+                        <div className={`article-inputs-input cargo ${lockInputs ? "locked" : ""}`}>
+                            <label>CARGO</label>
+                            <select value={inputs.cargo} defaultValue={"estagiario"} name={"cargo"}
+                                    onChange={handleChange} disabled={lockInputs}>
+                                <option value={"estagiario"}>Estagiário</option>
+                                <option value={"auxiliar-administrativo"}>Auxiliar administrativo</option>
+                                <option value={"gerente"}>Gerente</option>
+                                <option value={"diretor"}>Diretor</option>
+                            </select>
+                            <GenerateLockIcon/>
+                        </div>
+                        <div className={`article-inputs-input departamento ${lockInputs ? "locked" : ""}`}>
+                            <label>DEPARTAMENTO</label>
+                            <select value={inputs.departamento} defaultValue={"administrativo"} name={"departamento"}
+                                    onChange={handleChange} disabled={lockInputs}>
+                                <option value={"administrativo"}>Administrativo</option>
+                                <option value={"financeiro"}>Financeiro</option>
+                                <option value={"marketing"}>Marketing</option>
+                                <option value={"producao"}>Produção</option>
+                            </select>
+                            <GenerateLockIcon/>
+                        </div>
+                    </article>
+                    <div className={"container-save-button"}>
+                        <button
+                            className={`save-button ${lockInputs ? "locked" : ""}`} disabled={lockInputs}>{!funcionarioSelecionado ? "Criar perfil" : "Salvar alterações"}</button>
+                    </div>
+                </form>
+                <div className={`div-title ${registros.length > 0 ? "colapse" : ""}`}
+                     onClick={registros.length > 0 ? handleColapse : null}>
+                    <h1 className={"title"}>REGISTRO DE HORAS</h1>
+                    {registros.length > 0 && (
+                        colapsed ? (
+                            <ChevronDown strokeWidth={0.7} className="icon" size={50}/>
+                        ) : (
+                            <ChevronUp strokeWidth={0.7} className="icon" size={50}/>
+                        )
+                    )}
+                </div>
+                {!colapsed && <GeneratePoints deletePonto={deletePonto} registros={registros} getPonto={getPontos}/>}
+            </article>
+        </main>
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
     );
 }

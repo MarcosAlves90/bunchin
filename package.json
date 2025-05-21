@@ -13,9 +13,13 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.1.7",
+<<<<<<< HEAD
     "aos": "^2.3.4",
     "axios": "^1.7.7",
     "leaflet": "^1.9.4",
+=======
+    "axios": "^1.7.7",
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
     "lucide-react": "^0.454.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",

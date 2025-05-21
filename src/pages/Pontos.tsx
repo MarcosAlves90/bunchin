@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useContext, useState, useRef, useCallback, useMemo } from "react";
 import { UserContext, UserContextType } from "../utils/context/userContext.js";
 import { v4 as uuidv4 } from 'uuid';
@@ -16,6 +17,22 @@ export default function Pontos() {
     
     // Memo para evitar recriação desnecessária da data
     const currentDate = useMemo(() => new Date().toISOString(), []);
+=======
+import { useContext, useEffect, useState, useRef } from "react";
+import { UserContext } from "../utils/userContext.jsx";
+import { v4 as uuidv4 } from 'uuid';
+import { GeneratePoints } from "../components/PointSystems.jsx";
+import axios from "axios";
+import {getPoints} from "../utils/getPoints.jsx";
+import LiveClock from "../components/LiveClock.jsx";
+import {useNavigate} from "react-router-dom";
+
+export default function Pontos() {
+    const [registros, setRegistros] = useState([]);
+    const [locked, setLocked] = useState(true);
+    const { tema, usuario, API_URL } = useContext(UserContext);
+    const navigate = useNavigate();
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 
     const registrosComuns = [
         "Entrada",
@@ -24,9 +41,15 @@ export default function Pontos() {
         "Saída"
     ];
 
+<<<<<<< HEAD
     const timeoutRef = useRef<number | null>(null);
 
     async function handleBaterPontoClick() {
+=======
+    const timeoutRef = useRef(null);
+
+    function handleBaterPontoClick() {
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         if (locked) {
             setLocked(false);
             if (timeoutRef.current) {
@@ -38,6 +61,7 @@ export default function Pontos() {
             }, 5000);
         } else if (!locked && registros.length < 4) {
             setLocked(true);
+<<<<<<< HEAD
             const uuid = uuidv4();
             const novoRegistro: RegistroPonto = {
                 nome: registrosComuns[registros.length],
@@ -46,12 +70,22 @@ export default function Pontos() {
                 funcionario_fk: Number(usuario?.n_registro) || 0
             };
             await salvarPonto(novoRegistro);
+=======
+            const id = uuidv4();
+            const novoRegistro = { nome: registrosComuns[registros.length], id: id, data: new Date() };
+            setRegistros([...registros, novoRegistro]);
+            salvarPonto(novoRegistro);
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = null;
             }
         } else {
+<<<<<<< HEAD
             setLocked('maxAtingido');
+=======
+            setLocked(null);
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = setTimeout(() => {
@@ -60,6 +94,7 @@ export default function Pontos() {
                 }, 5000);
             }
         }
+<<<<<<< HEAD
     }    
     async function salvarPonto(registro: RegistroPonto): Promise<void> {
         if (!usuario) return;
@@ -88,10 +123,28 @@ export default function Pontos() {
             }
         }
     }
+=======
+    }
+
+    function salvarPonto(registro) {
+        axios.post(`${API_URL}ponto`, {
+            id_ponto: registro.id,
+            funcionario_fk: usuario.cpf,
+            nome_tipo: registro.nome,
+            data_hora: registro.data
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.error("Erro ao salvar ponto:", error);
+        });
+    }
+
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
     const handleMorePointsButtonClick = () => {
         navigate("/perfil");
     }
 
+<<<<<<< HEAD
     const handlePointsChange = useCallback((pontos: RegistroPonto[]) => {
         setRegistros(pontos);
     }, []);
@@ -112,6 +165,28 @@ export default function Pontos() {
                     <ChevronDown />
                     <p className={"card-registros-bottom-wrapper-title text-lg text-center font-semibold"}>Mais registros</p>
                 </div>
+=======
+    useEffect(() => {
+        (async () => {
+            const pontos = await getPoints(usuario.cpf, true, API_URL);
+            setRegistros(pontos);
+        })();
+    }, [usuario.cpf]);
+
+    return (
+        <main className={`mainCommon registros ${tema}`}>
+            <article className={"card-horario"}>
+                <div className={"clock"}>
+                    <i className="bi bi-clock"></i>
+                    <LiveClock/>
+                </div>
+                <button className={`button-ponto ${locked === null ? "indefinido" : !locked ? "bloqueado" : ""}`} onClick={handleBaterPontoClick}>{locked === null ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
+            </article>
+            <article className={"card-registros"}>
+                <p className={"card-registros-title"}>Registros recentes</p>
+                <GeneratePoints registros={registros} />
+                <p className={"card-registros-bottom-title"} onClick={handleMorePointsButtonClick}>Mais registros</p>
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
             </article>
         </main>
     );

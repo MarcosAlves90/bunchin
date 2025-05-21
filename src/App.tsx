@@ -1,4 +1,5 @@
 import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
+<<<<<<< HEAD
 // @ts-ignore
 import './App.css';
 <<<<<<< HEAD
@@ -7,10 +8,15 @@ import DecorativePenas from './components/molecules/DecorativeFeathers.tsx';
 =======
 import NavBar from './components/NavBar';
 >>>>>>> cc6508f (feat: Add main application pages and user context management)
+=======
+import './App.css';
+import NavBar from './components/NavBar';
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 import Home from './pages/Home.tsx';
 import Sobre from "./pages/Sobre.tsx";
 import Contato from './pages/Contato.tsx';
 import Login from './pages/Login';
+<<<<<<< HEAD
 <<<<<<< HEAD
 import Registro from './pages/Registro';
 import Perfil from "./pages/Perfil.tsx";
@@ -23,6 +29,8 @@ import Footer from "./components/organisms/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
 import HelpSystem from './components/organisms/HelpSystem.tsx';
 =======
+=======
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 import Perfil from "./pages/Perfil.tsx";
 import Pontos from "./pages/Pontos.tsx";
 import Configuracoes from "./pages/Configuracoes.tsx";
@@ -32,12 +40,18 @@ import {toggleClassOnHtml} from "./utils/themeSystems.tsx";
 import Administrador from "./pages/Administrador.tsx";
 import Footer from "./components/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
+<<<<<<< HEAD
 >>>>>>> cc6508f (feat: Add main application pages and user context management)
+=======
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 
 function App() {
 
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
   const [isDown, setIsDown] = useState(false);
+=======
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,6 +61,10 @@ function App() {
   useEffect(() => {
     if (!usuario && (location.pathname === "/perfil" ||
         location.pathname === "/pontos" ||
+<<<<<<< HEAD
+=======
+        location.pathname === "/configuracoes" ||
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         location.pathname === "/administrador")) {
       navigate('/login');
     }
@@ -69,6 +87,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+<<<<<<< HEAD
   useEffect(() => {
     // Controle do scroll apenas para a Home
     if (location.pathname === "/") {
@@ -85,6 +104,8 @@ function App() {
     }
   }, [location.pathname]);
 
+=======
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
   function handleThemeLocalState() {
     const tema = localStorage.getItem("tema");
     if (tema === "dark") {
@@ -100,10 +121,14 @@ function App() {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
       <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""} ${location.pathname === "/registro" ? "registro" : ""}`}>
 =======
       <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
 >>>>>>> cc6508f (feat: Add main application pages and user context management)
+=======
+      <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 
         <div className={"page-loader"}>
           {(loading) && (
@@ -112,6 +137,7 @@ function App() {
               </div>
           )}
         </div>
+<<<<<<< HEAD
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" && <NavBar/>}
         
         {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && (
@@ -120,18 +146,30 @@ function App() {
 
         {(usuario && <HelpSystem/>)}
         
+=======
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <NavBar/>}
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/sobre" element={<Sobre/>}/>
           <Route path="/contato" element={<Contato/>}/>
           <Route path="/perfil" element={<Perfil/>}/>
           <Route path="/pontos" element={<Pontos/>}/>
+<<<<<<< HEAD
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/registro" element={<Registro/>}/>
           <Route path={"resetar-senha"} element={<ResetarSenha/>}/>
         </Routes>
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" &&<Footer/>}
+=======
+          <Route path="/configuracoes" element={<Configuracoes/>}/>
+          <Route path="/administrador" element={<Administrador/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path={"resetar-senha"} element={<ResetarSenha/>}/>
+        </Routes>
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <Footer/>}
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
       </main>
   );
 }

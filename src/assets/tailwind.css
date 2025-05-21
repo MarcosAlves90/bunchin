@@ -4,6 +4,7 @@
     --spacing: 1rem;
 
     --font-subrayada: "Montserrat Subrayada", sans-serif;
+<<<<<<< HEAD
     --font-montserrat: "Montserrat", sans-serif;
 
     --color-primary: var(--primary);
@@ -16,10 +17,18 @@
  
     --color-green: var(--color-green);
     --color-red: var(--color-red);
+=======
+
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-highlight: var(--highlight);
+    --color-card: var(--card);
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
 
 :root {
     --highlight: #FF9900;
+<<<<<<< HEAD
 
     --primary: #0f0f0f;
     --secondary: #f0f0f0;
@@ -31,10 +40,16 @@
 
     --color-green: #68c935;
     --color-red: #e61f1f;
+=======
+    --primary: #0f0f0f;
+    --secondary: #f0f0f0;
+    --card: #C6C6C6;
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
 
 .dark {
     --highlight: #FFAE11;
+<<<<<<< HEAD
 
     --primary: #f0f0f0;
     --secondary: #0f0f0f;
@@ -47,6 +62,15 @@
 
 .mainCommon {
     @apply w-full pt-[90px] pb-2 box-border min-h-screen max-w-86 px-1;
+=======
+    --primary: #f0f0f0;
+    --secondary: #0f0f0f;
+    --card: #5b5b5b;
+}
+
+.mainCommon {
+    @apply w-full pt-[90px] box-border min-h-screen max-w-85;
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
 
 .mainCommon__hero__penas {
@@ -70,13 +94,18 @@
 }
 
 .button-session {
+<<<<<<< HEAD
     @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
     @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
+=======
+    @apply border-none transition text-lg pr-2 pl-2 rounded-sm;
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
     &.last {
         @apply mt-3;
     }
 }
 
+<<<<<<< HEAD
 .mainCommon__resources__title {
     @apply text-4xl font-subrayada mb-2 text-primary transition-colors duration-200;
 }
@@ -223,3 +252,60 @@
     }
 }
  
+=======
+.mainCommon__hero__chevron {
+    animation: bounce 1s ease-in-out;
+}
+
+.mainCommon__resources__title {
+    @apply text-4xl font-subrayada mb-3 text-primary transition-colors duration-200;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes bottomFloatRight {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateX(10px) translateY(-10px) rotate(2deg);
+    }
+    100% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+    }
+}
+
+@keyframes bottomFloatLeft {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateX(-10px) translateY(-10px) rotate(-2deg);
+    }
+    100% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)

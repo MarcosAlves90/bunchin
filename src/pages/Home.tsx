@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useRef, useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -24,17 +25,42 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 interface UserContextType { 
+=======
+import { useState, useRef, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Clock, Shield, UsersRound, ChevronDown } from "lucide-react";
+import ResourcePoint from "../components/ResourcePoint";
+import { UserContext } from "../utils/userContext";
+
+interface UserContextType {
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
     tema: string;
 }
 
 export default function Home() {
     const navigate = useNavigate();
+<<<<<<< HEAD
     const secondTitleRef = useRef(null);
     const { tema } = useContext(UserContext) as UserContextType;
     const [email, setEmail] = useState("");
 
     useEffect(() => {
         AOS.init();
+=======
+    const [isDown, setIsDown] = useState(false);
+    const secondTitleRef = useRef(null);
+    const { tema } = useContext(UserContext) as UserContextType;
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsDown(window.scrollY > 0);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        return () => window.removeEventListener('scroll', handleScroll);
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
     }, []);
 
     const handleArrowClick = () => {
@@ -42,6 +68,7 @@ export default function Home() {
             const offset = (secondTitleRef.current as HTMLElement).offsetTop - 140;
             window.scrollTo({ top: offset, behavior: 'smooth' });
         }
+<<<<<<< HEAD
     };    function handleLoginButtonClick() {
         navigate("/login");
     }
@@ -281,6 +308,95 @@ export default function Home() {
                     Registre sua empresa
                 </button>
             </article>
+=======
+    };
+    function handleLoginButtonClick() {
+        navigate("/login");
+    }
+
+    return (
+        <main className={`mainCommon flex justify-start items-center !py-0 flex-col`}>
+            <article className={"mainCommon__hero flex flex-col items-center justify-center h-[calc(100vh-90px)] mt-[90px]"}>
+                <img className={`mainCommon__hero__title-svg h-[150px] transition ${tema === "dark" ? "invert-100" : ""}`} src={"/bunchin_title.svg"} alt={"Título do site"} />
+                <p className={"mainCommon__hero__subtitle mt-0 text-xl text-primary transition duration-200"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>
+                <img className={`mainCommon__hero__penas ${isDown ? "down" : ""} left left-[-180px] ${tema === "light" ? "invert-100" : ""}`} src={"/penas_esquerda_home.svg"}
+                    alt={"Penas à esquerda"} />
+                <img className={`mainCommon__hero__penas ${isDown ? "down" : ""} right right-[-180px] ${tema === "light" ? "invert-100" : ""}`} src={"/penas_direita_home.svg"}
+                    alt={"Penas à direita"} />
+                <button className={"button-session mt-5 transition-colors duration-200 text-secondary !bg-highlight hover:!bg-primary"} onClick={handleLoginButtonClick}>
+                    Iniciar sessão
+                </button>
+                <ChevronDown className="mainCommon__hero__chevron transition-colors cursor-pointer text-primary absolute bottom-2" onClick={handleArrowClick} size={48} strokeWidth={2} />
+            </article>
+            <article className={`mainCommon__resources mt-7`}>
+                <p ref={secondTitleRef} className={"mainCommon__resources__title mb-0"}>NOSSOS RECURSOS</p>
+                <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>É com essa tecnologias que nossa plataforma pode revolucionar sua
+                    empresa</p>
+                <div className={"mainCommon__resources__box-points grid grid-cols-3 gap-3"}>
+                    <ResourcePoint
+                        icon={<Clock size={90} strokeWidth={1.5} />}
+                        title="CONTROLE DE PONTOS AVANÇADO"
+                        description="Registre e gerencie o ponto dos funcionários com precisão. Nossa tecnologia permite marcações via web, mobile e biometria, garantindo flexibilidade e segurança."
+                    />
+                    <ResourcePoint
+                        icon={<Shield size={90} strokeWidth={1.5} />}
+                        title="SEGURANÇA E CONFORMIDADE"
+                        description="Proteja os dados da sua empresa com nosso sistema de segurança e protocolos de uso. Modos como “ponto por proximidade” são o que garantem um uso correto dos nossos recursos."
+                    />
+                    <ResourcePoint
+                        icon={<UsersRound size={90} strokeWidth={1.5} />}
+                        title="GESTÃO INTELIGENTE DA EQUIPE"
+                        description="Acompanhe o desempenho e a produtividade da sua equipe em tempo real. Analise métricas importantes, defina metas e incentive o crescimento profissional dos seus colaboradores."
+                    />
+                </div>
+                <p className={"mainCommon__resources__title mt-7"}>HISTÓRIAS DE SUCESSO</p>
+                <div className={"box-stories"}>
+                    <div className={"story"}>
+                        <div className={"box-star"}>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                        </div>
+                        <p className={"story-p"}>"Desde que implementamos a plataforma, a motivação do time
+                            disparou! As metas são claras e as recompensas são um incentivo constante para todos.
+                            Acredito que estamos mais alinhados e engajados como nunca!"</p>
+                        <p className={"story-author"}>— Ana L., Gerente de RH da [Empresa ABC]</p>
+                    </div>
+                    <div className={"story"}>
+                        <div className={"box-star"}>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                        </div>
+                        <p className={"story-p"}>"A plataforma nos ajudou a acompanhar o desempenho de todos os
+                            colaboradores em tempo real. Agora, temos relatórios precisos e podemos dar feedbacks
+                            rápidos. Está facilitando muito nosso trabalho!"</p>
+                        <p className={"story-author"}>— Carlos M., Diretor de Operações da [Empresa XYZ]</p>
+                    </div>
+                    <div className={"story"}>
+                        <div className={"box-star"}>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                            <i className="bi bi-star"></i>
+                        </div>
+                        <p className={"story-p"}>"Ficamos surpresos com a facilidade de implementação. A
+                            integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa.
+                            O uso da plataforma no dia a dia também é muito intuitivo!"</p>
+                        <p className={"story-author"}>— Juliana S., CEO da [Empresa DEF]</p>
+                    </div>
+                </div>
+                <button className={"button-session last"}>
+                    Registre sua empresa
+                </button>
+            </article>
+            <div className={"gradient"} />
+>>>>>>> bea5ea5 (feat: Add main application pages and user context management)
         </main>
     );
 }
