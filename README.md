@@ -18,5 +18,4 @@ The project is still under development and the next updates will focus on the fo
 
 - [ ] Add projects page
 - [ ] Add tasks page
-- [X] Teste Commit
  
