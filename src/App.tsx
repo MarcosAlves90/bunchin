@@ -8,10 +8,13 @@ import DecorativePenas from './components/molecules/DecorativeFeathers.tsx';
 =======
 import NavBar from './components/NavBar';
 >>>>>>> cc6508f (feat: Add main application pages and user context management)
+<<<<<<< HEAD
 =======
 import './App.css';
 import NavBar from './components/NavBar';
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+>>>>>>> 9438f44 (feat: Add main application pages and user context management)
 import Home from './pages/Home.tsx';
 import Sobre from "./pages/Sobre.tsx";
 import Contato from './pages/Contato.tsx';
@@ -19,8 +22,11 @@ import Login from './pages/Login';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
+=======
+>>>>>>> 9438f44 (feat: Add main application pages and user context management)
 import Registro from './pages/Registro';
 import Perfil from "./pages/Perfil.tsx";
 import Pontos from "./pages/Pontos.tsx";
@@ -32,8 +38,11 @@ import Footer from "./components/organisms/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
 import HelpSystem from './components/organisms/HelpSystem.tsx';
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+>>>>>>> 9438f44 (feat: Add main application pages and user context management)
 import Perfil from "./pages/Perfil.tsx";
 import Pontos from "./pages/Pontos.tsx";
 import Configuracoes from "./pages/Configuracoes.tsx";
@@ -44,9 +53,13 @@ import Administrador from "./pages/Administrador.tsx";
 import Footer from "./components/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> cc6508f (feat: Add main application pages and user context management)
 =======
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+>>>>>>> cc6508f (feat: Add main application pages and user context management)
+>>>>>>> 9438f44 (feat: Add main application pages and user context management)
 
 function App() {
 
@@ -126,16 +139,22 @@ function App() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9438f44 (feat: Add main application pages and user context management)
       <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""} ${location.pathname === "/registro" ? "registro" : ""}`}>
 =======
       <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
 >>>>>>> cc6508f (feat: Add main application pages and user context management)
+<<<<<<< HEAD
 =======
       <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 =======
       <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""} ${location.pathname === "/registro" ? "registro" : ""}`}>
 >>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
+=======
+>>>>>>> 9438f44 (feat: Add main application pages and user context management)
 
         <div className={"page-loader"}>
           {(loading) && (
