@@ -1,18 +1,24 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
+
+import { useContext, useEffect } from "react";
+import { UserContext } from "../utils/userContext.jsx";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import {UserRound, Lock, Eye, EyeOff} from "lucide-react";
+import { UserRound, Lock, Eye, EyeOff } from "lucide-react";
+import { useLoginForm } from "../utils/useLoginForm";
 
 export default function Login() {
     const navigate = useNavigate();
-    const { tema, usuario, setUsuario } = useContext(UserContext);
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    const [passwordVisibility,  setPasswordVisibility] = useState(false);
+    const { tema, usuario, setUsuario, API_URL } = useContext(UserContext);
+    const {
+        email,
+        setEmail,
+        senha,
+        setSenha,
+        error,
+        loading,
+        passwordVisibility,
+        handlePasswordVisibility,
+        handleLoginButtonClick,
+    } = useLoginForm(API_URL, setUsuario, navigate);
 
     useEffect(() => {
         if (usuario) {
@@ -20,50 +26,20 @@ export default function Login() {
         }
     }, [usuario, navigate]);
 
-    const handleLoginButtonClick = async (event) => {
-        event.preventDefault();
-        setLoading(true);
-        setError("");
-        try {
-            const response = await axios.post('http://localhost:80/api/login', { email, senha });
-            if (response.data.status === 1) {
-                setUsuario(response.data.funcionario);
-                localStorage.setItem("usuario", JSON.stringify(response.data.funcionario));
-                if (response.data.funcionario.status === "1") {
-                    navigate('/pontos');
-                } else {
-                    navigate('/resetar-senha');
-                }
-            } else {
-                setError(response.data.message);
-            }
-        } catch (error) {
-            console.error("Erro com a requisição de login:", error);
-            setError("Erro ao tentar fazer login.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handlePasswordVisibility = () => {
-        setPasswordVisibility(!passwordVisibility);
-    }
-
     const handleBackButtonClick = () => navigate('/');
-
     const handleResetPasswordButtonClick = () => navigate('/resetar-senha');
 
     return (
         <>
             <img className={`login-penas-left ${tema}`}
-                 src={"/penas_esquerda_login.svg"}
-                 alt={"Penas à esquerda"}/>
+                src={"/penas_esquerda_login.svg"}
+                alt={"Penas à esquerda"} />
             <img className={`login-penas-right ${tema}`}
-                 src={"/penas_direita_login.svg"}
-                 alt={"Penas à direita"}/>
+                src={"/penas_direita_login.svg"}
+                alt={"Penas à direita"} />
             <div className={`login-form ${tema}`}>
                 <div className={"bird-icon-wrapper"}
-                     onClick={handleBackButtonClick}>
+                    onClick={handleBackButtonClick}>
                     <img
                         className="bird-icon"
                         src="/bunchin_bird_icon.svg"
@@ -72,12 +48,12 @@ export default function Login() {
                 </div>
                 <div className="left-side">
                     <h2 className={"left-side-h2"}>Não Possui um Cadastro?</h2>
-                    <img className={"left-side-crow"} src="/login_crow.svg" alt=""/>
+                    <img className={"left-side-crow"} src="/login_crow.svg" alt="" />
                     <p className={"left-side-p"}>Entre em contato com o departamento pessoal da sua
                         empresa para que eles criem seu acesso.</p>
                 </div>
                 <div className={"right-side"}>
-                    <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt=""/>
+                    <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt="" />
                     <form className={"form-login"}>
                         <label htmlFor="email">EMAIL OU CPF</label>
                         <div className={"input-box"}>
@@ -87,9 +63,11 @@ export default function Login() {
                                 placeholder="Email ou CPF"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                aria-label="Email ou CPF"
+                                autoComplete="username"
                             />
                             <UserRound
-                                color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"}/>
+                                color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"} />
                         </div>
                         <label htmlFor="senha">SENHA</label>
                         <div className={"input-box last"}>
@@ -99,6 +77,8 @@ export default function Login() {
                                 placeholder="Senha"
                                 value={senha}
                                 onChange={(e) => setSenha(e.target.value)}
+                                aria-label="Senha"
+                                autoComplete="current-password"
                             />
                             <Lock
                                 color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"}
@@ -108,6 +88,9 @@ export default function Login() {
                                     className={"eye"}
                                     color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
                                     onClick={handlePasswordVisibility}
+                                    aria-label="Mostrar senha"
+                                    role="button"
+                                    tabIndex={0}
                                 />
                             }
                             {passwordVisibility &&
@@ -115,12 +98,21 @@ export default function Login() {
                                     className={"eye"}
                                     color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
                                     onClick={handlePasswordVisibility}
+                                    aria-label="Ocultar senha"
+                                    role="button"
+                                    tabIndex={0}
                                 />
                             }
                         </div>
-                        <p className={"reset-password"} onClick={handleResetPasswordButtonClick}>Esqueci a senha</p>
-                        <button type={"submit"} value={"Submit"} className={`button-login ${error ? "error" : ""}`}
-                                onClick={handleLoginButtonClick} disabled={loading}>
+                        <p className={"reset-password"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>
+                        <button
+                            type={"submit"}
+                            value={"Submit"}
+                            className={`button-login ${error ? "error" : ""}`}
+                            onClick={handleLoginButtonClick}
+                            disabled={loading}
+                            aria-label="Iniciar sessão"
+                        >
                             <i className="bi bi-feather2 left"></i>
                             {loading ? "Carregando..." : error ? error : "Iniciar"}
                             <i className="bi bi-feather2 right"></i>

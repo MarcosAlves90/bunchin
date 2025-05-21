@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export async function getPoints(cpf, todayBool) {
+export async function getPoints(cpf, todayBool, API_URL) {
     try {
-        const { data } = await axios.get(`http://localhost:80/api/ponto/`);
+        const { data } = await axios.get(`${API_URL}ponto/`);
         if (!Array.isArray(data)) {
             console.error("Unexpected API response:", data);
             return [];

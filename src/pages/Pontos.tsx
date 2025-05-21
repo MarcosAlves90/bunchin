@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
+import { UserContext } from "../utils/userContext.jsx";
 import { v4 as uuidv4 } from 'uuid';
-import { GeneratePoints } from "../systems/PointSystems.jsx";
+import { GeneratePoints } from "../components/PointSystems.jsx";
 import axios from "axios";
-import {getPoints} from "../systems/api.jsx";
+import {getPoints} from "../utils/getPoints.jsx";
 import LiveClock from "../components/LiveClock.jsx";
 import {useNavigate} from "react-router-dom";
 
 export default function Pontos() {
     const [registros, setRegistros] = useState([]);
     const [locked, setLocked] = useState(true);
-    const { tema, usuario } = useContext(UserContext);
+    const { tema, usuario, API_URL } = useContext(UserContext);
     const navigate = useNavigate();
 
     const registrosComuns = [
@@ -55,7 +55,7 @@ export default function Pontos() {
     }
 
     function salvarPonto(registro) {
-        axios.post('http://localhost:80/api/ponto', {
+        axios.post(`${API_URL}ponto`, {
             id_ponto: registro.id,
             funcionario_fk: usuario.cpf,
             nome_tipo: registro.nome,
@@ -73,7 +73,7 @@ export default function Pontos() {
 
     useEffect(() => {
         (async () => {
-            const pontos = await getPoints(usuario.cpf, true);
+            const pontos = await getPoints(usuario.cpf, true, API_URL);
             setRegistros(pontos);
         })();
     }, [usuario.cpf]);

@@ -1,12 +1,12 @@
-import {useCallback, useContext, useEffect, useState, useMemo} from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
-import PropTypes from "prop-types";
 import axios from "axios";
-import { GeneratePoints } from "../systems/PointSystems.jsx";
-import {getPoints} from "../systems/api.jsx";
-import {ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield} from "lucide-react";
+import PropTypes from "prop-types";
 import validator from "validator";
-import {SendEmail} from "../systems/SendEmail.jsx";
+import {useCallback, useContext, useEffect, useState, useMemo} from "react";
+import { UserContext } from "../utils/userContext.jsx";
+import { GeneratePoints } from "../components/PointSystems.jsx";
+import {getPoints} from "../utils/getPoints.jsx";
+import {ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield} from "lucide-react";
+import {SendEmail} from "../utils/sendEmail.jsx";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
@@ -14,7 +14,7 @@ export default function Administrador() {
     const [funcionarios, setFuncionarios] = useState([]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
-    const { tema, usuario } = useContext(UserContext);
+    const { tema, usuario, API_URL } = useContext(UserContext);
     const [inputs, setInputs] = useState([]);
     const [colapsed, setColapsed] = useState(true);
     const [lockInputs, setLockInputs] = useState(true);
@@ -53,7 +53,7 @@ export default function Administrador() {
         event.preventDefault();
         const isEmailValid = validator.isEmail(validator.normalizeEmail(inputs.email));
         if (funcionarioSelecionado) {
-            axios.put(`http://localhost:80/api/funcionario/${funcionarioSelecionado}/edit`, inputs)
+            axios.put(`${API_URL}funcionario/${funcionarioSelecionado}/edit`, inputs)
                 .then(response => {
                     console.log(response.data);
                     getUsers();
@@ -63,7 +63,7 @@ export default function Administrador() {
             const inputsClone = { ...inputs, senha: newPassword };
             sendEmail(newPassword);
             console.log(newPassword);
-            axios.post('http://localhost:80/api/funcionario/save', inputsClone)
+            axios.post(`${API_URL}funcionario/save`, inputsClone)
                 .then(response => {
                     console.log(response.data);
                     getUsers();
@@ -80,14 +80,14 @@ export default function Administrador() {
     }, []);
 
     function getUsers() {
-        axios.get(`http://localhost:80/api/funcionario/`).then(response => {
+        axios.get(`${API_URL}funcionario/`).then(response => {
             console.log(response.data);
             setFuncionarios(response.data);
         });
     }
 
     const deleteUser = (cpf) => {
-        axios.delete(`http://localhost:80/api/funcionario/${cpf}/delete`).then(response => {
+        axios.delete(`${API_URL}funcionario/${cpf}/delete`).then(response => {
             console.log(response.data);
             getUsers();
             handleUnselectEmployee();
@@ -97,7 +97,7 @@ export default function Administrador() {
     const getPontos = () => {
         if (funcionarioSelecionado) {
             (async () => {
-                const pontos = await getPoints(funcionarioSelecionado, false);
+                const pontos = await getPoints(funcionarioSelecionado, false, API_URL);
                 setRegistros(pontos);
             })();
         }
@@ -109,7 +109,7 @@ export default function Administrador() {
 
 
     const deletePonto = (id) => {
-        axios.delete(`http://localhost:80/api/ponto/${id}/delete`).then(response => {
+        axios.delete(`${API_URL}ponto/${id}/delete`).then(response => {
             console.log(response.data);
             getPontos();
         });

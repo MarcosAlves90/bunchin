@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
+import { UserContext } from "../utils/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Sobre() {

@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState, useCallback, useMemo } from "react";
-import { UserContext } from "../assets/ContextoDoUsuario.jsx";
-import { GeneratePoints } from "../systems/PointSystems.jsx";
-import { getPoints } from "../systems/api.jsx";
+import { UserContext } from "../utils/userContext.jsx";
+import { GeneratePoints } from "../components/PointSystems.jsx";
+import { getPoints } from "../utils/getPoints.jsx";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function Perfil() {
-    const { usuario, tema } = useContext(UserContext);
+    const { usuario, tema, API_URL } = useContext(UserContext);
     const [registros, setRegistros] = useState([]);
     const [colapsed, setColapsed] = useState(true);
 
     useEffect(() => {
         const fetchPoints = async () => {
-            const pontos = await getPoints(usuario.cpf, false);
+            const pontos = await getPoints(usuario.cpf, false, API_URL);
             setRegistros(pontos);
         };
         fetchPoints();
@@ -20,7 +20,7 @@ export default function Perfil() {
     const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
 
     const userFields = useMemo(() => [
-        { label: "NOME COMPLETO", value: usuario.nome, placeholder: "exemplo da silva paiva", type: "text", name: "nome" },
+        { label: "NOME COMPLETO", value: usuario.nome, placeholder: "Exemplo da Silva", type: "text", name: "nome" },
         { label: "EMAIL", value: usuario.email, placeholder: "exemplo@gmail.com", type: "email", name: "email" },
         { label: "REGISTRO", value: usuario.n_registro, placeholder: "1234567890", type: "number", name: "n_registro" },
         { label: "CPF", value: usuario.cpf, placeholder: "12345678900", type: "number", name: "cpf" },
