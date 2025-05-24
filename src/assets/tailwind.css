@@ -4,11 +4,13 @@
     --spacing: 1rem;
 
     --font-subrayada: "Montserrat Subrayada", sans-serif;
+    --font-montserrat: "Montserrat", sans-serif;
 
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
     --color-highlight: var(--highlight);
     --color-card: var(--card);
+    --color-story-card: var(--story-card);
 }
 
 :root {
@@ -16,6 +18,7 @@
     --primary: #0f0f0f;
     --secondary: #f0f0f0;
     --card: #C6C6C6;
+    --story-card: #0f0f0f;
 }
 
 .dark {
@@ -23,6 +26,7 @@
     --primary: #f0f0f0;
     --secondary: #0f0f0f;
     --card: #5b5b5b;
+    --story-card: #f0f0f0;
 }
 
 .mainCommon {
@@ -61,7 +65,25 @@
 }
 
 .mainCommon__resources__title {
-    @apply text-4xl font-subrayada mb-3 text-primary transition-colors duration-200;
+    @apply text-4xl font-subrayada mb-2 text-primary transition-colors duration-200;
+}
+
+.mainCommon__resources__box-points__point-wrapper .point-clock {
+    animation: cuckoo 2s infinite ease-in-out;
+}
+
+/* Animações */
+
+@keyframes cuckoo {
+    0% {
+        transform: rotate(-30deg);
+    }
+    50% {
+        transform: rotate(30deg);
+    }
+    100% {
+        transform: rotate(-30deg);
+    }
 }
 
 @keyframes float {

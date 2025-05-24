@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Clock, Shield, UsersRound, ChevronDown } from "lucide-react";
 import ResourcePoint from "../components/ResourcePoint";
 import { UserContext } from "../utils/userContext";
+import Story from "../components/Story";
 
 interface UserContextType {
     tema: string;
@@ -50,73 +51,49 @@ export default function Home() {
                 <ChevronDown className="mainCommon__hero__chevron transition-colors cursor-pointer text-primary absolute bottom-2" onClick={handleArrowClick} size={48} strokeWidth={2} />
             </article>
             <article className={`mainCommon__resources mt-7`}>
-                <p ref={secondTitleRef} className={"mainCommon__resources__title mb-0"}>NOSSOS RECURSOS</p>
+                <p ref={secondTitleRef} className={"mainCommon__resources__title"}>NOSSOS RECURSOS</p>
                 <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>É com essa tecnologias que nossa plataforma pode revolucionar sua
                     empresa</p>
                 <div className={"mainCommon__resources__box-points grid grid-cols-3 gap-3"}>
                     <ResourcePoint
-                        icon={<Clock size={90} strokeWidth={1.5} />}
+                        icon={<Clock size={90} strokeWidth={1.5} className="mb-0.5" />}
                         title="CONTROLE DE PONTOS AVANÇADO"
                         description="Registre e gerencie o ponto dos funcionários com precisão. Nossa tecnologia permite marcações via web, mobile e biometria, garantindo flexibilidade e segurança."
                     />
                     <ResourcePoint
-                        icon={<Shield size={90} strokeWidth={1.5} />}
+                        icon={<Shield size={90} strokeWidth={1.5} className="mb-0.5" />}
                         title="SEGURANÇA E CONFORMIDADE"
                         description="Proteja os dados da sua empresa com nosso sistema de segurança e protocolos de uso. Modos como “ponto por proximidade” são o que garantem um uso correto dos nossos recursos."
                     />
                     <ResourcePoint
-                        icon={<UsersRound size={90} strokeWidth={1.5} />}
+                        icon={<UsersRound size={90} strokeWidth={1.5} className="mb-0.5" />}
                         title="GESTÃO INTELIGENTE DA EQUIPE"
                         description="Acompanhe o desempenho e a produtividade da sua equipe em tempo real. Analise métricas importantes, defina metas e incentive o crescimento profissional dos seus colaboradores."
                     />
                 </div>
                 <p className={"mainCommon__resources__title mt-7"}>HISTÓRIAS DE SUCESSO</p>
-                <div className={"box-stories"}>
-                    <div className={"story"}>
-                        <div className={"box-star"}>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                        </div>
-                        <p className={"story-p"}>"Desde que implementamos a plataforma, a motivação do time
-                            disparou! As metas são claras e as recompensas são um incentivo constante para todos.
-                            Acredito que estamos mais alinhados e engajados como nunca!"</p>
-                        <p className={"story-author"}>— Ana L., Gerente de RH da [Empresa ABC]</p>
-                    </div>
-                    <div className={"story"}>
-                        <div className={"box-star"}>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                        </div>
-                        <p className={"story-p"}>"A plataforma nos ajudou a acompanhar o desempenho de todos os
-                            colaboradores em tempo real. Agora, temos relatórios precisos e podemos dar feedbacks
-                            rápidos. Está facilitando muito nosso trabalho!"</p>
-                        <p className={"story-author"}>— Carlos M., Diretor de Operações da [Empresa XYZ]</p>
-                    </div>
-                    <div className={"story"}>
-                        <div className={"box-star"}>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                            <i className="bi bi-star"></i>
-                        </div>
-                        <p className={"story-p"}>"Ficamos surpresos com a facilidade de implementação. A
-                            integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa.
-                            O uso da plataforma no dia a dia também é muito intuitivo!"</p>
-                        <p className={"story-author"}>— Juliana S., CEO da [Empresa DEF]</p>
-                    </div>
+                <div className={"box-stories grid grid-cols-3 gap-3 group"}>
+                    <Story
+                        starNumber={4}
+                        text="Desde que implementamos a plataforma, a motivação do time disparou! As metas são claras e as recompensas são um incentivo constante para todos. Acredito que estamos mais alinhados e engajados como nunca!"
+                        author="— Ana L., Gerente de RH da [Empresa ABC]"
+                    />
+                    <Story
+                        starNumber={5}
+                        text="A plataforma nos ajudou a acompanhar o desempenho de todos os colaboradores em tempo real. Agora, temos relatórios precisos e podemos dar feedbacks rápidos. Está facilitando muito nosso trabalho!"
+                        author="— Carlos M., Diretor de Operações da [Empresa XYZ]"
+                    />
+                    <Story
+                        starNumber={5}
+                        text="Ficamos surpresos com a facilidade de implementação. A integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa. O uso da plataforma no dia a dia também é muito intuitivo!"
+                        author="— Juliana S., CEO da [Empresa DEF]"
+                    />
                 </div>
                 <button className={"button-session last"}>
                     Registre sua empresa
                 </button>
             </article>
-            <div className={"gradient"} />
+            <div className={"gradient mt-3 w-full h-15"} />
         </main>
     );
 }
