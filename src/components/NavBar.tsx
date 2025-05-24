@@ -57,8 +57,8 @@ export default function NavBar() {
     ];
 
     return (
-        <nav className={`navbar !fixed top-0 right-0 left-0 z-50 mt-1 box-border flex h-[calc(90px-1rem)] w-full items-center justify-center transition duration-200`}>
-            <div className="navbar__container box-border flex h-full w-full max-w-85 items-center justify-between rounded-sm bg-highlight p-0 px-2 mx-1">
+        <nav className={`navbar !fixed top-0 right-0 left-0 z-50 box-border flex h-[calc(90px-1rem)] w-full items-center justify-center transition duration-200`}>
+            <div className="navbar__container box-border flex h-full w-full max-w-85 items-center justify-between rounded-b-sm bg-highlight p-0 px-2 mx-1">
                 <div
                     className="navbar__container__logo-wrapper text-secondary hover:text-primary"
                 >
