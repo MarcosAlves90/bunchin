@@ -76,84 +76,55 @@ export default function Administrador() {
         });
     }    const handleSubmit = useCallback(async (event: React.FormEvent) => {
         event.preventDefault();
-        
-        if (funcionarioSelecionado && lockInputs) {
-            setShowEditModeMessage(true);
-            setTimeout(() => {
-                setShowEditModeMessage(false);
-            }, 5000);
-            return;
+        const isEmailValid = validator.isEmail(validator.normalizeEmail(inputs.email));
+        if (funcionarioSelecionado) {
+            axios.put(`${API_URL}funcionario/${funcionarioSelecionado}/edit`, inputs)
+                .then(response => {
+                    console.log(response.data);
+                    getUsers();
+                });
+        } else if (isEmailValid) {
+            const newPassword = generatePassword();
+            const inputsClone = { ...inputs, senha: newPassword };
+            sendEmail(newPassword);
+            console.log(newPassword);
+            axios.post(`${API_URL}funcionario/save`, inputsClone)
+                .then(response => {
+                    console.log(response.data);
+                    getUsers();
+                    handleUnselectEmployee();
+                });
+        } else {
+            console.log('Email inválido');
         }
-        
-        const normalizedEmail = validator.normalizeEmail(inputs.email);
-        const isEmailValid = normalizedEmail && validator.isEmail(normalizedEmail);
-        
-        try {
-            if (funcionarioSelecionado) {
-                await axios.put(`${API_URL}funcionario/${funcionarioSelecionado}`, inputs);
-                console.log("Funcionário atualizado com sucesso!");
-                await getUsers();
-            } else if (isEmailValid) {
-                const newPassword = generatePassword();
-                const inputsClone = { ...inputs, senha: newPassword };
-                sendEmail(newPassword);
-                console.log(newPassword);
-                await axios.post(`${API_URL}funcionario`, inputsClone);
-                console.log("Funcionário criado com sucesso!");
-                await getUsers();
-                setFuncionarioSelecionado("");
-                setLockInputs(false);
-                const defaultValues = {
-                    n_registro: "",
-                    nome: "",
-                    email: "",
-                    cpf: "",
-                    funcao: "comum",
-                    cargo: "estagiario",
-                    departamento: "administrativo"
-                };
-                for (const [name, value] of Object.entries(defaultValues)) {
-                    handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
-                }
-            } else {
-                console.log('Email inválido');
-            }
-        } catch (error) {
-            console.error("Erro ao processar funcionário:", error);
-        }
-    }, [API_URL, funcionarioSelecionado, inputs, lockInputs]);
+    };
 
-    const getUsers = useCallback(async (): Promise<void> => {
-        if (abortControllerRef.current) {
-            abortControllerRef.current.abort();
-        }
+    useEffect(() => {
+        getUsers();
+        handleUnselectEmployee();
+    }, []);
 
-        const controller = new AbortController();
-        abortControllerRef.current = controller;
+    function getUsers() {
+        axios.get(`${API_URL}funcionario/`).then(response => {
+            console.log(response.data);
+            setFuncionarios(response.data);
+        });
+    }
 
-        setIsLoading(true);
+    const deleteUser = (cpf) => {
+        axios.delete(`${API_URL}funcionario/${cpf}/delete`).then(response => {
+            console.log(response.data);
+            getUsers();
+            handleUnselectEmployee();
+        });
+    };
 
-        try {
-            const response = await axios.get(`${API_URL}funcionario`, {
-                signal: controller.signal
-            });
-            
-            if (!controller.signal.aborted) {
-                console.log(response.data);
-                setFuncionarios(response.data);
-            }
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log("Requisição de funcionários cancelada:", error.message);
-                return;
-            }
-            
-            console.error("Erro ao buscar funcionários:", error);
-            setFuncionarios([]);
-        } finally {
-            if (!controller.signal.aborted) {
-                setIsLoading(false);
-            }
+    const getPontos = () => {
+        if (funcionarioSelecionado) {
+            (async () => {
+                const pontos = await getPoints(funcionarioSelecionado, false, API_URL);
+                setRegistros(pontos);
+            })();
         }
     }, [API_URL]);
 
