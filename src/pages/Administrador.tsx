@@ -80,7 +80,7 @@ export default function Administrador() {
     }, []);
 
     function getUsers() {
-        axios.get(`${API_URL}funcionario/`).then(response => {
+        axios.get(`${API_URL}funcionario`).then(response => {
             console.log(response.data);
             setFuncionarios(response.data);
         });
