@@ -24,8 +24,8 @@ export default function Footer() {
     }
 
     return (
-        <footer className={`${tema} z-1 w-full py-2 px-0`}>
-            <div className={"box-grid"}>
+        <footer className={`${tema} z-1 w-full py-2 px-0 max-w-85 mb-2 rounded-b-sm`}>
+            <div className={"box-grid grid grid-cols-10 justify-start items-center gap-1"}>
                 <div className={"title-wrapper span-3"}>
                     <img src={"/logo.svg"} alt={"Logo do site"}/>
                     <p className={"title"}>Bunchin</p>
@@ -34,7 +34,7 @@ export default function Footer() {
                 <p className={"important span-2"}>Informações de contato</p>
                 <p className={"important span-3"}>De olho nas novidades</p>
             </div>
-            <div className={"box-grid second"}>
+            <div className={"box-grid second grid grid-cols-10 justify-start items-center gap-1"}>
                 <p className={"subText span-3"}>Simplifique o controle de horários e dados dos seus colaboradores
                     com a nossa plataforma. Solução completa,
                     prática e segura para você focar no que realmente importa: sua equipe.</p>
@@ -53,7 +53,7 @@ export default function Footer() {
                     <p>Fique por dentro das novidades e atualizações! Inscreva-se e seja o
                         primeiro a saber de melhorias e recursos exclusivos.</p>
                     <div className={"input-wrapper"}>
-                        <input className={`${tema === "dark" ? "common-input dark" : "common-input light"}`}
+                        <input className={`w-full py-0.5 px-1 border-3 bg-secondary border-card text-card`}
                                placeholder={"Seu email"}
                                onChange={(e) => setEmail(e.target.value)}
                         ></input>

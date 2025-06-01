@@ -4,6 +4,8 @@ import { Clock, Shield, UsersRound, ChevronDown } from "lucide-react";
 import ResourcePoint from "../components/ResourcePoint";
 import { UserContext } from "../utils/userContext";
 import Story from "../components/Story";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 interface UserContextType {
     tema: string;
@@ -16,6 +18,7 @@ export default function Home() {
     const { tema } = useContext(UserContext) as UserContextType;
 
     useEffect(() => {
+        AOS.init();
         const handleScroll = () => {
             setIsDown(window.scrollY > 0);
         };
@@ -54,7 +57,7 @@ export default function Home() {
                 <p ref={secondTitleRef} className={"mainCommon__resources__title"}>NOSSOS RECURSOS</p>
                 <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>É com essa tecnologias que nossa plataforma pode revolucionar sua
                     empresa</p>
-                <div className={"mainCommon__resources__box-points grid grid-cols-3 gap-3"}>
+                <div className={"mainCommon__resources__box-points grid grid-cols-3 gap-3"} data-aos="fade-up">
                     <ResourcePoint
                         icon={<Clock size={90} strokeWidth={1.5} className="mb-0.5" />}
                         title="CONTROLE DE PONTOS AVANÇADO"
@@ -72,7 +75,8 @@ export default function Home() {
                     />
                 </div>
                 <p className={"mainCommon__resources__title mt-7"}>HISTÓRIAS DE SUCESSO</p>
-                <div className={"box-stories grid grid-cols-3 gap-3 group"}>
+                <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>Relatos de clientes satisfeitos com a nossa plataforma e serviços de alto nível</p>
+                <div className={"box-stories grid grid-cols-3 gap-3 group"} data-aos="flip-down">
                     <Story
                         starNumber={4}
                         text="Desde que implementamos a plataforma, a motivação do time disparou! As metas são claras e as recompensas são um incentivo constante para todos. Acredito que estamos mais alinhados e engajados como nunca!"
@@ -89,11 +93,11 @@ export default function Home() {
                         author="— Juliana S., CEO da [Empresa DEF]"
                     />
                 </div>
-                <button className={"button-session last"}>
+                <button className={"button-session last mt-5 transition-colors duration-200 text-secondary !bg-highlight hover:!bg-primary"}>
                     Registre sua empresa
                 </button>
             </article>
-            <div className={"gradient mt-3 w-full h-15"} />
+            <div className={"gradient mt-3 w-full h-10 bg-linear-to-t from-highlight to-transparent"} />
         </main>
     );
 }
