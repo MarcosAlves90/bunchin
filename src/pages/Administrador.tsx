@@ -53,7 +53,7 @@ export default function Administrador() {
         event.preventDefault();
         const isEmailValid = validator.isEmail(validator.normalizeEmail(inputs.email));
         if (funcionarioSelecionado) {
-            axios.put(`${API_URL}funcionario/${funcionarioSelecionado}/edit`, inputs)
+            axios.put(`${API_URL}funcionario/${funcionarioSelecionado}`, inputs)
                 .then(response => {
                     console.log(response.data);
                     getUsers();
@@ -63,7 +63,7 @@ export default function Administrador() {
             const inputsClone = { ...inputs, senha: newPassword };
             sendEmail(newPassword);
             console.log(newPassword);
-            axios.post(`${API_URL}funcionario/save`, inputsClone)
+            axios.post(`${API_URL}funcionario`, inputsClone)
                 .then(response => {
                     console.log(response.data);
                     getUsers();
@@ -87,7 +87,7 @@ export default function Administrador() {
     }
 
     const deleteUser = (cpf) => {
-        axios.delete(`${API_URL}funcionario/${cpf}/delete`).then(response => {
+        axios.delete(`${API_URL}funcionario/${cpf}`).then(response => {
             console.log(response.data);
             getUsers();
             handleUnselectEmployee();
