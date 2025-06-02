@@ -1,8 +1,28 @@
 import axios from "axios";
 
-export async function getPoints(cpf, todayBool, API_URL) {
+interface Ponto {
+    id_ponto: string;
+    data_hora: string;
+    nome_tipo: string;
+    funcionario_fk: {
+        cpf: string;
+    };
+}
+
+interface PontoProcessado {
+    nome: string;
+    id: string;
+    data: Date;
+    funcionario_fk: string;
+}
+
+export async function getPoints(
+    cpf: string,
+    todayBool: boolean,
+    API_URL: string
+): Promise<PontoProcessado[]> {
     try {
-        const { data } = await axios.get(`${API_URL}ponto`);
+        const { data } = await axios.get<Ponto[]>(`${API_URL}ponto`);
         if (!Array.isArray(data)) {
             console.error("Unexpected API response:", data);
             return [];
@@ -12,13 +32,14 @@ export async function getPoints(cpf, todayBool, API_URL) {
         return data
             .filter(ponto => {
                 const pointDate = new Date(ponto.data_hora);
-                return (todayBool ? pointDate.toDateString() === today.toDateString() : true) && ponto.funcionario_fk.cpf === cpf;
+                return (todayBool ? pointDate.toDateString() === today.toDateString() : true) &&
+                    ponto.funcionario_fk && ponto.funcionario_fk.cpf === cpf;
             })
             .map(ponto => ({
                 nome: ponto.nome_tipo,
                 id: ponto.id_ponto,
                 data: new Date(ponto.data_hora),
-                funcionario_fk: ponto.funcionario_fk.cpf
+                funcionario_fk: ponto.funcionario_fk ? ponto.funcionario_fk.cpf : ''
             }));
     } catch (error) {
         console.error("Error loading points of the day:", error);

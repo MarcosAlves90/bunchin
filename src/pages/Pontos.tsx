@@ -1,21 +1,15 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext, UserContextType } from "../utils/userContext.jsx";
 import { v4 as uuidv4 } from 'uuid';
-import { GeneratePoints } from "../components/PointSystems.jsx";
+import { GeneratePoints, RegistroPonto } from "../components/PointSystems.jsx";
 import axios from "axios";
 import {getPoints} from "../utils/getPoints.jsx";
 import LiveClock from "../components/LiveClock.jsx";
 import {useNavigate} from "react-router-dom";
 import { ChevronDown, AlarmClock } from "lucide-react";
 
-interface Registro {
-    nome: string;
-    id: string;
-    data: Date;
-}
-
 export default function Pontos() {
-    const [registros, setRegistros] = useState<Registro[]>([]);
+    const [registros, setRegistros] = useState<RegistroPonto[]>([]);
     const [locked, setLocked] = useState<boolean | 'maxAtingido'>(true);
     const { usuario, API_URL } = useContext<UserContextType>(UserContext);
     const navigate = useNavigate();
@@ -41,8 +35,13 @@ export default function Pontos() {
             }, 5000);
         } else if (!locked && registros.length < 4) {
             setLocked(true);
-            const id = uuidv4();
-            const novoRegistro = { nome: registrosComuns[registros.length], id: id, data: new Date() };
+            const uuid = uuidv4();
+            const novoRegistro: RegistroPonto = { 
+                nome: registrosComuns[registros.length], 
+                id: uuid, 
+                data: new Date(),
+                funcionario_fk: usuario?.cpf || ''
+            };
             setRegistros([...registros, novoRegistro]);
             salvarPonto(novoRegistro);
             if (timeoutRef.current) {
@@ -61,7 +60,7 @@ export default function Pontos() {
         }
     }
 
-    function salvarPonto(registro: Registro): void {
+    function salvarPonto(registro: RegistroPonto): void {
         if (!usuario) return;
         
         axios.post(`${API_URL}ponto`, {

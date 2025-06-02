@@ -20,9 +20,9 @@ export default function Configuracoes() {
     }
 
     return (
-        <main className={`mainCommon configuracoes ${tema}`}>
-            <article className={"card-configuracoes"}>
-                <h1 className="configuracoes-title">Configurações</h1>
+        <main className={`mainCommon text-base flex justify-center items-center flex-col`}>
+            <article className={"bg-card rounded-sm w-full p-2 flex flex-col gap-1 text-primary transition-colors"}>
+                <h1 className="text-4xl font-subrayada mb-2">Configurações</h1>
                 <button className={`button-theme`} onClick={handleButtonThemeClick}>
                     {tema === "light" ? "Tema Escuro" : "Tema Claro"}
                 </button>
