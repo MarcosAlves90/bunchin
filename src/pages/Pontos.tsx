@@ -1,16 +1,23 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { UserContext } from "../utils/userContext.jsx";
+import { UserContext, UserContextType } from "../utils/userContext.jsx";
 import { v4 as uuidv4 } from 'uuid';
 import { GeneratePoints } from "../components/PointSystems.jsx";
 import axios from "axios";
 import {getPoints} from "../utils/getPoints.jsx";
 import LiveClock from "../components/LiveClock.jsx";
 import {useNavigate} from "react-router-dom";
+import { ChevronDown, AlarmClock } from "lucide-react";
+
+interface Registro {
+    nome: string;
+    id: string;
+    data: Date;
+}
 
 export default function Pontos() {
-    const [registros, setRegistros] = useState([]);
-    const [locked, setLocked] = useState(true);
-    const { tema, usuario, API_URL } = useContext(UserContext);
+    const [registros, setRegistros] = useState<Registro[]>([]);
+    const [locked, setLocked] = useState<boolean | 'maxAtingido'>(true);
+    const { usuario, API_URL } = useContext<UserContextType>(UserContext);
     const navigate = useNavigate();
 
     const registrosComuns = [
@@ -20,8 +27,8 @@ export default function Pontos() {
         "Saída"
     ];
 
-    const timeoutRef = useRef(null);
-
+    const timeoutRef = useRef<number | null>(null);
+    
     function handleBaterPontoClick() {
         if (locked) {
             setLocked(false);
@@ -43,7 +50,7 @@ export default function Pontos() {
                 timeoutRef.current = null;
             }
         } else {
-            setLocked(null);
+            setLocked('maxAtingido');
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = setTimeout(() => {
@@ -54,7 +61,9 @@ export default function Pontos() {
         }
     }
 
-    function salvarPonto(registro) {
+    function salvarPonto(registro: Registro): void {
+        if (!usuario) return;
+        
         axios.post(`${API_URL}ponto`, {
             id_ponto: registro.id,
             funcionario_fk: usuario.cpf,
@@ -73,24 +82,28 @@ export default function Pontos() {
 
     useEffect(() => {
         (async () => {
+            if (!usuario) return;
             const pontos = await getPoints(usuario.cpf, true, API_URL);
             setRegistros(pontos);
         })();
-    }, [usuario.cpf]);
+    }, [usuario?.cpf, API_URL]);
 
     return (
-        <main className={`mainCommon registros ${tema}`}>
-            <article className={"card-horario"}>
-                <div className={"clock"}>
-                    <i className="bi bi-clock"></i>
+        <main className={`mainCommon text-base flex justify-center items-center flex-col`}>
+            <article className={"card-horario bg-card rounded-sm w-full transition-colors p-1.5 gap-3 flex flex-col items-center"}>
+                <div className={"clock flex items-center justify-between gap-1 text-primary mt-3"}>
+                    <AlarmClock className="w-[65px] h-[65px]"/>
                     <LiveClock/>
                 </div>
-                <button className={`button-ponto ${locked === null ? "indefinido" : !locked ? "bloqueado" : ""}`} onClick={handleBaterPontoClick}>{locked === null ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
+                <button className={`button-session ${locked === 'maxAtingido' ? "!bg-red !text-primary" : !locked ? "!bg-green hover:!bg-secondary hover:!text-green" : ""}`} onClick={handleBaterPontoClick}>{locked === 'maxAtingido' ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
             </article>
-            <article className={"card-registros"}>
-                <p className={"card-registros-title"}>Registros recentes</p>
+            <article className={"card-registros font-bold text-start mt-2 w-full transition-colors rounded-sm p-1.5 bg-card flex gap-1.5 flex-col"}>
+                <p className={"card-registros-title text-xl font-subrayada text-primary"}>Registros recentes</p>
                 <GeneratePoints registros={registros} />
-                <p className={"card-registros-bottom-title"} onClick={handleMorePointsButtonClick}>Mais registros</p>
+                <div className="card-registros-bottom-wrapper rounded-sm text-secondary bg-highlight px-1 py-[0.7rem] mx-auto transition-colors flex gap-1 items-center hover:cursor-pointer hover:bg-primary" onClick={handleMorePointsButtonClick}>
+                    <ChevronDown/>
+                    <p className={"card-registros-bottom-wrapper-title text-lg text-center font-semibold"}>Mais registros</p>
+                </div>
             </article>
         </main>
     );

@@ -11,6 +11,9 @@
     --color-highlight: var(--highlight);
     --color-card: var(--card);
     --color-story-card: var(--story-card);
+
+    --color-green: var(--color-green);
+    --color-red: var(--color-red);
 }
 
 :root {
@@ -19,6 +22,8 @@
     --secondary: #f0f0f0;
     --card: #C6C6C6;
     --story-card: #0f0f0f;
+    --color-green: #68c935;
+    --color-red: #e61f1f;
 }
 
 .dark {
@@ -54,7 +59,7 @@
 }
 
 .button-session {
-    @apply border-none transition text-lg pr-2 pl-2 rounded-sm;
+    @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary transition-colors;
     &.last {
         @apply mt-3;
     }

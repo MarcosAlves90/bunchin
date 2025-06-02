@@ -5,6 +5,7 @@ import ResourcePoint from "../components/ResourcePoint";
 import { UserContext } from "../utils/userContext";
 import Story from "../components/Story";
 import AOS from "aos";
+// @ts-ignore
 import "aos/dist/aos.css";
 
 interface UserContextType {
@@ -40,7 +41,7 @@ export default function Home() {
     }
 
     return (
-        <main className={`mainCommon flex justify-start items-center !py-0 flex-col`}>
+        <main className={`mainCommon-home flex justify-start items-center flex-col box-border min-h-screen max-w-85 w-full`}>
             <article className={"mainCommon__hero flex flex-col items-center justify-center h-[calc(100vh-90px)] mt-[90px]"}>
                 <img className={`mainCommon__hero__title-svg h-[150px] transition ${tema === "dark" ? "invert-100" : ""}`} src={"/bunchin_title.svg"} alt={"Título do site"} />
                 <p className={"mainCommon__hero__subtitle mt-0 text-xl text-primary transition duration-200"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>
@@ -48,7 +49,7 @@ export default function Home() {
                     alt={"Penas à esquerda"} />
                 <img className={`mainCommon__hero__penas ${isDown ? "down" : ""} right right-[-180px] ${tema === "light" ? "invert-100" : ""}`} src={"/penas_direita_home.svg"}
                     alt={"Penas à direita"} />
-                <button className={"button-session mt-5 transition-colors duration-200 text-secondary !bg-highlight hover:!bg-primary"} onClick={handleLoginButtonClick}>
+                <button className={"button-session mt-5"} onClick={handleLoginButtonClick}>
                     Iniciar sessão
                 </button>
                 <ChevronDown className="mainCommon__hero__chevron transition-colors cursor-pointer text-primary absolute bottom-2" onClick={handleArrowClick} size={48} strokeWidth={2} />
@@ -93,7 +94,7 @@ export default function Home() {
                         author="— Juliana S., CEO da [Empresa DEF]"
                     />
                 </div>
-                <button className={"button-session last mt-5 transition-colors duration-200 text-secondary !bg-highlight hover:!bg-primary"}>
+                <button className={"button-session last mt-5"}>
                     Registre sua empresa
                 </button>
             </article>

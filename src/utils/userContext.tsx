@@ -2,12 +2,17 @@ import { createContext, useState, ReactNode, Dispatch, SetStateAction } from "re
 
 export interface Usuario {
     id: string;
+    n_registro: number;
     nome: string;
     email: string;
-    funcao?: string;
+    funcao: string;
+    cargo: string;
+    departamento: string;
+    cpf: string;
+    status: string;
 }
 
-interface UserContextType {
+export interface UserContextType {
     tema: string;
     setTema: Dispatch<SetStateAction<string>>;
     usuario: Usuario | null;

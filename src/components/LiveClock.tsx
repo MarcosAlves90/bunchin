@@ -12,7 +12,7 @@ export default function LiveClock() {
     }, []);
 
     return (
-        <div className="horario">
+        <div className="horario text-7xl min-w-20">
             {time.toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' })}
         </div>
     );
