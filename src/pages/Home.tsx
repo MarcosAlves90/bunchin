@@ -25,6 +25,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 interface UserContextType { 
+<<<<<<< HEAD
 =======
 import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +35,8 @@ import { UserContext } from "../utils/userContext";
 
 interface UserContextType {
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+>>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
     tema: string;
 }
 
@@ -310,7 +313,7 @@ export default function Home() {
             </article>
 =======
     };
-    function handleLoginButtonClick() {
+    function handleLoginPageButtonClick() {
         navigate("/login");
     }
 
@@ -350,6 +353,7 @@ export default function Home() {
                     />
                 </div>
                 <p className={"mainCommon__resources__title mt-7"}>HISTÓRIAS DE SUCESSO</p>
+<<<<<<< HEAD
                 <div className={"box-stories"}>
                     <div className={"story"}>
                         <div className={"box-star"}>
@@ -390,6 +394,25 @@ export default function Home() {
                             O uso da plataforma no dia a dia também é muito intuitivo!"</p>
                         <p className={"story-author"}>— Juliana S., CEO da [Empresa DEF]</p>
                     </div>
+=======
+                <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>Relatos de clientes satisfeitos com a nossa plataforma e serviços de alto nível</p>
+                <div className={"box-stories grid grid-cols-3 mb-5 gap-3 group"} data-aos="flip-down">
+                    <Story
+                        starNumber={4}
+                        text="Desde que implementamos a plataforma, a motivação do time disparou! As metas são claras e as recompensas são um incentivo constante para todos. Acredito que estamos mais alinhados e engajados como nunca!"
+                        author="— Ana L., Gerente de RH da [Empresa ABC]"
+                    />
+                    <Story
+                        starNumber={5}
+                        text="A plataforma nos ajudou a acompanhar o desempenho de todos os colaboradores em tempo real. Agora, temos relatórios precisos e podemos dar feedbacks rápidos. Está facilitando muito nosso trabalho!"
+                        author="— Carlos M., Diretor de Operações da [Empresa XYZ]"
+                    />
+                    <Story
+                        starNumber={5} 
+                        text="Ficamos surpresos com a facilidade de implementação. A integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa. O uso da plataforma no dia a dia também é muito intuitivo!"
+                        author="— Juliana S., CEO da [Empresa DEF]"
+                    />
+>>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
                 </div>
                 <button className={"button-session last"}>
                     Registre sua empresa

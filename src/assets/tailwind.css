@@ -1,12 +1,12 @@
 @import "tailwindcss";
-
+ 
 @theme {
     --spacing: 1rem;
-
+ 
     --font-subrayada: "Montserrat Subrayada", sans-serif;
 <<<<<<< HEAD
     --font-montserrat: "Montserrat", sans-serif;
-
+ 
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
     --color-tertiary: var(--tertiary);
@@ -25,7 +25,7 @@
     --color-card: var(--card);
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
-
+ 
 :root {
     --highlight: #FF9900;
 <<<<<<< HEAD
@@ -46,7 +46,7 @@
     --card: #C6C6C6;
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
-
+ 
 .dark {
     --highlight: #FFAE11;
 <<<<<<< HEAD
@@ -59,7 +59,7 @@
     --card: rgb(91, 91, 91);
     --story-card: #f0f0f0;
 }
-
+ 
 .mainCommon {
     @apply w-full pt-[90px] pb-2 box-border min-h-screen max-w-86 px-1;
 =======
@@ -72,7 +72,7 @@
     @apply w-full pt-[90px] box-border min-h-screen max-w-85;
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
-
+ 
 .mainCommon__hero__penas {
     animation: float 3s ease-in-out infinite;
     @apply absolute transition-all duration-200 bottom-[-180px];
@@ -92,7 +92,7 @@
         }
     }
 }
-
+ 
 .button-session {
 <<<<<<< HEAD
     @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
@@ -104,12 +104,20 @@
         @apply mt-3;
     }
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
+=======
+ 
+.mainCommon__hero__chevron {
+    animation: bounce 1s ease-in-out;
+}
+ 
+>>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
 .mainCommon__resources__title {
     @apply text-4xl font-subrayada mb-2 text-primary transition-colors duration-200;
 }
-
+ 
 .mainCommon__resources__box-points__point-wrapper .point-clock {
     animation: cuckoo 2s infinite ease-in-out;
 }
@@ -118,6 +126,7 @@
     @apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen bg-primary/20 z-50 backdrop-blur-md flex items-center justify-center p-1;
 }
 
+<<<<<<< HEAD
 
 .login-form{
     &::after {
@@ -132,6 +141,13 @@
         border-left: 25px solid var(--highlight);
         border-right: 25px solid transparent;
         border-bottom: 25px solid transparent;
+=======
+/* Animações */
+ 
+@keyframes cuckoo {
+    0% {
+        transform: rotate(-30deg);
+>>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
     }
     &::before{
         width: calc(100% - 50px);
@@ -260,7 +276,7 @@
 .mainCommon__resources__title {
     @apply text-4xl font-subrayada mb-3 text-primary transition-colors duration-200;
 }
-
+ 
 @keyframes float {
     0% {
         transform: translateY(0);
@@ -272,7 +288,7 @@
         transform: translateY(0);
     }
 }
-
+ 
 @keyframes bottomFloatRight {
     0% {
         transform: translateX(0) translateY(0) rotate(0deg);
@@ -284,7 +300,7 @@
         transform: translateX(0) translateY(0) rotate(0deg);
     }
 }
-
+ 
 @keyframes bottomFloatLeft {
     0% {
         transform: translateX(0) translateY(0) rotate(0deg);
@@ -296,7 +312,7 @@
         transform: translateX(0) translateY(0) rotate(0deg);
     }
 }
-
+ 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
         transform: translateY(0);
@@ -308,4 +324,8 @@
         transform: translateY(-10px);
     }
 }
+<<<<<<< HEAD
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+ 
+>>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)

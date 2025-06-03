@@ -3,7 +3,16 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "../utils/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { UserRound, Lock, Eye, EyeOff } from "lucide-react";
+<<<<<<< HEAD
 import { useLoginForm } from "../utils/useLoginForm";
+=======
+<<<<<<< HEAD
+import useLoginForm from "../utils/hooks/useLoginForm";
+=======
+import YellowButton from "../components/YellowButton.jsx";
+import { useLoginForm } from "../utils/useLoginForm";
+>>>>>>> b99ad81 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
+>>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
 
 export default function Login() {
     const navigate = useNavigate();
@@ -105,18 +114,15 @@ export default function Login() {
                             }
                         </div>
                         <p className={"reset-password"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>
-                        <button
+                        <YellowButton 
+                            text={loading? "Carregando..." : error ? error : "Iniciar"}
+                            clickFunction={handleLoginButtonClick}
+                            error={error}
                             type={"submit"}
                             value={"Submit"}
-                            className={`button-login ${error ? "error" : ""}`}
-                            onClick={handleLoginButtonClick}
                             disabled={loading}
                             aria-label="Iniciar sessão"
-                        >
-                            <i className="bi bi-feather2 left"></i>
-                            {loading ? "Carregando..." : error ? error : "Iniciar"}
-                            <i className="bi bi-feather2 right"></i>
-                        </button>
+                        />
                     </form>
                 </div>
             </div>
