@@ -23,7 +23,7 @@ import AOS from "aos";
 // @ts-ignore
 import "aos/dist/aos.css";
 
-interface UserContextType {
+interface UserContextType { 
     tema: string;
 }
 
