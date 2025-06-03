@@ -22,7 +22,7 @@ export async function getPoints(
     try {
         const { data } = await axios.get<Ponto[]>(`${API_URL}ponto`);
         if (!Array.isArray(data)) {
-            console.error("Unexpected API response:", data);
+            console.error("Resposta inesperada da API:", data);
             return [];
         }
 
@@ -40,7 +40,7 @@ export async function getPoints(
                 funcionario_fk: ponto.funcionario_fk ? ponto.funcionario_fk : ''
             }));
     } catch (error) {
-        console.error("Error loading points of the day:", error);
+        console.error("Erro ao carregar os registros:", error);
         return [];
     }
 }

@@ -1,31 +1,39 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import validator from "validator";
-import {useCallback, useContext, useEffect, useState, useMemo} from "react";
+import { useCallback, useContext, useEffect, useState, useMemo } from "react";
 import { UserContext } from "../utils/context/userContext.js";
 import { GeneratePoints } from "../components/organisms/PointSystems.jsx";
-import {getPoints} from "../utils/services/getPoints.js";
-import {ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield} from "lucide-react";
-import {SendEmail} from "../utils/services/sendEmail.js";
+import { ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield } from "lucide-react";
+import { SendEmail } from "../utils/services/sendEmail.js";
+
+interface Funcionario {
+    cpf: string;
+    nome: string;
+    email: string;
+    n_registro: string;
+    funcao: string;
+    cargo: string;
+    departamento: string;
+}
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
-    const [registros, setRegistros] = useState([]);
-    const [funcionarios, setFuncionarios] = useState([]);
+    const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const { tema, usuario, API_URL } = useContext(UserContext);
-    const [inputs, setInputs] = useState([]);
+    const [inputs, setInputs] = useState<Record<string, string>>({});
     const [colapsed, setColapsed] = useState(true);
     const [lockInputs, setLockInputs] = useState(true);
 
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }));
     };
 
-    const handleSearchChange = (event) => {
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
@@ -37,21 +45,21 @@ export default function Administrador() {
             password += charset.charAt(Math.floor(Math.random() * n));
         }
         return password;
-    }
-
-    function sendEmail(password) {
+    }    function sendEmail(password: string) {
+        // @ts-ignore
         SendEmail(import.meta.env.VITE_PUBLIC_API_KEY_S,
+            // @ts-ignore
             import.meta.env.VITE_SERVICE_API_KEY_S,
+            // @ts-ignore
             import.meta.env.VITE_TEMPLATE_API_KEY_1_S, {
             email: inputs.email,
             password: password,
             name: inputs.nome
         });
-    }
-
-    const handleSubmit = (event) => {
+    }    const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        const isEmailValid = validator.isEmail(validator.normalizeEmail(inputs.email));
+        const normalizedEmail = validator.normalizeEmail(inputs.email);
+        const isEmailValid = normalizedEmail && validator.isEmail(normalizedEmail);
         if (funcionarioSelecionado) {
             axios.put(`${API_URL}funcionario/${funcionarioSelecionado}`, inputs)
                 .then(response => {
@@ -84,40 +92,14 @@ export default function Administrador() {
             console.log(response.data);
             setFuncionarios(response.data);
         });
-    }
-
-    const deleteUser = (cpf) => {
+    }    const deleteUser = (cpf: string) => {
         axios.delete(`${API_URL}funcionario/${cpf}`).then(response => {
             console.log(response.data);
             getUsers();
             handleUnselectEmployee();
         });
-    };
-
-    const getPontos = () => {
-        if (funcionarioSelecionado) {
-            (async () => {
-                const pontos = await getPoints(funcionarioSelecionado, false, API_URL);
-                setRegistros(pontos);
-            })();
-        }
-    }
-
-    useEffect(() => {
-        getPontos();
-    }, [funcionarioSelecionado]);
-
-
-    const deletePonto = (id) => {
-        axios.delete(`${API_URL}ponto/${id}`).then(response => {
-            console.log(response.data);
-            getPontos();
-        });
-    };
-
-    function handleUnselectEmployee() {
+    };    function handleUnselectEmployee() {
         setFuncionarioSelecionado("");
-        setRegistros([]);
         setLockInputs(false);
         const defaultValues = {
             n_registro: "",
@@ -129,32 +111,30 @@ export default function Administrador() {
             departamento: "administrativo"
         };
         for (const [name, value] of Object.entries(defaultValues)) {
-            handleChange({ target: { name, value } });
+            handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
         }
-    }
-
-    function GenerateEmployeesButtons({ funcionarios }) {
+    }    function GenerateEmployeesButtons({ funcionarios }: { funcionarios: Funcionario[] }) {
         const filteredFuncionarios = useMemo(() => {
-            return funcionarios.filter(funcionario =>
+            return funcionarios.filter((funcionario: Funcionario) =>
                 funcionario.nome.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }, [funcionarios, searchTerm]);
 
         return (
             <article className={"article-employees"}>
-                {filteredFuncionarios.filter((funcionario) => usuario.n_registro !== funcionario.n_registro).map(funcionario => (
+                {filteredFuncionarios.filter((funcionario: Funcionario) => String(usuario?.n_registro) !== funcionario.n_registro).map((funcionario: Funcionario) => (
                     <div key={funcionario.cpf}
-                         className={`employee-item ${funcionarioSelecionado === funcionario.cpf ? "ativo" : ""}`}>
+                        className={`employee-item ${funcionarioSelecionado === funcionario.cpf ? "ativo" : ""}`}>
                         <p className={"nome"}
-                           onClick={() => handleEmployeeButtonClick(funcionario)}>{funcionario.nome}</p>
+                            onClick={() => handleEmployeeButtonClick(funcionario)}>{funcionario.nome}</p>
                         {funcionarioSelecionado === funcionario.cpf &&
                             <X strokeWidth={2.5}
-                               size={16}
-                               absoluteStrokeWidth={true}
-                               onClick={handleUnselectEmployee}
-                               color={tema === "dark" ?
-                                   "var(--background-color-navbar-dark)" :
-                                   "var(--background-color-navbar-light)"}
+                                size={16}
+                                absoluteStrokeWidth={true}
+                                onClick={handleUnselectEmployee}
+                                color={tema === "dark" ?
+                                    "var(--background-color-navbar-dark)" :
+                                    "var(--background-color-navbar-light)"}
                             />}
                         {!(funcionarioSelecionado === funcionario.cpf) &&
                             <div className={"box display-flex-center"} onClick={() => handleEmployeeButtonClick(funcionario)}>
@@ -173,17 +153,22 @@ export default function Administrador() {
 
     GenerateEmployeesButtons.propTypes = {
         funcionarios: PropTypes.array.isRequired,
-    };
-
-    function handleEmployeeButtonClick(funcionario) {
+    };    function handleEmployeeButtonClick(funcionario: Funcionario) {
         setFuncionarioSelecionado(funcionario.cpf);
         setIndexFuncionario(funcionarios.findIndex(f => f.cpf === funcionario.cpf));
         setLockInputs(true);
-    }
-
-    useEffect(() => {
-        if (funcionarioSelecionado) {
-            setInputs(funcionarios[indexFuncionario]);
+    }    useEffect(() => {
+        if (funcionarioSelecionado && funcionarios[indexFuncionario]) {
+            const funcionario = funcionarios[indexFuncionario];
+            setInputs({
+                n_registro: funcionario.n_registro,
+                nome: funcionario.nome,
+                email: funcionario.email,
+                cpf: funcionario.cpf,
+                funcao: funcionario.funcao,
+                cargo: funcionario.cargo,
+                departamento: funcionario.departamento
+            });
         }
         console.log(funcionarioSelecionado);
     }, [funcionarioSelecionado]);
@@ -232,16 +217,16 @@ export default function Administrador() {
                     }
                     {funcionarioSelecionado &&
                         (lockInputs ?
-                                <PenOff
-                                    strokeWidth={1}
-                                    size={43}
-                                    onClick={handleLockInputs}
-                                /> :
-                                <Pen
-                                    strokeWidth={1}
-                                    size={43}
-                                    onClick={handleLockInputs}
-                                />
+                            <PenOff
+                                strokeWidth={1}
+                                size={43}
+                                onClick={handleLockInputs}
+                            /> :
+                            <Pen
+                                strokeWidth={1}
+                                size={43}
+                                onClick={handleLockInputs}
+                            />
                         )
                     }
                 </div>
@@ -250,19 +235,19 @@ export default function Administrador() {
                         <div className={`article-inputs-input nome ${lockInputs ? "locked" : ""}`}>
                             <label>NOME COMPLETO</label>
                             <input value={inputs.nome || ""} placeholder={"exemplo da silva paiva"} type={"text"}
-                                   name={"nome"} onChange={handleChange} disabled={lockInputs}/>
-                            <GenerateLockIcon/>
+                                name={"nome"} onChange={handleChange} disabled={lockInputs} />
+                            <GenerateLockIcon />
                         </div>
                         <div className={`article-inputs-input email ${lockInputs ? "locked" : ""}`}>
                             <label>EMAIL</label>
                             <input value={inputs.email || ""} placeholder={"exemplo@gmail.com"} type={"email"}
-                                   name={"email"} onChange={handleChange} disabled={lockInputs}/>
-                            <GenerateLockIcon/>
+                                name={"email"} onChange={handleChange} disabled={lockInputs} />
+                            <GenerateLockIcon />
                         </div>
                         <div className={"article-inputs-input n-registro locked"}>
                             <label>REGISTRO</label>
                             <input value={inputs.n_registro || ""} placeholder={"1234567890"} type={"number"}
-                                   name={"n_registro"} disabled/>
+                                name={"n_registro"} disabled />
                             <Shield
                                 color={tema === "light" ? "var(--background-color-light-dark-theme)" : "var(--background-color-dark-light-theme)"}
                             />
@@ -270,58 +255,57 @@ export default function Administrador() {
                         <div className={`article-inputs-input cpf ${lockInputs ? "locked" : ""}`}>
                             <label>CPF</label>
                             <input value={inputs.cpf || ""} placeholder={"12345678900"} type={"number"} name={"cpf"}
-                                   onChange={handleChange} disabled={lockInputs}/>
-                            <GenerateLockIcon/>
+                                onChange={handleChange} disabled={lockInputs} />
+                            <GenerateLockIcon />
                         </div>
                         <div className={`article-inputs-input funcao ${lockInputs ? "locked" : ""}`}>
                             <label>FUNÇÃO</label>
                             <select value={inputs.funcao} defaultValue={"comum"} name={"funcao"}
-                                    onChange={handleChange} disabled={lockInputs}>
+                                onChange={handleChange} disabled={lockInputs}>
                                 <option value={"comum"}>Comum</option>
                                 <option value={"administrador"}>Administrador</option>
                             </select>
-                            <GenerateLockIcon/>
+                            <GenerateLockIcon />
                         </div>
                         <div className={`article-inputs-input cargo ${lockInputs ? "locked" : ""}`}>
                             <label>CARGO</label>
                             <select value={inputs.cargo} defaultValue={"estagiario"} name={"cargo"}
-                                    onChange={handleChange} disabled={lockInputs}>
+                                onChange={handleChange} disabled={lockInputs}>
                                 <option value={"estagiario"}>Estagiário</option>
                                 <option value={"auxiliar-administrativo"}>Auxiliar administrativo</option>
                                 <option value={"gerente"}>Gerente</option>
                                 <option value={"diretor"}>Diretor</option>
                             </select>
-                            <GenerateLockIcon/>
+                            <GenerateLockIcon />
                         </div>
                         <div className={`article-inputs-input departamento ${lockInputs ? "locked" : ""}`}>
                             <label>DEPARTAMENTO</label>
                             <select value={inputs.departamento} defaultValue={"administrativo"} name={"departamento"}
-                                    onChange={handleChange} disabled={lockInputs}>
+                                onChange={handleChange} disabled={lockInputs}>
                                 <option value={"administrativo"}>Administrativo</option>
                                 <option value={"financeiro"}>Financeiro</option>
                                 <option value={"marketing"}>Marketing</option>
                                 <option value={"producao"}>Produção</option>
                             </select>
-                            <GenerateLockIcon/>
+                            <GenerateLockIcon />
                         </div>
                     </article>
                     <div className={"container-save-button"}>
                         <button
                             className={`save-button ${lockInputs ? "locked" : ""}`} disabled={lockInputs}>{!funcionarioSelecionado ? "Criar perfil" : "Salvar alterações"}</button>
                     </div>
-                </form>
-                <div className={`div-title ${registros.length > 0 ? "colapse" : ""}`}
-                     onClick={registros.length > 0 ? handleColapse : null}>
+                </form>                <div className={`div-title ${funcionarioSelecionado ? "colapse" : ""}`}
+                    onClick={funcionarioSelecionado ? handleColapse : undefined}>
                     <h1 className={"title"}>REGISTRO DE HORAS</h1>
-                    {registros.length > 0 && (
+                    {funcionarioSelecionado && (
                         colapsed ? (
-                            <ChevronDown strokeWidth={0.7} className="icon" size={50}/>
+                            <ChevronDown strokeWidth={0.7} className="icon" size={50} />
                         ) : (
-                            <ChevronUp strokeWidth={0.7} className="icon" size={50}/>
+                            <ChevronUp strokeWidth={0.7} className="icon" size={50} />
                         )
                     )}
                 </div>
-                {!colapsed && <GeneratePoints deletePonto={deletePonto} registros={registros} getPonto={getPontos}/>}
+                {!colapsed && funcionarioSelecionado && <GeneratePoints canDelete={true} canRefresh={true} cpf={funcionarioSelecionado} />}
             </article>
         </main>
     );

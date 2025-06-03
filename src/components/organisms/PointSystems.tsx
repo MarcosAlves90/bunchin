@@ -1,14 +1,14 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import ReactModal from 'react-modal';
-import { useCallback, useContext, useState, useMemo } from "react";
+import { useCallback, useContext, useState, useMemo, useEffect, forwardRef, useImperativeHandle } from "react";
 import { UserContext } from "../../utils/context/userContext";
 import { useLocation } from "react-router-dom";
 import { SendEmail } from "../../utils/services/sendEmail";
 import { CalendarDays, BadgeX, Pencil, PencilOff, OctagonAlert } from "lucide-react";
-import Skeleton from 'react-loading-skeleton';
-// @ts-ignore
-import 'react-loading-skeleton/dist/skeleton.css';
+import { getPoints } from "../../utils/services/getPoints";
+import { ErrorModal, FormState } from "../molecules/ErrorModal";
+import { PointSkeleton } from "../atoms/PointSkeleton";
 
 ReactModal.setAppElement('#root');
 
@@ -20,14 +20,16 @@ export interface RegistroPonto {
 }
 
 interface GeneratePointsProps {
-    registros: RegistroPonto[];
-    deletePonto?: (id: string) => void;
-    getPonto?: () => void;
+    canDelete?: boolean;
+    canRefresh?: boolean;
+    cpf?: string;
+    onPointsChange?: (registros: RegistroPonto[]) => void;
+    todayOnly?: boolean;
 }
 
-interface FormState {
-    message: string;
-    reason: string;
+export interface GeneratePointsRef {
+    refreshPoints: () => Promise<void>;
+    setLoadingNewPoint: (loading: boolean) => void;
 }
 
 interface EditState {
@@ -36,94 +38,22 @@ interface EditState {
     time: string;
 }
 
-interface ErrorModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    tema: string;
-    selectedItem: RegistroPonto | null;
-    formState: FormState;
-    setFormState: React.Dispatch<React.SetStateAction<FormState>>;
-    handleSendMessage: (data: Date) => void;
-}
-
 interface RegistroItemProps {
     registro: RegistroPonto;
     isAdmin: boolean;
     handleOpenModal: (registro: RegistroPonto) => void;
-    deletePonto?: (id: string) => void;
+    onDeletePonto?: (id: string) => void;
     editState: EditState;
     setEditState: React.Dispatch<React.SetStateAction<EditState>>;
     updatePonto: (registro: RegistroPonto) => Promise<void>;
     formatLocalDate: (date: Date) => string;
 }
 
-// Componente de Modal extraído para melhorar a organização
-const ErrorModal = ({ isOpen, onClose, tema, selectedItem, formState, setFormState, handleSendMessage }: ErrorModalProps) => (
-    <ReactModal
-        isOpen={isOpen}
-        onRequestClose={onClose}
-        className={`Modal ${tema}`}
-        overlayClassName="Overlay"
-        bodyOpenClassName="no-scroll"
-    >
-        <p className="modal-title">HOUVE UM ERRO NO SEU PONTO?</p>
-        <p className="modal-p light">
-            Fique à vontade para nos dizer o motivo. Nós analisaremos e retornaremos seu chamado via email cadastrado
-        </p>
-        <select
-            className={`common-input ${tema} select`}
-            onChange={e => setFormState(prev => ({ ...prev, reason: e.target.value }))}
-            value={formState.reason}
-        >
-            <option value="Outro">Outro</option>
-            <option value="Mudança de turno">Mudança de turno</option>
-            <option value="Erro de fuso">Erro de fuso</option>
-            <option value="Instruções não claras">Instruções não claras</option>
-            <option value="Horário de verão">Horário de verão</option>
-        </select>
-        <textarea
-            className={`common-input ${tema} textarea`}
-            maxLength={250}
-            rows={3}
-            onChange={e => setFormState(prev => ({ ...prev, message: e.target.value }))}
-            value={formState.message}
-        />
-        <p className="charCount">{formState.message.length}/250</p>
-        <div className="box-buttons">
-            <button className="button-cancel" onClick={onClose}>Cancelar</button>
-            <button 
-                className="button-send" 
-                onClick={() => selectedItem && handleSendMessage(selectedItem.data)}
-                disabled={!selectedItem}
-            >
-                Enviar
-            </button>
-        </div>
-    </ReactModal>
-);
-
-// Componente para esqueletos de registros
-const SkeletonItem = ({ tema }: { tema: string }) => {
-    // Cores diferentes baseadas no tema
-    const baseColor = tema === 'light' ? '#0f0f0f' : '#f0f0f0';
-    const highlightColor = tema === 'light' ? '#212121' : '#d1d1d1';
-    
-    return (
-        <Skeleton 
-        className="absolute inset-0 h-full min-h-9 max-h-9 w-full rounded-sm"
-        containerClassName='min-h-9 max-h-9 flex items-center justify-center'
-        baseColor={baseColor}
-        highlightColor={highlightColor}
-        />
-    );
-};
-
-// Componente para itens de registro (memoizado para evitar renderizações desnecessárias)
-const RegistroItem = ({ registro, isAdmin, handleOpenModal, deletePonto, editState, 
+const RegistroItem = ({ registro, isAdmin, handleOpenModal, onDeletePonto, editState,
     setEditState, updatePonto, formatLocalDate }: RegistroItemProps) => {
     const originalDate = new Date(registro.data);
     const isEditing = editState.id === registro.id;
-    
+
     const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>, separator: string) => {
         const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', separator];
         const value = e.currentTarget.value;
@@ -134,7 +64,7 @@ const RegistroItem = ({ registro, isAdmin, handleOpenModal, deletePonto, editSta
             e.preventDefault();
         }
     }, []);
-    
+
     const handlePenButtonClick = () => {
         if (isEditing) {
             updatePonto(registro);
@@ -147,15 +77,15 @@ const RegistroItem = ({ registro, isAdmin, handleOpenModal, deletePonto, editSta
             });
         }
     };
-    
+
     return (
         <div className="registro-item relative flex min-h-9 flex-col items-center justify-center gap-1 rounded-sm bg-primary p-0.5 text-secondary transition-colors">
             {!isAdmin && (
                 <OctagonAlert className="absolute top-0.5 right-0.5 cursor-pointer hover:text-red" onClick={() => handleOpenModal(registro)} />
             )}            {isAdmin && (
                 <>
-                    {deletePonto && (
-                        <BadgeX className="absolute top-0.5 right-0.5 cursor-pointer hover:text-red" onClick={() => deletePonto(registro.id)} />
+                    {onDeletePonto && (
+                        <BadgeX className="absolute top-0.5 right-0.5 cursor-pointer hover:text-red" onClick={() => onDeletePonto(registro.id)} />
                     )}
                     {!isEditing ? (
                         <Pencil className="absolute top-0.5 left-0.5 cursor-pointer" onClick={handlePenButtonClick} />
@@ -191,31 +121,29 @@ const RegistroItem = ({ registro, isAdmin, handleOpenModal, deletePonto, editSta
     );
 };
 
-export function GeneratePoints({ registros, deletePonto, getPonto }: GeneratePointsProps) {
+export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>(({ canDelete = false, canRefresh = false, cpf, onPointsChange, todayOnly = false }, ref) => {
     const { tema, usuario, API_URL } = useContext(UserContext);
     const location = useLocation();
-
-    // Estados combinados para reduzir a quantidade de useState
+    const [registros, setRegistros] = useState<RegistroPonto[]>([]);
     const [selectedItem, setSelectedItem] = useState<RegistroPonto | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [formState, setFormState] = useState<FormState>({ message: '', reason: '' });
     const [editState, setEditState] = useState<EditState>({ id: null, date: '', time: '' });
+    const [loadingNewPoint, setLoadingNewPoint] = useState(false);
 
-    // Funções utilitárias
-    const formatLocalDate = useCallback((date: Date): string => 
+    const formatLocalDate = useCallback((date: Date): string =>
         date.toLocaleDateString('pt-BR').replace(/(\d{4})$/, match => match.slice(-2)), []);
-        
+
     const getUpdatedDate = useCallback((originalDate: Date): Date => {
         const { date, time } = editState;
         if (!date && !time) return originalDate;
-        
+
         const [day, month, year] = (date || originalDate.toLocaleDateString('pt-BR')).split('/').map(Number);
         const fullYear = year < 100 ? 2000 + year : year;
         const [hours, minutes, seconds] = (time || originalDate.toLocaleTimeString('pt-BR')).split(':').map(Number);
         return new Date(fullYear, month - 1, day, hours, minutes, seconds);
     }, [editState]);
 
-    // Handlers otimizados
     const handleOpenModal = useCallback((registro: RegistroPonto): void => {
         setSelectedItem(registro);
         setShowModal(true);
@@ -246,7 +174,44 @@ export function GeneratePoints({ registros, deletePonto, getPonto }: GeneratePoi
             );
             handleCloseModal();
         }
-    }, [usuario, formState, handleCloseModal]);
+    }, [usuario, formState, handleCloseModal]); const getPonto = useCallback(async (): Promise<void> => {
+        const cpfToUse = cpf || usuario?.cpf || '';
+        if (cpfToUse) {
+            try {
+                const pontos = await getPoints(cpfToUse, todayOnly, API_URL);
+                setRegistros(pontos);
+                if (onPointsChange) {
+                    onPointsChange(pontos);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar pontos:", error);
+                setRegistros([]);
+                if (onPointsChange) {
+                    onPointsChange([]);
+                }
+            }
+        }
+    }, [cpf, usuario?.cpf, API_URL, todayOnly, onPointsChange]);
+    useImperativeHandle(ref, () => ({
+        refreshPoints: getPonto,
+        setLoadingNewPoint
+    }), [getPonto]);
+
+    useEffect(() => {
+        getPonto();
+    }, [getPonto]);
+
+    const deletePonto = useCallback(async (id: string): Promise<void> => {
+        if (!canDelete) return;
+
+        try {
+            await axios.delete(`${API_URL}ponto/${id}`);
+            console.log("Ponto deletado com sucesso!");
+            await getPonto();
+        } catch (error) {
+            console.error("Erro ao deletar ponto:", error);
+        }
+    }, [API_URL, canDelete, getPonto]);
 
     const updatePonto = useCallback(async (registro: RegistroPonto): Promise<void> => {
         try {
@@ -257,74 +222,75 @@ export function GeneratePoints({ registros, deletePonto, getPonto }: GeneratePoi
                 nome_tipo: registro.nome,
                 data_hora: updatedDate.toISOString()
             });
-            // Chama getPonto apenas se estiver disponível
-            if (getPonto) getPonto();
+            if (canRefresh) await getPonto();
         } catch (error) {
             console.error("Erro ao salvar ponto:", error);
         }
-    }, [API_URL, getUpdatedDate, getPonto]);
+    }, [API_URL, getUpdatedDate, canRefresh, getPonto]);
 
-    // Ordenação de registros otimizada com memoização
     const sortedRegistros = useMemo(() => {
         const isPerfilOrAdmin = location.pathname === "/perfil" || usuario?.funcao === "administrador";
         return [...registros].sort((a, b) => {
             const dateA = new Date(a.data).getTime();
             const dateB = new Date(b.data).getTime();
             const sameDay = new Date(a.data).toDateString() === new Date(b.data).toDateString();
-            
+
             return isPerfilOrAdmin
                 ? (sameDay ? dateA - dateB : dateB - dateA)
                 : dateA - dateB;
         });
     }, [registros, location.pathname, usuario?.funcao]);
 
-    // Verificação se é administrador - memoizada para evitar recálculo
-    const isAdmin = useMemo(() => 
-        location.pathname !== "/pontos" && 
-        location.pathname !== "/perfil" && 
-        usuario?.funcao === "administrador", 
-    [location.pathname, usuario?.funcao]);
+    const isAdmin = useMemo(() =>
+        location.pathname !== "/pontos" &&
+        location.pathname !== "/perfil" &&
+        usuario?.funcao === "administrador",
+        [location.pathname, usuario?.funcao]);
 
     return (
         <>
-            <ErrorModal 
+            <ErrorModal
                 isOpen={showModal}
                 onClose={handleCloseModal}
-                tema={tema}
                 selectedItem={selectedItem}
                 formState={formState}
                 setFormState={setFormState}
                 handleSendMessage={handleSendMessage}
-            />
-
+            />            
             <article className={`grid grid-cols-4 gap-1`}>
                 {sortedRegistros.length > 0 ? (
-                    sortedRegistros.map(registro => (
-                        <RegistroItem 
-                            key={registro.id}
-                            registro={registro}
-                            isAdmin={isAdmin}
-                            handleOpenModal={handleOpenModal}
-                            deletePonto={deletePonto}
-                            editState={editState}
-                            setEditState={setEditState}
-                            updatePonto={updatePonto}
-                            formatLocalDate={formatLocalDate}
-                        />
-                    ))
+                    <>
+                        {sortedRegistros.map(registro => (
+                            <RegistroItem
+                                key={registro.id}
+                                registro={registro}
+                                isAdmin={isAdmin}
+                                handleOpenModal={handleOpenModal}
+                                onDeletePonto={canDelete ? deletePonto : undefined}
+                                editState={editState}
+                                setEditState={setEditState}
+                                updatePonto={updatePonto}
+                                formatLocalDate={formatLocalDate}
+                            />
+                        ))}
+                        {loadingNewPoint && (
+                            <PointSkeleton key="loading" tema={tema} />
+                        )}
+                    </>
                 ) : (
-                    // Renderiza 4 esqueletos quando não há registros
                     Array(4).fill(0).map((_, index) => (
-                        <SkeletonItem key={index} tema={tema} />
+                        <PointSkeleton key={index} tema={tema} />
                     ))
                 )}
             </article>
         </>
     );
-}
+});
 
 GeneratePoints.propTypes = {
-    registros: PropTypes.array.isRequired,
-    deletePonto: PropTypes.func,
-    getPonto: PropTypes.func
+    canDelete: PropTypes.bool,
+    canRefresh: PropTypes.bool,
+    cpf: PropTypes.string,
+    onPointsChange: PropTypes.func,
+    todayOnly: PropTypes.bool
 };

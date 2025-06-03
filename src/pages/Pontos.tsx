@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useState, useRef, useCallback } from "react";
 import { UserContext, UserContextType } from "../utils/context/userContext.js";
 import { v4 as uuidv4 } from 'uuid';
-import { GeneratePoints, RegistroPonto } from "../components/organisms/PointSystems";
+import { GeneratePoints, RegistroPonto, GeneratePointsRef } from "../components/organisms/PointSystems";
 import axios from "axios";
-import {getPoints} from "../utils/services/getPoints.js";
 import LiveClock from "../components/atoms/LiveClock.js";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, AlarmClock } from "lucide-react";
 
 export default function Pontos() {
@@ -13,6 +12,7 @@ export default function Pontos() {
     const [locked, setLocked] = useState<boolean | 'maxAtingido'>(true);
     const { usuario, API_URL } = useContext<UserContextType>(UserContext);
     const navigate = useNavigate();
+    const generatePointsRef = useRef<GeneratePointsRef>(null);
 
     const registrosComuns = [
         "Entrada",
@@ -22,8 +22,8 @@ export default function Pontos() {
     ];
 
     const timeoutRef = useRef<number | null>(null);
-    
-    function handleBaterPontoClick() {
+
+    async function handleBaterPontoClick() {
         if (locked) {
             setLocked(false);
             if (timeoutRef.current) {
@@ -36,14 +36,13 @@ export default function Pontos() {
         } else if (!locked && registros.length < 4) {
             setLocked(true);
             const uuid = uuidv4();
-            const novoRegistro: RegistroPonto = { 
-                nome: registrosComuns[registros.length], 
-                id: uuid, 
+            const novoRegistro: RegistroPonto = {
+                nome: registrosComuns[registros.length],
+                id: uuid,
                 data: new Date(),
                 funcionario_fk: usuario?.cpf || ''
             };
-            setRegistros([...registros, novoRegistro]);
-            salvarPonto(novoRegistro);
+            await salvarPonto(novoRegistro);
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = null;
@@ -58,49 +57,54 @@ export default function Pontos() {
                 }, 5000);
             }
         }
-    }
-
-    function salvarPonto(registro: RegistroPonto): void {
+    }    async function salvarPonto(registro: RegistroPonto): Promise<void> {
         if (!usuario) return;
-        
-        axios.post(`${API_URL}ponto`, {
-            id_ponto: registro.id,
-            funcionario_fk: usuario.cpf,
-            nome_tipo: registro.nome,
-            data_hora: registro.data
-        }).then(response => {
-            console.log(response.data);
-        }).catch(error => {
-            console.error("Erro ao salvar ponto:", error);
-        });
-    }
 
-    const handleMorePointsButtonClick = () => {
+        try {
+            if (generatePointsRef.current) {
+                generatePointsRef.current.setLoadingNewPoint(true);
+            }
+
+            const response = await axios.post(`${API_URL}ponto`, {
+                id_ponto: registro.id,
+                funcionario_fk: usuario.cpf,
+                nome_tipo: registro.nome,
+                data_hora: registro.data
+            });
+            console.log(response.data);
+            
+            if (generatePointsRef.current) {
+                await generatePointsRef.current.refreshPoints();
+            }
+        } catch (error) {
+            console.error("Erro ao salvar ponto:", error);
+        } finally {
+            if (generatePointsRef.current) {
+                generatePointsRef.current.setLoadingNewPoint(false);
+            }
+        }
+    }const handleMorePointsButtonClick = () => {
         navigate("/perfil");
     }
 
-    useEffect(() => {
-        (async () => {
-            if (!usuario) return;
-            const pontos = await getPoints(usuario.cpf, true, API_URL);
-            setRegistros(pontos);
-        })();
-    }, [usuario?.cpf, API_URL]);
+    const handlePointsChange = useCallback((pontos: RegistroPonto[]) => {
+        setRegistros(pontos);
+    }, []);
 
     return (
         <main className={`mainCommon text-base flex justify-center items-center flex-col`}>
             <article className={"card-horario bg-card rounded-sm w-full transition-colors p-1.5 gap-3 flex flex-col items-center"}>
                 <div className={"clock flex items-center justify-between gap-1 text-primary mt-3"}>
-                    <AlarmClock className="w-[65px] h-[65px]"/>
-                    <LiveClock/>
+                    <AlarmClock className="w-[65px] h-[65px]" />
+                    <LiveClock />
                 </div>
                 <button className={`button-session max-w-20 w-full ${locked === 'maxAtingido' ? "!bg-red !text-primary" : !locked ? "!bg-green hover:!bg-secondary hover:!text-green" : ""}`} onClick={handleBaterPontoClick}>{locked === 'maxAtingido' ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
             </article>
             <article className={"card-registros font-bold text-start mt-2 w-full transition-colors rounded-sm p-1.5 bg-card flex gap-1.5 flex-col"}>
                 <p className={"card-registros-title text-xl font-subrayada text-primary"}>Registros recentes</p>
-                <GeneratePoints registros={registros} />
+                <GeneratePoints ref={generatePointsRef} todayOnly={true} onPointsChange={handlePointsChange} />
                 <div className="card-registros-bottom-wrapper max-w-20 w-full rounded-sm text-secondary bg-highlight px-1 py-[0.7rem] mx-auto transition-colors flex gap-1 items-center hover:cursor-pointer hover:bg-primary" onClick={handleMorePointsButtonClick}>
-                    <ChevronDown/>
+                    <ChevronDown />
                     <p className={"card-registros-bottom-wrapper-title text-lg text-center font-semibold"}>Mais registros</p>
                 </div>
             </article>

@@ -1,32 +1,20 @@
-import { useContext, useEffect, useState, useCallback, useMemo } from "react";
+import { useContext, useState, useCallback, useMemo } from "react";
 import { UserContext } from "../utils/context/userContext.js";
 import { GeneratePoints } from "../components/organisms/PointSystems";
-import { getPoints } from "../utils/services/getPoints.js";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function Perfil() {
-    const { usuario, tema, API_URL } = useContext(UserContext);
-    const [registros, setRegistros] = useState([]);
+    const { usuario, tema } = useContext(UserContext);
     const [colapsed, setColapsed] = useState(true);
 
-    useEffect(() => {
-        const fetchPoints = async () => {
-            const pontos = await getPoints(usuario.cpf, false, API_URL);
-            setRegistros(pontos);
-        };
-        fetchPoints();
-    }, [usuario.cpf]);
-
-    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
-
-    const userFields = useMemo(() => [
-        { label: "NOME COMPLETO", value: usuario.nome, placeholder: "Exemplo da Silva", type: "text", name: "nome" },
-        { label: "EMAIL", value: usuario.email, placeholder: "exemplo@gmail.com", type: "email", name: "email" },
-        { label: "REGISTRO", value: usuario.n_registro, placeholder: "1234567890", type: "number", name: "n_registro" },
-        { label: "CPF", value: usuario.cpf, placeholder: "12345678900", type: "number", name: "cpf" },
-        { label: "FUNÇÃO", value: usuario.funcao, placeholder: "comum", type: "text", name: "funcao" },
-        { label: "CARGO", value: usuario.cargo, placeholder: "estagiario", type: "text", name: "cargo" },
-        { label: "DEPARTAMENTO", value: usuario.departamento, placeholder: "administrativo", type: "text", name: "departamento" }
+    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);    const userFields = useMemo(() => [
+        { label: "NOME COMPLETO", value: usuario?.nome, placeholder: "Exemplo da Silva", type: "text", name: "nome" },
+        { label: "EMAIL", value: usuario?.email, placeholder: "exemplo@gmail.com", type: "email", name: "email" },
+        { label: "REGISTRO", value: usuario?.n_registro, placeholder: "1234567890", type: "number", name: "n_registro" },
+        { label: "CPF", value: usuario?.cpf, placeholder: "12345678900", type: "number", name: "cpf" },
+        { label: "FUNÇÃO", value: usuario?.funcao, placeholder: "comum", type: "text", name: "funcao" },
+        { label: "CARGO", value: usuario?.cargo, placeholder: "estagiario", type: "text", name: "cargo" },
+        { label: "DEPARTAMENTO", value: usuario?.departamento, placeholder: "administrativo", type: "text", name: "departamento" }
     ], [usuario]);
 
     return (
@@ -50,7 +38,7 @@ export default function Perfil() {
                     <ChevronUp strokeWidth={0.7} className="icon" size={50} />
                 )}
             </div>
-            {!colapsed && <GeneratePoints registros={registros} />}
+            {!colapsed && <GeneratePoints />}
         </main>
     );
 }
