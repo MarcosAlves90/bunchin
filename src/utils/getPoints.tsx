@@ -37,7 +37,7 @@ export async function getPoints(
                 nome: ponto.nome_tipo,
                 id: ponto.id_ponto,
                 data: new Date(ponto.data_hora),
-                funcionario_fk: ponto.funcionario_fk ? ponto.funcionario_fk.cpf : ''
+                funcionario_fk: ponto.funcionario_fk ? ponto.funcionario_fk : ''
             }));
     } catch (error) {
         console.error("Error loading points of the day:", error);
