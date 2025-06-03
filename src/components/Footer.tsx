@@ -53,7 +53,7 @@ export default function Footer() {
                     <p>Fique por dentro das novidades e atualizações! Inscreva-se e seja o
                         primeiro a saber de melhorias e recursos exclusivos.</p>
                     <div className={"input-wrapper"}>
-                        <input className={`w-full py-0.5 px-1 border-3 bg-secondary border-card text-card`}
+                        <input className={`w-full py-0.5 px-1 border-3 bg-secondary focus:bg-white border-card text-card`}
                                placeholder={"Seu email"}
                                onChange={(e) => setEmail(e.target.value)}
                         ></input>

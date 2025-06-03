@@ -4,10 +4,11 @@ import { Clock, Shield, UsersRound, ChevronDown } from "lucide-react";
 import ResourcePoint from "../components/ResourcePoint";
 import { UserContext } from "../utils/userContext";
 import Story from "../components/Story";
+import YellowButton from "../components/YellowButton";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-interface UserContextType {
+interface UserContextType { 
     tema: string;
 }
 
@@ -35,7 +36,7 @@ export default function Home() {
             window.scrollTo({ top: offset, behavior: 'smooth' });
         }
     };
-    function handleLoginButtonClick() {
+    function handleLoginPageButtonClick() {
         navigate("/login");
     }
 
@@ -43,14 +44,12 @@ export default function Home() {
         <main className={`mainCommon flex justify-start items-center !py-0 flex-col`}>
             <article className={"mainCommon__hero flex flex-col items-center justify-center h-[calc(100vh-90px)] mt-[90px]"}>
                 <img className={`mainCommon__hero__title-svg h-[150px] transition ${tema === "dark" ? "invert-100" : ""}`} src={"/bunchin_title.svg"} alt={"Título do site"} />
-                <p className={"mainCommon__hero__subtitle mt-0 text-xl text-primary transition duration-200"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>
+                <p className={"mainCommon__hero__subtitle mt-0 mb-5 text-xl text-primary transition duration-200"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>
                 <img className={`mainCommon__hero__penas ${isDown ? "down" : ""} left left-[-180px] ${tema === "light" ? "invert-100" : ""}`} src={"/penas_esquerda_home.svg"}
                     alt={"Penas à esquerda"} />
                 <img className={`mainCommon__hero__penas ${isDown ? "down" : ""} right right-[-180px] ${tema === "light" ? "invert-100" : ""}`} src={"/penas_direita_home.svg"}
                     alt={"Penas à direita"} />
-                <button className={"button-session mt-5 transition-colors duration-200 text-secondary !bg-highlight hover:!bg-primary"} onClick={handleLoginButtonClick}>
-                    Iniciar sessão
-                </button>
+                <YellowButton clickFunction={handleLoginPageButtonClick} error={null} text="Iniciar sessão"/>
                 <ChevronDown className="mainCommon__hero__chevron transition-colors cursor-pointer text-primary absolute bottom-2" onClick={handleArrowClick} size={48} strokeWidth={2} />
             </article>
             <article className={`mainCommon__resources mt-7`}>
@@ -76,7 +75,7 @@ export default function Home() {
                 </div>
                 <p className={"mainCommon__resources__title mt-7"}>HISTÓRIAS DE SUCESSO</p>
                 <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>Relatos de clientes satisfeitos com a nossa plataforma e serviços de alto nível</p>
-                <div className={"box-stories grid grid-cols-3 gap-3 group"} data-aos="flip-down">
+                <div className={"box-stories grid grid-cols-3 mb-5 gap-3 group"} data-aos="flip-down">
                     <Story
                         starNumber={4}
                         text="Desde que implementamos a plataforma, a motivação do time disparou! As metas são claras e as recompensas são um incentivo constante para todos. Acredito que estamos mais alinhados e engajados como nunca!"
@@ -88,14 +87,12 @@ export default function Home() {
                         author="— Carlos M., Diretor de Operações da [Empresa XYZ]"
                     />
                     <Story
-                        starNumber={5}
+                        starNumber={5} 
                         text="Ficamos surpresos com a facilidade de implementação. A integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa. O uso da plataforma no dia a dia também é muito intuitivo!"
                         author="— Juliana S., CEO da [Empresa DEF]"
                     />
                 </div>
-                <button className={"button-session last mt-5 transition-colors duration-200 text-secondary !bg-highlight hover:!bg-primary"}>
-                    Registre sua empresa
-                </button>
+                <YellowButton text="Cadastre sua empresa" error={null} clickFunction={handleLoginPageButtonClick}/>
             </article>
             <div className={"gradient mt-3 w-full h-10 bg-linear-to-t from-highlight to-transparent"} />
         </main>

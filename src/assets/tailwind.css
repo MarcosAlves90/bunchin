@@ -1,26 +1,31 @@
 @import "tailwindcss";
-
+ 
 @theme {
     --spacing: 1rem;
-
+ 
     --font-subrayada: "Montserrat Subrayada", sans-serif;
     --font-montserrat: "Montserrat", sans-serif;
-
+ 
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
     --color-highlight: var(--highlight);
     --color-card: var(--card);
     --color-story-card: var(--story-card);
+ 
+    --color-green: var(--color-green);
+    --color-red: var(--color-red);
 }
-
+ 
 :root {
     --highlight: #FF9900;
     --primary: #0f0f0f;
     --secondary: #f0f0f0;
     --card: #C6C6C6;
     --story-card: #0f0f0f;
+    --color-green: #68c935;
+    --color-red: #e61f1f;
 }
-
+ 
 .dark {
     --highlight: #FFAE11;
     --primary: #f0f0f0;
@@ -28,11 +33,11 @@
     --card: #5b5b5b;
     --story-card: #f0f0f0;
 }
-
+ 
 .mainCommon {
     @apply w-full pt-[90px] box-border min-h-screen max-w-85;
 }
-
+ 
 .mainCommon__hero__penas {
     animation: float 3s ease-in-out infinite;
     @apply absolute transition-all duration-200 bottom-[-180px];
@@ -52,28 +57,28 @@
         }
     }
 }
-
+ 
 .button-session {
-    @apply border-none transition text-lg pr-2 pl-2 rounded-sm;
+    @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
     &.last {
         @apply mt-3;
     }
 }
-
+ 
 .mainCommon__hero__chevron {
     animation: bounce 1s ease-in-out;
 }
-
+ 
 .mainCommon__resources__title {
     @apply text-4xl font-subrayada mb-2 text-primary transition-colors duration-200;
 }
-
+ 
 .mainCommon__resources__box-points__point-wrapper .point-clock {
     animation: cuckoo 2s infinite ease-in-out;
 }
-
+ 
 /* Animações */
-
+ 
 @keyframes cuckoo {
     0% {
         transform: rotate(-30deg);
@@ -85,7 +90,7 @@
         transform: rotate(-30deg);
     }
 }
-
+ 
 @keyframes float {
     0% {
         transform: translateY(0);
@@ -97,7 +102,7 @@
         transform: translateY(0);
     }
 }
-
+ 
 @keyframes bottomFloatRight {
     0% {
         transform: translateX(0) translateY(0) rotate(0deg);
@@ -109,7 +114,7 @@
         transform: translateX(0) translateY(0) rotate(0deg);
     }
 }
-
+ 
 @keyframes bottomFloatLeft {
     0% {
         transform: translateX(0) translateY(0) rotate(0deg);
@@ -121,7 +126,7 @@
         transform: translateX(0) translateY(0) rotate(0deg);
     }
 }
-
+ 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
         transform: translateY(0);
@@ -133,3 +138,4 @@
         transform: translateY(-10px);
     }
 }
+ 
