@@ -109,7 +109,7 @@ export default function Administrador() {
 
 
     const deletePonto = (id) => {
-        axios.delete(`${API_URL}ponto/${id}/delete`).then(response => {
+        axios.delete(`${API_URL}ponto/${id}`).then(response => {
             console.log(response.data);
             getPontos();
         });

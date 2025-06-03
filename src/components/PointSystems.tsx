@@ -251,7 +251,7 @@ export function GeneratePoints({ registros, deletePonto, getPonto }: GeneratePoi
     const updatePonto = useCallback(async (registro: RegistroPonto): Promise<void> => {
         try {
             const updatedDate = getUpdatedDate(new Date(registro.data));
-            await axios.put(`${API_URL}ponto`, {
+            await axios.put(`${API_URL}ponto/${registro.id}`, {
                 id_ponto: registro.id,
                 funcionario_fk: registro.funcionario_fk,
                 nome_tipo: registro.nome,

@@ -4,9 +4,7 @@ interface Ponto {
     id_ponto: string;
     data_hora: string;
     nome_tipo: string;
-    funcionario_fk: {
-        cpf: string;
-    };
+    funcionario_fk: string;
 }
 
 interface PontoProcessado {
@@ -33,7 +31,7 @@ export async function getPoints(
             .filter(ponto => {
                 const pointDate = new Date(ponto.data_hora);
                 return (todayBool ? pointDate.toDateString() === today.toDateString() : true) &&
-                    ponto.funcionario_fk && ponto.funcionario_fk.cpf === cpf;
+                    ponto.funcionario_fk && ponto.funcionario_fk === cpf;
             })
             .map(ponto => ({
                 nome: ponto.nome_tipo,
