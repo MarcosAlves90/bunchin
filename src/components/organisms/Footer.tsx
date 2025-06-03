@@ -1,8 +1,8 @@
 import validator from 'validator';
 import {useContext, useState} from "react";
-import {UserContext} from "../utils/userContext.jsx";
+import {UserContext} from "../../utils/context/userContext";
 import {useNavigate} from "react-router-dom";
-import {SendEmail} from "../utils/sendEmail.jsx";
+import {SendEmail} from "../../utils/services/sendEmail";
 
 export default function Footer() {
 
@@ -13,8 +13,11 @@ export default function Footer() {
 
     function handleSendEmailClick() {
         if (validator.isEmail(validator.normalizeEmail(email))) {
+            // @ts-ignore
             SendEmail(import.meta.env.VITE_PUBLIC_API_KEY,
+                // @ts-ignore
                 import.meta.env.VITE_SERVICE_API_KEY,
+                // @ts-ignore
                 import.meta.env.VITE_TEMPLATE_API_KEY_1, {
                 email: email,
             });

@@ -2,11 +2,11 @@
 import axios from "axios";
 import validator from "validator";
 import { useEffect, useContext } from "react";
-import { SendEmail } from "../utils/sendEmail.jsx";
+import { SendEmail } from "../utils/services/sendEmail.js";
 import { v4 as uuidv4 } from 'uuid';
-import { UserContext } from "../utils/userContext.jsx";
+import { UserContext } from "../utils/context/userContext.js";
 import { useNavigate } from "react-router-dom";
-import { useResetPasswordForm } from "../utils/useResetPasswordForm.jsx";
+import { useResetPasswordForm } from "../utils/hooks/useResetPasswordForm.js";
 
 export default function ResetarSenha() {
     const navigate = useNavigate();

@@ -2,9 +2,9 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import ReactModal from 'react-modal';
 import { useCallback, useContext, useState, useMemo } from "react";
-import { UserContext } from "../utils/userContext.jsx";
+import { UserContext } from "../../utils/context/userContext";
 import { useLocation } from "react-router-dom";
-import { SendEmail } from "../utils/sendEmail.jsx";
+import { SendEmail } from "../../utils/services/sendEmail";
 import { CalendarDays, BadgeX, Pencil, PencilOff, OctagonAlert } from "lucide-react";
 import Skeleton from 'react-loading-skeleton';
 // @ts-ignore

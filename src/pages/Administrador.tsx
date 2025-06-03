@@ -2,11 +2,11 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import validator from "validator";
 import {useCallback, useContext, useEffect, useState, useMemo} from "react";
-import { UserContext } from "../utils/userContext.jsx";
-import { GeneratePoints } from "../components/PointSystems.jsx";
-import {getPoints} from "../utils/getPoints.jsx";
+import { UserContext } from "../utils/context/userContext.js";
+import { GeneratePoints } from "../components/organisms/PointSystems.jsx";
+import {getPoints} from "../utils/services/getPoints.js";
 import {ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield} from "lucide-react";
-import {SendEmail} from "../utils/sendEmail.jsx";
+import {SendEmail} from "../utils/services/sendEmail.js";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);

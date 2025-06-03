@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Clock, Shield, UsersRound, ChevronDown } from "lucide-react";
-import ResourcePoint from "../components/ResourcePoint";
-import { UserContext } from "../utils/userContext";
-import Story from "../components/Story";
+import ResourcePoint from "../components/molecules/ResourcePoint";
+import { UserContext } from "../utils/context/userContext";
+import Story from "../components/atoms/Story";
 import AOS from "aos";
 // @ts-ignore
 import "aos/dist/aos.css";

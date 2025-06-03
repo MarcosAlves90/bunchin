@@ -1,7 +1,7 @@
 import {useContext} from "react";
-import {UserContext} from "../utils/userContext.jsx";
+import {UserContext} from "../utils/context/userContext.js";
 import {useNavigate} from "react-router-dom";
-import {changeTheme} from "../utils/themeSystems.jsx";
+import {changeTheme} from "../utils/theme/themeSystems.js";
 
 export default function Configuracoes() {
 

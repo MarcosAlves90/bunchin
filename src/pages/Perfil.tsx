@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useCallback, useMemo } from "react";
-import { UserContext } from "../utils/userContext.jsx";
-import { GeneratePoints } from "../components/PointSystems.jsx";
-import { getPoints } from "../utils/getPoints.jsx";
+import { UserContext } from "../utils/context/userContext.js";
+import { GeneratePoints } from "../components/organisms/PointSystems";
+import { getPoints } from "../utils/services/getPoints.js";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function Perfil() {

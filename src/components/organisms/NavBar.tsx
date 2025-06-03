@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useContext } from "react";
-import { UserContext } from "../utils/userContext";
-import { changeTheme } from "../utils/themeSystems";
+import { UserContext } from "../../utils/context/userContext";
+import { changeTheme } from "../../utils/theme/themeSystems";
 
 interface NavLink {
     to: string;
