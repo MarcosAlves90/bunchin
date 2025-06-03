@@ -174,7 +174,8 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
             );
             handleCloseModal();
         }
-    }, [usuario, formState, handleCloseModal]); const getPonto = useCallback(async (): Promise<void> => {
+    }, [usuario, formState, handleCloseModal]);
+    const getPonto = useCallback(async (): Promise<void> => {
         const cpfToUse = cpf || usuario?.cpf || '';
         if (cpfToUse) {
             try {
