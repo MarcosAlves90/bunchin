@@ -1,12 +1,12 @@
 @import "tailwindcss";
-
+ 
 @theme {
     --spacing: 1rem;
-
+ 
     --font-subrayada: "Montserrat Subrayada", sans-serif;
 <<<<<<< HEAD
     --font-montserrat: "Montserrat", sans-serif;
-
+ 
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
     --color-tertiary: var(--tertiary);
@@ -25,7 +25,7 @@
     --color-card: var(--card);
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
-
+ 
 :root {
     --highlight: #FF9900;
 <<<<<<< HEAD
@@ -46,7 +46,7 @@
     --card: #C6C6C6;
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
-
+ 
 .dark {
     --highlight: #FFAE11;
 <<<<<<< HEAD
@@ -70,7 +70,7 @@
 >>>>>>> e3fcf0b (Refactors styles and animations; enhances login form)
     --story-card: #f0f0f0;
 }
-
+ 
 .mainCommon {
     @apply w-full pt-[90px] pb-2 box-border min-h-screen max-w-86 px-1;
 =======
@@ -83,7 +83,7 @@
     @apply w-full pt-[90px] box-border min-h-screen max-w-85;
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
-
+ 
 .mainCommon__hero__penas {
     animation: float 3s ease-in-out infinite;
     @apply absolute transition-all duration-200 bottom-[-180px];
@@ -103,7 +103,7 @@
         }
     }
 }
-
+ 
 .button-session {
 <<<<<<< HEAD
     @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
@@ -132,7 +132,7 @@
 .mainCommon__resources__title {
     @apply text-4xl font-subrayada mb-2 text-primary transition-colors duration-200;
 }
-
+ 
 .mainCommon__resources__box-points__point-wrapper .point-clock {
     animation: cuckoo 2s infinite ease-in-out;
 }
@@ -286,6 +286,7 @@
         @apply text-2xl;
     }
 }
+<<<<<<< HEAD
  
 =======
 .mainCommon__hero__chevron {
@@ -464,3 +465,6 @@
     }
 }
 >>>>>>> 54d4c4f (Adds UI enhancements and new components for improved functionality)
+=======
+ 
+>>>>>>> 269d480 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
