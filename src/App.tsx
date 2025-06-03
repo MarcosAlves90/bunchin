@@ -1,6 +1,7 @@
 import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
+// @ts-ignore
 import './App.css';
-import NavBar from './components/NavBar';
+import NavBar from './components/organisms/NavBar';
 import Home from './pages/Home.tsx';
 import Sobre from "./pages/Sobre.tsx";
 import Contato from './pages/Contato.tsx';
@@ -12,7 +13,7 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./utils/context/userContext.tsx";
 import {toggleClassOnHtml} from "./utils/theme/themeSystems.tsx";
 import Administrador from "./pages/Administrador.tsx";
-import Footer from "./components/Footer.tsx";
+import Footer from "./components/organisms/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
 
 function App() {
