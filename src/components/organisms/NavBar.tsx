@@ -30,14 +30,14 @@ export default function NavBar() {
     const handleLogoClick = () => navigate('/');
     
     const renderLinks = (links: NavLink[]) => (
-        <ul className="navbar__container__nav gap-4 flex items-center justify-center">
+        <ul className="navbar__container__nav gap-4 flex items-center justify-center w-full">
             {links.map(({ to, label }: NavLink) => (
                 <Link
                     key={to}
                     className={`nav-link text-lg relative ${
                         location.pathname === to ? "text-primary" : "text-secondary"
-                    } hover:text-primary transition-colors duration-300 
-                    after:content-[''] after:absolute after:bottom-[-3px] after:left-0 
+                    } hover:text-primary transition-colors duration-300 ${(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && !usuario ? "max-w-7 w-full" : ""}
+                    after:content-[''] after:absolute after:bottom-[-5px] after:left-0 
                     after:h-[0.1rem] after:bg-primary after:transition-all 
                     after:duration-300 after:ease-out ${
                         location.pathname === to 
