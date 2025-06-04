@@ -38,7 +38,7 @@ export default function NavBar() {
                         location.pathname === to ? "text-primary" : "text-secondary"
                     } hover:text-primary transition-colors duration-300 
                     after:content-[''] after:absolute after:bottom-[-3px] after:left-0 
-                    after:h-[0.1rem] after:bg-primary after:transition-all 
+                    after:h-[0.rem] after:bg-primary after:transition-all 
                     after:duration-300 after:ease-out ${
                         location.pathname === to 
                             ? "after:w-full" 
