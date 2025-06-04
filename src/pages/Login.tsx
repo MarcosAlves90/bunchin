@@ -32,28 +32,28 @@ export default function Login() {
     return (
         <>
             <img className={`login-penas-left ${tema}`}
-                src={"/penas_esquerda_login.svg"}
+                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"}
                 alt={"Penas à esquerda"} />
             <img className={`login-penas-right ${tema}`}
-                src={"/penas_direita_login.svg"}
+                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_direita_login_c14tob.svg"}
                 alt={"Penas à direita"} />
             <div className={`login-form ${tema}`}>
                 <div className={"bird-icon-wrapper"}
                     onClick={handleBackButtonClick}>
                     <img
                         className="bird-icon"
-                        src="/bunchin_bird_icon.svg"
+                        src="https://res.cloudinary.com/dflvo098t/image/upload/bunchin_bird_icon_r8mgim.svg"
                         alt="Pássaro do bunchin"
                     />
                 </div>
                 <div className="left-side">
                     <h2 className={"left-side-h2"}>Não Possui um Cadastro?</h2>
-                    <img className={"left-side-crow"} src="/login_crow.svg" alt="" />
+                    <img className={"left-side-crow"} src="https://res.cloudinary.com/dflvo098t/image/upload/login_crow_tq7jng.svg" alt="" />
                     <p className={"left-side-p"}>Entre em contato com o departamento pessoal da sua
                         empresa para que eles criem seu acesso.</p>
                 </div>
                 <div className={"right-side"}>
-                    <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt="" />
+                    <img className={"title-sessao"} src="https://res.cloudinary.com/dflvo098t/image/upload/iniciando_sessao_title_d5bzll.svg" alt="" />
                     <form className={"form-login"}>
                         <label htmlFor="email">EMAIL OU CPF</label>
                         <div className={"input-box"}>
