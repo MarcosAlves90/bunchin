@@ -81,3 +81,33 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+/* Dark theme for Leaflet map */
+.dark-map .leaflet-layer,
+.dark-map .leaflet-control-zoom-in,
+.dark-map .leaflet-control-zoom-out,
+.dark-map .leaflet-control-attribution {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Custom popup styling for light theme */
+.custom-popup-light .leaflet-popup-content-wrapper {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.custom-popup-light .leaflet-popup-tip {
+  background-color: #000000 !important;
+}
+
+/* Custom popup styling for dark theme */
+.custom-popup-dark .leaflet-popup-content-wrapper {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 8px;
+}
+
+.custom-popup-dark .leaflet-popup-tip {
+  background-color: #ffffff !important;
+}
