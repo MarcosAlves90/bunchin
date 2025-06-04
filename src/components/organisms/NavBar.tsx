@@ -28,13 +28,22 @@ export default function NavBar() {
 
     const handleThemeChange = () => changeTheme(tema, setTema);
     const handleLogoClick = () => navigate('/');
-
+    
     const renderLinks = (links: NavLink[]) => (
         <ul className="navbar__container__nav gap-4 flex items-center justify-center">
             {links.map(({ to, label }: NavLink) => (
                 <Link
                     key={to}
-                    className={`nav-link text-lg p-0 ${location.pathname === to ? "text-primary" : "text-secondary"} hover:text-primary transition duration-200`}
+                    className={`nav-link text-lg relative ${
+                        location.pathname === to ? "text-primary" : "text-secondary"
+                    } hover:text-primary transition-colors duration-300 
+                    after:content-[''] after:absolute after:bottom-[-3px] after:left-0 
+                    after:h-[0.1rem] after:bg-primary after:transition-all 
+                    after:duration-300 after:ease-out ${
+                        location.pathname === to 
+                            ? "after:w-full" 
+                            : "after:w-0 hover:after:w-full"
+                    }`}
                     to={to}
                 >
                     {label}
@@ -58,7 +67,7 @@ export default function NavBar() {
 
     return (
         <nav className={`navbar !fixed top-0 right-0 left-0 z-50 box-border flex h-[calc(90px-1rem)] w-full items-center justify-center transition duration-200`}>
-            <div className="navbar__container box-border flex h-full w-full max-w-85 items-center justify-between rounded-b-sm bg-highlight p-0 px-2 mx-1">
+            <div className="navbar__container box-border flex h-full w-full items-center justify-between bg-highlight p-0 px-2">
                 <div
                     className="navbar__container__logo-wrapper text-secondary hover:text-primary"
                 >

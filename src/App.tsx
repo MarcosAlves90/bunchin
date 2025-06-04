@@ -65,7 +65,7 @@ function App() {
   }
 
   return (
-      <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
+      <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
 
         <div className={"page-loader"}>
           {(loading) && (

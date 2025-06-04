@@ -1,8 +1,8 @@
 import validator from 'validator';
-import {useContext, useState} from "react";
-import {UserContext} from "../../utils/context/userContext";
-import {useNavigate} from "react-router-dom";
-import {SendEmail} from "../../utils/services/sendEmail";
+import { useContext, useState } from "react";
+import { UserContext } from "../../utils/context/userContext";
+import { useNavigate } from "react-router-dom";
+import { SendEmail } from "../../utils/services/sendEmail";
 
 export default function Footer() {
 
@@ -12,7 +12,8 @@ export default function Footer() {
     const { tema } = useContext(UserContext);
 
     function handleSendEmailClick() {
-        if (validator.isEmail(validator.normalizeEmail(email))) {
+        const normalizedEmail = validator.normalizeEmail(email);
+        if (normalizedEmail && validator.isEmail(normalizedEmail)) {
             // @ts-ignore
             SendEmail(import.meta.env.VITE_PUBLIC_API_KEY,
                 // @ts-ignore
@@ -27,10 +28,10 @@ export default function Footer() {
     }
 
     return (
-        <footer className={`${tema} z-1 w-full py-2 px-0 max-w-85 mb-2 rounded-b-sm`}>
+        <footer className={`${tema} z-1 w-full py-2 px-0`}>
             <div className={"box-grid grid grid-cols-10 justify-start items-center gap-1"}>
                 <div className={"title-wrapper span-3"}>
-                    <img src={"/logo.svg"} alt={"Logo do site"}/>
+                    <img src={"/logo.svg"} alt={"Logo do site"} />
                     <p className={"title"}>Bunchin</p>
                 </div>
                 <p className={"important span-2"}>Links úteis</p>
@@ -57,8 +58,8 @@ export default function Footer() {
                         primeiro a saber de melhorias e recursos exclusivos.</p>
                     <div className={"input-wrapper"}>
                         <input className={`w-full py-0.5 px-1 border-3 bg-secondary border-card text-card`}
-                               placeholder={"Seu email"}
-                               onChange={(e) => setEmail(e.target.value)}
+                            placeholder={"Seu email"}
+                            onChange={(e) => setEmail(e.target.value)}
                         ></input>
                         <p className={"absolute"} onClick={handleSendEmailClick}>Inscrever-se</p>
                     </div>

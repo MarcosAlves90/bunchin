@@ -24,7 +24,7 @@ export default function Contato() {
                             rel="noopener noreferrer"
                             className="mx-auto cursor-pointer p-[0.2rem] rounded-sm duration-200 hover:bg-secondary underline hover:font-bold"
                         >
-                            <strong>Endereço:</strong> Rua Exemplo, 123, Cidade, Estado, CEP 12345-678
+                            <strong>Endereço:</strong> Av. Antônia R. Fioravanti, 804 - Centro, Mauá
                         </a>
                         <a 
                             href="tel:+551112345678"
