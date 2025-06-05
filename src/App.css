@@ -243,43 +243,17 @@ footer {
     }
 
     .left-side {
-        padding: 0 20px 0 20px;
-        display: flex;
-        flex-direction: column;
+        /*padding: 0 20px 16px 20px;*/
+        /*display: flex;*/
+        /* flex-direction: column; */
         align-items: center;
         .left-side-h2 {
             font-family: "Montserrat Subrayada", sans-serif;
-            font-size: 1.5rem;
             font-weight: bold;
-            margin-top: 60px;
-        }
-        .left-side-crow {
-            margin: 30px 0 30px 0;
-        }
-        .left-side-p {
-            max-width: 340px;
-            font-size: 1.5em;
-            margin: 0;
         }
     }
     .right-side {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        align-self: flex-start;
-        height: 100%;
-        padding: 0 50px 50px 50px;
         .input-box {
-            width: 100%;
-            position: relative;
-            margin-bottom: 40px;
-            &.last {
-                margin-bottom: 0;
-            }
-            input {
-                width: 100%;
-                padding-left: 3rem;
-            }
             .lucide {
                 position: absolute;
                 top: 1.1rem;
@@ -363,27 +337,48 @@ footer {
     &::after {
         width: 0;
         height: 0;
-        background: #fff;
+        background: transparent;
         content: '';
         position: absolute;
         bottom: 0;
         right: 0;
     }
+    &::before{
+        width: calc(100% - 50px);
+        height: 0;
+        background: transparent;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 50px;
+    }
     &.light::after {
         border-top: 25px solid var(--background-color-navbar-light);
         border-left: 25px solid var(--background-color-navbar-light);
-        border-right: 25px solid var(--background-color-light-theme);
-        border-bottom: 25px solid var(--background-color-light-theme);
+        border-right: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+    }
+    &.light::before {
+        border-top: 25px solid var(--background-color-navbar-light);
+        border-left: 25px solid var(--background-color-navbar-light);
+        border-right: 25px solid var(--background-color-navbar-light);
+        border-bottom: 25px solid var(--background-color-navbar-light);
     }
     &.dark::after {
         border-top: 25px solid var(--background-color-navbar-dark);
         border-left: 25px solid var(--background-color-navbar-dark);
-        border-right: 25px solid var(--background-color-dark-theme);
-        border-bottom: 25px solid var(--background-color-dark-theme);
+        border-right: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+    }
+    &.dark::before {
+        border-top: 25px solid var(--background-color-navbar-dark);
+        border-left: 25px solid var(--background-color-navbar-dark);
+        border-right: 25px solid var(--background-color-navbar-dark);
+        border-bottom: 25px solid var(--background-color-navbar-dark);
     }
     &.light {
-        background-color: var(--background-color-navbar-light);
         .left-side {
+            background-color: var(--background-color-navbar-light);
             .left-side-p {
                 color: var(--background-color-dark-theme);
             }
@@ -417,7 +412,6 @@ footer {
         }
     }
     &.dark {
-        background-color: var(--background-color-navbar-dark);
         .bird-icon {
             filter: invert(1);
         }
@@ -425,6 +419,7 @@ footer {
             filter: invert(1);
         }
         .left-side {
+            background-color: var(--background-color-navbar-dark);
             .left-side-crow {
                 filter: invert(1);
             }
