@@ -47,7 +47,7 @@ export default function Login() {
                         className={`bird-icon ${tema === "dark" ? "invert" : ""}`}
                         src="https://res.cloudinary.com/dflvo098t/image/upload/bunchin_bird_icon_r8mgim.svg"
                         alt="Pássaro do bunchin"
-                    />
+                    /> 
                 </div>
                 <div className={`bg-highlight text-primary items-center justify-center px-2 pt-2 flex flex-col h-full max-w-27 rounded-tl-sm`}>
                     <h2 className={"text-2xl font-subrayada font-bold"}>Não Possui um Cadastro?</h2>
