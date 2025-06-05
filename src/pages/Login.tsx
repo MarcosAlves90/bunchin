@@ -55,6 +55,7 @@ export default function Login() {
                         alt="Pássaro do bunchin"
                     /> 
                 </div>
+<<<<<<< HEAD
                 <div className="left-side">
                     <h2 className={"left-side-h2"}>Não Possui um Cadastro?</h2>
                     <img className={"left-side-crow"} src="/login_crow.svg" alt="" />
@@ -62,10 +63,24 @@ export default function Login() {
                         empresa para que eles criem seu acesso.</p>
                 </div>
                 <div className={"right-side"}>
+<<<<<<< HEAD
                     <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt="" />
+=======
+                    <img className={"title-sessao"} src="https://res.cloudinary.com/dflvo098t/image/upload/iniciando_sessao_title_d5bzll.svg" alt="" />
+=======
+                <div className={`left-side px-2 flex flex-col h-full ${tema}`}>
+                    <h2 className={"left-side-h2 text-2xl mt-4"}>Não Possui um Cadastro?</h2>
+                    <img className={"my-[30px]"} src="/login_crow.svg" alt="" />
+                    <p className={"left-side-p max-w-[340px] lg:text-2xl md:text-lg m-0"}>Entre em contato com o departamento pessoal da sua
+                        empresa para que eles criem seu acesso.</p>
+                </div>
+                <div className={"right-side flex flex-col items-center self-start h-full px-4 pb-4"}>
+                    <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt="" />
+>>>>>>> c6958e5 (feat: Refatorar estilos do login, remover classes CSS e adicionar classes responsivas do tailwind)
+>>>>>>> 5d2684f (feat: Refatorar estilos do login, remover classes CSS e adicionar classes responsivas do tailwind)
                     <form className={"form-login"}>
                         <label htmlFor="email">EMAIL OU CPF</label>
-                        <div className={"input-box"}>
+                        <div className={"input-box w-full relative mb-3"}>
                             <input
                                 type="text"
                                 id="email"
@@ -74,12 +89,13 @@ export default function Login() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 aria-label="Email ou CPF"
                                 autoComplete="username"
+                                className={"w-full !pl-3"}
                             />
                             <UserRound
                                 color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"} />
                         </div>
                         <label htmlFor="senha">SENHA</label>
-                        <div className={"input-box last"}>
+                        <div className={"input-box last w-full relative"}>
                             <input
                                 type={passwordVisibility ? "text" : "password"}
                                 id="senha"
@@ -88,6 +104,7 @@ export default function Login() {
                                 onChange={(e) => setSenha(e.target.value)}
                                 aria-label="Senha"
                                 autoComplete="current-password"
+                                className={"w-full !pl-3"}
                             />
                             <Lock
                                 color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"}
