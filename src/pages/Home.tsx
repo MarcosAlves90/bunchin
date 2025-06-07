@@ -98,7 +98,6 @@ export default function Home() {
                     Registre sua empresa
                 </button>
             </article>
-            <div className={"gradient mt-3 w-full h-10 bg-linear-to-t from-highlight to-transparent"} />
         </main>
     );
 }
