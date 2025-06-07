@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import validator from "validator";
-import { useCallback, useContext, useEffect, useState, useMemo } from "react";
+import { useCallback, useContext, useEffect, useState, useMemo, useRef } from "react";
 import { UserContext } from "../utils/context/userContext.js";
 import { GeneratePoints } from "../components/organisms/PointSystems.jsx";
 import { ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield } from "lucide-react";
@@ -26,6 +26,7 @@ export default function Administrador() {
     const [inputs, setInputs] = useState<Record<string, string>>({});
     const [colapsed, setColapsed] = useState(true);
     const [lockInputs, setLockInputs] = useState(true);
+    const abortControllerRef = useRef<AbortController | null>(null);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = event.target.name;
@@ -56,49 +57,85 @@ export default function Administrador() {
             password: password,
             name: inputs.nome
         });
-    }    const handleSubmit = (event: React.FormEvent) => {
+    }    const handleSubmit = useCallback(async (event: React.FormEvent) => {
         event.preventDefault();
         const normalizedEmail = validator.normalizeEmail(inputs.email);
         const isEmailValid = normalizedEmail && validator.isEmail(normalizedEmail);
-        if (funcionarioSelecionado) {
-            axios.put(`${API_URL}funcionario/${funcionarioSelecionado}`, inputs)
-                .then(response => {
-                    console.log(response.data);
-                    getUsers();
-                });
-        } else if (isEmailValid) {
-            const newPassword = generatePassword();
-            const inputsClone = { ...inputs, senha: newPassword };
-            sendEmail(newPassword);
-            console.log(newPassword);
-            axios.post(`${API_URL}funcionario`, inputsClone)
-                .then(response => {
-                    console.log(response.data);
-                    getUsers();
-                    handleUnselectEmployee();
-                });
-        } else {
-            console.log('Email inválido');
+        
+        try {
+            if (funcionarioSelecionado) {
+                await axios.put(`${API_URL}funcionario/${funcionarioSelecionado}`, inputs);
+                console.log("Funcionário atualizado com sucesso!");
+                await getUsers();
+            } else if (isEmailValid) {
+                const newPassword = generatePassword();
+                const inputsClone = { ...inputs, senha: newPassword };
+                sendEmail(newPassword);
+                console.log(newPassword);
+                
+                await axios.post(`${API_URL}funcionario`, inputsClone);
+                console.log("Funcionário criado com sucesso!");
+                await getUsers();
+                handleUnselectEmployee();
+            } else {
+                console.log('Email inválido');
+            }
+        } catch (error) {
+            console.error("Erro ao processar funcionário:", error);
         }
-    };
+    }, [API_URL, funcionarioSelecionado, inputs]);
 
+    
+    const getUsers = useCallback(async (): Promise<void> => {
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+
+        const controller = new AbortController();
+        abortControllerRef.current = controller;
+
+        try {
+            const response = await axios.get(`${API_URL}funcionario`, {
+                signal: controller.signal
+            });
+            
+            if (!controller.signal.aborted) {
+                console.log(response.data);
+                setFuncionarios(response.data);
+            }
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                console.log("Requisição de funcionários cancelada:", error.message);
+                return;
+            }
+            
+            console.error("Erro ao buscar funcionários:", error);
+            setFuncionarios([]);
+        }
+    }, [API_URL]);
+    
     useEffect(() => {
         getUsers();
         handleUnselectEmployee();
+    }, [getUsers]);
+    useEffect(() => {
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
     }, []);
 
-    function getUsers() {
-        axios.get(`${API_URL}funcionario`).then(response => {
-            console.log(response.data);
-            setFuncionarios(response.data);
-        });
-    }    const deleteUser = (cpf: string) => {
-        axios.delete(`${API_URL}funcionario/${cpf}`).then(response => {
-            console.log(response.data);
-            getUsers();
+    const deleteUser = useCallback(async (cpf: string): Promise<void> => {
+        try {
+            await axios.delete(`${API_URL}funcionario/${cpf}`);
+            console.log("Funcionário deletado com sucesso!");
+            await getUsers();
             handleUnselectEmployee();
-        });
-    };    function handleUnselectEmployee() {
+        } catch (error) {
+            console.error("Erro ao deletar funcionário:", error);
+        }
+    }, [API_URL, getUsers]);    function handleUnselectEmployee() {
         setFuncionarioSelecionado("");
         setLockInputs(false);
         const defaultValues = {

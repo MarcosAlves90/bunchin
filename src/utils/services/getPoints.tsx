@@ -17,10 +17,14 @@ interface PontoProcessado {
 export async function getPoints(
     cpf: string,
     todayBool: boolean,
-    API_URL: string
+    API_URL: string,
+    signal?: AbortSignal
 ): Promise<PontoProcessado[]> {
     try {
-        const { data } = await axios.get<Ponto[]>(`${API_URL}ponto`);
+        const { data } = await axios.get<Ponto[]>(`${API_URL}ponto`, {
+            signal: signal,
+        });
+
         if (!Array.isArray(data)) {
             console.error("Resposta inesperada da API:", data);
             return [];

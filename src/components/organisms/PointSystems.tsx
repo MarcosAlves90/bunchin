@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import ReactModal from 'react-modal';
-import { useCallback, useContext, useState, useMemo, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useCallback, useContext, useState, useMemo, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import { UserContext } from "../../utils/context/userContext";
 import { useLocation } from "react-router-dom";
 import { SendEmail } from "../../utils/services/sendEmail";
@@ -130,6 +130,7 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
     const [formState, setFormState] = useState<FormState>({ message: '', reason: '' });
     const [editState, setEditState] = useState<EditState>({ id: null, date: '', time: '' });
     const [loadingNewPoint, setLoadingNewPoint] = useState(false);
+    const abortControllerRef = useRef<AbortController | null>(null);
 
     const formatLocalDate = useCallback((date: Date): string =>
         date.toLocaleDateString('pt-BR').replace(/(\d{4})$/, match => match.slice(-2)), []);
@@ -178,13 +179,26 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
     const getPonto = useCallback(async (): Promise<void> => {
         const cpfToUse = cpf || usuario?.cpf || '';
         if (cpfToUse) {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+            const controller = new AbortController();
+            abortControllerRef.current = controller;
+
             try {
-                const pontos = await getPoints(cpfToUse, todayOnly, API_URL);
-                setRegistros(pontos);
-                if (onPointsChange) {
-                    onPointsChange(pontos);
+                const pontos = await getPoints(cpfToUse, todayOnly, API_URL, controller.signal);
+                if (!controller.signal.aborted) {
+                    setRegistros(pontos);
+                    if (onPointsChange) {
+                        onPointsChange(pontos);
+                    }
                 }
+                
             } catch (error) {
+                if (axios.isCancel(error)) {
+                    console.log("Requisição cancelada:", error.message);
+                    return;
+                }
                 console.error("Erro ao buscar pontos:", error);
                 setRegistros([]);
                 if (onPointsChange) {
@@ -200,6 +214,12 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
 
     useEffect(() => {
         getPonto();
+
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
     }, [getPonto]);
 
     const deletePonto = useCallback(async (id: string): Promise<void> => {
