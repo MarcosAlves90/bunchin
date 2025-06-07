@@ -21,21 +21,38 @@ export async function getPoints(
     signal?: AbortSignal
 ): Promise<PontoProcessado[]> {
     try {
-        const { data } = await axios.get<Ponto[]>(`${API_URL}ponto`, {
-            signal: signal,
-        });
+        let data: Ponto[];
+
+        if (todayBool) {
+            const today = new Date();
+            const todayTimestamp = today.toISOString();
+            
+            const response = await axios.get<Ponto[]>(`${API_URL}ponto/filtro`, {
+                params: {
+                    cpf: cpf,
+                    dia: todayTimestamp
+                },
+                signal: signal,
+            });
+            data = response.data;
+        } else {
+            const response = await axios.get<Ponto[]>(`${API_URL}ponto`, {
+                signal: signal,
+            });
+            data = response.data;
+        }
 
         if (!Array.isArray(data)) {
             console.error("Resposta inesperada da API:", data);
             return [];
         }
 
-        const today = new Date();
         return data
             .filter(ponto => {
-                const pointDate = new Date(ponto.data_hora);
-                return (todayBool ? pointDate.toDateString() === today.toDateString() : true) &&
-                    ponto.funcionario_fk && ponto.funcionario_fk === cpf;
+                if (!todayBool) {
+                    return ponto.funcionario_fk && ponto.funcionario_fk === cpf;
+                }
+                return ponto.funcionario_fk && ponto.funcionario_fk === cpf;
             })
             .map(ponto => ({
                 nome: ponto.nome_tipo,
