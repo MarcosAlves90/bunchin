@@ -93,14 +93,14 @@ export default function Pontos() {
 
     return (
         <main className={`mainCommon text-base flex justify-center items-center flex-col`}>
-            <article className={"card-horario bg-card rounded-sm w-full transition-colors p-1.5 gap-3 flex flex-col items-center"}>
+            <article className={"card-horario bg-tertiary rounded-sm w-full transition-colors p-1.5 gap-3 flex flex-col items-center"}>
                 <div className={"clock flex items-center justify-between gap-1 text-primary mt-3"}>
                     <AlarmClock className="w-[65px] h-[65px]" />
                     <LiveClock />
                 </div>
                 <button className={`button-session max-w-20 w-full ${locked === 'maxAtingido' ? "!bg-red !text-primary" : !locked ? "!bg-green hover:!bg-secondary hover:!text-green" : ""}`} onClick={handleBaterPontoClick}>{locked === 'maxAtingido' ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
             </article>
-            <article className={"card-registros font-bold text-start mt-2 w-full transition-colors rounded-sm p-1.5 bg-card flex gap-1.5 flex-col"}>
+            <article className={"card-registros font-bold text-start mt-2 w-full transition-colors rounded-sm p-1.5 bg-tertiary flex gap-1.5 flex-col"}>
                 <p className={"card-registros-title text-xl font-subrayada text-primary"}>Registros recentes</p>
                 <GeneratePoints ref={generatePointsRef} todayOnly={true} onPointsChange={handlePointsChange} />
                 <div className="card-registros-bottom-wrapper max-w-20 w-full rounded-sm text-secondary bg-highlight px-1 py-[0.7rem] mx-auto transition-colors flex gap-1 items-center hover:cursor-pointer hover:bg-primary" onClick={handleMorePointsButtonClick}>

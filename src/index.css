@@ -77,11 +77,6 @@ body {
 
 /*// - Fim da animação do Loader -*/
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
 /* Dark theme for Leaflet map */
 .dark-map .leaflet-layer,
 .dark-map .leaflet-control-zoom-in,

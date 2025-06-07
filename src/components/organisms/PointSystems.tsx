@@ -109,7 +109,7 @@ const RegistroItem = ({ registro, isAdmin, handleOpenModal, onDeletePonto, editS
             <div className="w-full flex items-center justify-center">
                 <CalendarDays />
                 <input
-                    className="max-w-6 text-base text-center"
+                    className="max-w-6 text-base text-center font-bold"
                     name="date"
                     disabled={!isEditing}
                     onChange={e => setEditState(prev => ({ ...prev, date: e.target.value }))}

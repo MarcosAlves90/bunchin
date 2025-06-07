@@ -8,6 +8,7 @@
 
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
+    --color-tertiary: var(--tertiary);
     --color-highlight: var(--highlight);
     --color-card: var(--card);
     --color-story-card: var(--story-card);
@@ -18,9 +19,12 @@
 
 :root {
     --highlight: #FF9900;
+
     --primary: #0f0f0f;
     --secondary: #f0f0f0;
-    --card: #C6C6C6;
+    --tertiary: rgb(210, 210, 210);
+
+    --card: rgb(188, 188, 188);
     --story-card: #0f0f0f;
     --color-green: #68c935;
     --color-red: #e61f1f;
@@ -28,14 +32,17 @@
 
 .dark {
     --highlight: #FFAE11;
+
     --primary: #f0f0f0;
     --secondary: #0f0f0f;
-    --card: #5b5b5b;
+    --tertiary: rgb(35, 35, 35);
+
+    --card: rgb(91, 91, 91);
     --story-card: #f0f0f0;
 }
 
 .mainCommon {
-    @apply w-full pt-[90px] box-border min-h-screen max-w-85;
+    @apply w-full pt-[90px] pb-2 box-border min-h-screen max-w-86 px-1;
 }
 
 .mainCommon__hero__penas {

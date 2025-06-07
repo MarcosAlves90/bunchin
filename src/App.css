@@ -469,9 +469,6 @@ footer {
     p {
         transition: var(--common-transition);
     }
-    &.perfil, &.registros {
-        margin: 60px 13vw;
-    }
     &.sobre, &.configuracoes {
         display: flex;
         justify-content: center;
@@ -746,89 +743,6 @@ footer {
                     }
                     .save-button:hover {
                         background-color: var(--background-color-light-theme);
-                    }
-                }
-            }
-        }
-    }
-    &.perfil {
-        .article-inputs {
-            padding: 0 0 45px 0;
-            border-bottom: 1px solid;
-        }
-        .div-title {
-            transition: var(--common-transition);
-            margin: 50px 0 50px 0;
-            display: flex;
-            justify-content: start;
-            align-items: center;
-            .title {
-                text-align: start;
-                font-family: "Montserrat Subrayada", sans-serif;
-                font-size: 2.6em;
-            }
-            .icon {
-                transition: var(--common-transition);
-            }
-            &.first {
-                margin-top: 0;
-            }
-            &.last {
-                justify-content: space-between;
-                &:hover {
-                    cursor: pointer;
-                    .icon {
-                        transform: scale(1.2);
-                    }
-                }
-            }
-        }
-        &.light {
-            .div-title {
-                color: var(--background-color-dark-theme);
-                .icon {
-                    color: var(--background-color-dark-theme);
-                }
-            }
-            input,select {
-                border-color: var(--background-color-dark-theme);
-                background-color: var(--background-color-light-theme);
-                color: var(--background-color-dark-theme);
-            }
-            .article-inputs {
-                border-color: var(--background-color-dark-theme);
-                .article-inputs-input {
-                    label {
-                        color: var(--background-color-light-dark-theme);
-                    }
-                    input, select {
-                        border-color: var(--background-color-light-dark-theme);
-                        color: var(--background-color-light-dark-theme);
-                    }
-                }
-            }
-        }
-        &.dark {
-            .div-title {
-                color: var(--background-color-light-theme);
-                .icon {
-                    color: var(--background-color-light-theme);
-                }
-            }
-            input,select {
-                border-color: var(--background-color-light-theme);
-                background-color: var(--background-color-dark-theme);
-                color: var(--background-color-light-theme);
-            }
-            .article-inputs {
-                border-color: var(--background-color-light-theme);
-                .article-inputs-input {
-                    label {
-                        color: var(--background-color-dark-light-theme);
-                    }
-                    input, select {
-                        border-color: var(--background-color-dark-light-theme) !important;
-                        color: var(--background-color-dark-light-theme);
                     }
                 }
             }
