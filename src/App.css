@@ -223,115 +223,21 @@ footer {
 }
 
 .login-form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 50px;
-    height: 600px;
-    position: relative;
-
-    .bird-icon-wrapper {
-        position: absolute;
-        left: -2.1rem;
-        top: -3.3rem;
-        .bird-icon {
-            position: relative;
-        }
-        &:hover {
-            cursor: pointer;
-        }
-    }
-
     .left-side {
-        /*padding: 0 20px 16px 20px;*/
-        /*display: flex;*/
-        /* flex-direction: column; */
-        align-items: center;
         .left-side-h2 {
             font-family: "Montserrat Subrayada", sans-serif;
             font-weight: bold;
         }
     }
     .right-side {
-        .input-box {
             .lucide {
                 position: absolute;
                 top: 1.1rem;
                 left: 1rem;
             }
-            .eye {
-                left: unset;
-                right: 1rem;
-                transition: var(--common-transition);
-                &:hover {
-                    cursor: pointer;
-                    transform: scale(1.2);
-                }
-            }
-        }
-        .title-sessao {
-            margin-top: 50px;
-            margin-bottom: 70px;
-            height: 60px;
-        }
-        input, label {
-            width: 100%;
-        }
         label {
             font-family: "Montserrat Subrayada", sans-serif;
             text-align: start;
-        }
-        input {
-            font-weight: bold;
-            padding: 13px;
-            outline: none;
-            &:focus {
-                outline: none;
-            }
-        }
-        .reset-password {
-            margin-top: 5px;
-            margin-bottom: 40px;
-            width: 100%;
-            text-align: end;
-            transition: var(--common-transition);
-            &:hover {
-                opacity: 0.5;
-                cursor: pointer;
-            }
-        }
-        .button-login:hover {
-            outline: none;
-            border: none;
-        }
-        .form-login {
-            min-width: 35vw;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            .button-login {
-                transition: all 0.2s ease-in-out;
-                margin-top: 15px;
-                display: flex;
-                justify-content: space-between;
-                width: 80%;
-                font-size: 1.25vw;
-                border: none;
-                padding: 10px;
-                i::before {
-                    rotate: -30deg;
-                }
-                i.right {
-                    margin-right: 10px;
-                }
-                i.left {
-                    margin-left: 10px;
-                }
-            }
-            .error-message {
-                margin-bottom: 0 !important;
-            }
         }
     }
     &::after {
