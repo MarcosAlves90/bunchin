@@ -130,6 +130,7 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
     const [formState, setFormState] = useState<FormState>({ message: '', reason: '' });
     const [editState, setEditState] = useState<EditState>({ id: null, date: '', time: '' });
     const [loadingNewPoint, setLoadingNewPoint] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const abortControllerRef = useRef<AbortController | null>(null);
 
     const formatLocalDate = useCallback((date: Date): string =>
@@ -175,8 +176,7 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
             );
             handleCloseModal();
         }
-    }, [usuario, formState, handleCloseModal]);
-    const getPonto = useCallback(async (): Promise<void> => {
+    }, [usuario, formState, handleCloseModal]);    const getPonto = useCallback(async (): Promise<void> => {
         const cpfToUse = cpf || usuario?.cpf || '';
         if (cpfToUse) {
             if (abortControllerRef.current) {
@@ -185,6 +185,7 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
             const controller = new AbortController();
             abortControllerRef.current = controller;
 
+            setIsLoading(true);
             try {
                 const pontos = await getPoints(cpfToUse, todayOnly, API_URL, controller.signal);
                 if (!controller.signal.aborted) {
@@ -204,6 +205,10 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 if (onPointsChange) {
                     onPointsChange([]);
                 }
+            } finally {
+                if (!controller.signal.aborted) {
+                    setIsLoading(false);
+                }
             }
         }
     }, [cpf, usuario?.cpf, API_URL, todayOnly, onPointsChange]);
@@ -220,21 +225,19 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 abortControllerRef.current.abort();
             }
         };
-    }, [getPonto]);
-
-    const deletePonto = useCallback(async (id: string): Promise<void> => {
+    }, [getPonto]);    const deletePonto = useCallback(async (id: string): Promise<void> => {
         if (!canDelete) return;
 
         try {
+            setIsLoading(true);
             await axios.delete(`${API_URL}ponto/${id}`);
             console.log("Ponto deletado com sucesso!");
             await getPonto();
         } catch (error) {
             console.error("Erro ao deletar ponto:", error);
+            setIsLoading(false);
         }
-    }, [API_URL, canDelete, getPonto]);
-
-    const updatePonto = useCallback(async (registro: RegistroPonto): Promise<void> => {
+    }, [API_URL, canDelete, getPonto]);    const updatePonto = useCallback(async (registro: RegistroPonto): Promise<void> => {
         try {
             const updatedDate = getUpdatedDate(new Date(registro.data));
             await axios.put(`${API_URL}ponto/${registro.id}`, {
@@ -243,7 +246,10 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 nome_tipo: registro.nome,
                 data_hora: updatedDate.toISOString()
             });
-            if (canRefresh) await getPonto();
+            if (canRefresh) {
+                setIsLoading(true);
+                await getPonto();
+            }
         } catch (error) {
             console.error("Erro ao salvar ponto:", error);
         }
@@ -277,9 +283,12 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 formState={formState}
                 setFormState={setFormState}
                 handleSendMessage={handleSendMessage}
-            />            
-            <article className={`grid grid-cols-4 gap-1`}>
-                {sortedRegistros.length > 0 ? (
+            />              <article className={`grid grid-cols-4 gap-1`}>
+                {isLoading && !loadingNewPoint ? (
+                    Array(4).fill(0).map((_, index) => (
+                        <PointSkeleton key={`loading-${index}`} tema={tema} />
+                    ))
+                ) : (
                     <>
                         {sortedRegistros.map(registro => (
                             <RegistroItem
@@ -295,13 +304,14 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                             />
                         ))}
                         {loadingNewPoint && (
-                            <PointSkeleton key="loading" tema={tema} />
+                            <PointSkeleton key="new-point-loading" tema={tema} />
+                        )}
+                        {(!loadingNewPoint && sortedRegistros.length === 0) && (
+                            <div className="col-span-4 flex items-center justify-center min-h-9 max-h-9 h-full">
+                                <span className="text-center text-card w-full text-lg font-normal">Nenhum ponto registrado</span>
+                            </div>
                         )}
                     </>
-                ) : (
-                    Array(4).fill(0).map((_, index) => (
-                        <PointSkeleton key={index} tema={tema} />
-                    ))
                 )}
             </article>
         </>

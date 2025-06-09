@@ -2,13 +2,13 @@ import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
 // @ts-ignore
 import './App.css';
 import NavBar from './components/organisms/NavBar';
+import DecorativePenas from './components/molecules/DecorativeFeathers.tsx';
 import Home from './pages/Home.tsx';
 import Sobre from "./pages/Sobre.tsx";
 import Contato from './pages/Contato.tsx';
 import Login from './pages/Login';
 import Perfil from "./pages/Perfil.tsx";
 import Pontos from "./pages/Pontos.tsx";
-import Configuracoes from "./pages/Configuracoes.tsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./utils/context/userContext.tsx";
 import {toggleClassOnHtml} from "./utils/theme/themeSystems.tsx";
@@ -19,6 +19,7 @@ import ResetarSenha from "./pages/ResetarSenha.tsx";
 function App() {
 
   const [loading, setLoading] = useState(true);
+  const [isDown, setIsDown] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,7 +29,6 @@ function App() {
   useEffect(() => {
     if (!usuario && (location.pathname === "/perfil" ||
         location.pathname === "/pontos" ||
-        location.pathname === "/configuracoes" ||
         location.pathname === "/administrador")) {
       navigate('/login');
     }
@@ -50,6 +50,22 @@ function App() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Controle do scroll apenas para a Home
+    if (location.pathname === "/") {
+      const handleScroll = () => {
+        setIsDown(window.scrollY > 0);
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+
+      return () => window.removeEventListener('scroll', handleScroll);
+    } else {
+      setIsDown(false);
+    }
+  }, [location.pathname]);
 
   function handleThemeLocalState() {
     const tema = localStorage.getItem("tema");
@@ -75,13 +91,18 @@ function App() {
           )}
         </div>
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <NavBar/>}
+        
+        {/* Penas decorativas para Home, Sobre e Contato */}
+        {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && (
+          <DecorativePenas isDown={location.pathname === "/" ? isDown : false} />
+        )}
+        
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/sobre" element={<Sobre/>}/>
           <Route path="/contato" element={<Contato/>}/>
           <Route path="/perfil" element={<Perfil/>}/>
           <Route path="/pontos" element={<Pontos/>}/>
-          <Route path="/configuracoes" element={<Configuracoes/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path={"resetar-senha"} element={<ResetarSenha/>}/>

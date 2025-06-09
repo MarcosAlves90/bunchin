@@ -28,17 +28,19 @@ export default function Perfil() {
     ], [usuario]);
 
     return (
-        <main className={`mainCommon perfil text-base flex justify-center items-center flex-col text-primary transition-colors`}>
-            <h1 className="text-4xl font-subrayada w-full text-left">DADOS DO USUÁRIO</h1>
-            <article className="inputs-box grid grid-cols-6 gap-2 w-full my-2">
-                {userFields.map(field => (
-                    <div key={field.name} className={`flex flex-col ${field.name === "n_registro" ? "col-span-1" : field.name === "email" ? "col-span-2" : "col-span-3"}`}>
-                        <label className="w-full text-start">{field.label}</label>
-                        <input className={`border-b-2 border-primary p-0.5 bg-tertiary rounded-t-sm pointer-events-none`} value={field.value || ""} placeholder={field.placeholder} type={field.type} name={field.name} readOnly />
-                    </div>
-                ))}
+        <main className={`mainCommon perfil text-base gap-2 flex justify-center items-center flex-col text-primary transition-colors`}>
+            <article className="w-full bg-tertiary p-1.5 rounded-sm">
+                <h1 className="text-4xl font-subrayada w-full text-left">DADOS DO USUÁRIO</h1>
+                <div className="inputs-box grid grid-cols-6 gap-2 w-full my-2">
+                    {userFields.map(field => (
+                        <div key={field.name} className={`flex flex-col ${field.name === "n_registro" ? "col-span-1" : field.name === "email" ? "col-span-2" : "col-span-3"}`}>
+                            <label className="w-full text-start">{field.label}</label>
+                            <input className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm pointer-events-none`} value={field.value || ""} placeholder={field.placeholder} type={field.type} name={field.name} readOnly />
+                        </div>
+                    ))}
+                </div>
             </article>
-            <div className="w-full bg-tertiary p-1 rounded-sm">
+            <article className="w-full bg-tertiary p-1.5 rounded-sm">
                 <div className={`flex justify-between items-center ${!colapsed ? "pb-0.5 border-b-1 border-card mb-1" : ""}`}>
                     <h1 className="text-4xl font-subrayada w-full text-left">REGISTRO DE HORAS</h1>
                     {colapsed ? (
@@ -60,7 +62,7 @@ export default function Perfil() {
                         <GeneratePoints />
                     </>
                 )}
-            </div>
+            </article>
         </main>
     );
 }
