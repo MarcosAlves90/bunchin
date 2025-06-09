@@ -6,6 +6,7 @@ import { UserContext } from "../utils/context/userContext.js";
 import { GeneratePoints } from "../components/organisms/PointSystems.jsx";
 import { ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield, CircleUserRound } from "lucide-react";
 import { SendEmail } from "../utils/services/sendEmail.js";
+import { EmployeeSkeleton } from "../components/atoms/EmployeeSkeleton.tsx";
 
 interface Funcionario {
     cpf: string;
@@ -26,7 +27,23 @@ export default function Administrador() {
     const [inputs, setInputs] = useState<Record<string, string>>({});
     const [colapsed, setColapsed] = useState(true);
     const [lockInputs, setLockInputs] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const abortControllerRef = useRef<AbortController | null>(null);
+    const [selectedDate, setSelectedDate] = useState(() => {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        return yesterday.toISOString().split('T')[0];
+    });
+    const selectedDateISO = useMemo(() => {
+        const [year, month, day] = selectedDate.split('-').map(Number);
+        const date = new Date(year, month - 1, day, 12, 0, 0);
+        return date.toISOString();
+    }, [selectedDate]);
+
+    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
+    const handleDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedDate(event.target.value);
+    }, []);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = event.target.name;
@@ -97,7 +114,6 @@ export default function Administrador() {
         }
     }, [API_URL, funcionarioSelecionado, inputs]);
 
-    
     const getUsers = useCallback(async (): Promise<void> => {
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
@@ -105,6 +121,8 @@ export default function Administrador() {
 
         const controller = new AbortController();
         abortControllerRef.current = controller;
+
+        setIsLoading(true);
 
         try {
             const response = await axios.get(`${API_URL}funcionario`, {
@@ -123,11 +141,17 @@ export default function Administrador() {
             
             console.error("Erro ao buscar funcionários:", error);
             setFuncionarios([]);
+        } finally {
+            if (!controller.signal.aborted) {
+                setIsLoading(false);
+            }
         }
     }, [API_URL]);
+
     useEffect(() => {
         getUsers();
     }, [getUsers]);
+    
     useEffect(() => {
         return () => {
             if (abortControllerRef.current) {
@@ -155,14 +179,32 @@ export default function Administrador() {
             }
         } catch (error) {
             console.error("Erro ao deletar funcionário:", error);        }
-    }, [API_URL, getUsers]);
-
-    function GenerateEmployeesButtons({ funcionarios }: { funcionarios: Funcionario[] }) {
+    }, [API_URL, getUsers]);      function GenerateEmployeesButtons({ funcionarios }: { funcionarios: Funcionario[] }) {
         const filteredFuncionarios = useMemo(() => {
             return funcionarios.filter((funcionario: Funcionario) =>
                 funcionario.nome.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }, [funcionarios, searchTerm]);
+
+        if (isLoading) {
+            return (
+                <article className={"flex flex-col gap-0.5"}>
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <EmployeeSkeleton tema={tema} key={`skeleton-${index}`} />
+                    ))}
+                </article>
+            );
+        }
+
+        if (filteredFuncionarios.length === 0) {
+            return (
+                <article className={"flex flex-col gap-0.5"}>
+                    <p className="text-center text-base text-primary opacity-70 py-2">
+                        {funcionarios.length === 0 ? "Nenhum funcionário encontrado" : "Nenhum funcionário corresponde à pesquisa"}
+                    </p>
+                </article>
+            );
+        }
 
         return (
             <article className={"flex flex-col gap-0.5"}>
@@ -251,8 +293,6 @@ export default function Administrador() {
             handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
         }
     }, []);
-
-    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
 
     const handleLockInputs = useCallback(() => setLockInputs(prev => !prev), []);
 
@@ -375,19 +415,34 @@ export default function Administrador() {
                             <button
                                 className={`save-button ${lockInputs ? "locked" : ""}`} disabled={lockInputs}>{!funcionarioSelecionado ? "Criar perfil" : "Salvar alterações"}</button>
                         </div>
-                    </form>                <div className={`div-title ${funcionarioSelecionado ? "colapse" : ""}`}
-                        onClick={funcionarioSelecionado ? handleColapse : undefined}>
-                        <h1 className={"title"}>REGISTRO DE HORAS</h1>
-                        {funcionarioSelecionado && (
-                            colapsed ? (
-                                <ChevronDown strokeWidth={0.7} className="icon" size={50} />
-                            ) : (
-                                <ChevronUp strokeWidth={0.7} className="icon" size={50} />
-                            )
-                        )}
-                    </div>
-                    {!colapsed && funcionarioSelecionado && <GeneratePoints canDelete={true} canRefresh={true} cpf={funcionarioSelecionado} />}
+                    </form>                
                 </article>
+                {funcionarioSelecionado && (
+                    <article className="w-full bg-tertiary p-1.5 rounded-sm">
+                        <div className={`flex justify-between items-center ${!colapsed ? "pb-0.5 border-b-1 border-card mb-1" : ""}`}>
+                            <h1 className="text-4xl font-subrayada w-full text-left">REGISTRO DE HORAS</h1>
+                            {colapsed ? (
+                                <ChevronDown strokeWidth={0.9} className="icon bg-highlight rounded-sm text-secondary cursor-pointer" size={50} onClick={handleColapse} />
+                            ) : (
+                                <ChevronUp strokeWidth={0.9} className="icon bg-highlight rounded-sm text-secondary cursor-pointer" size={50} onClick={handleColapse} />
+                            )}                
+                        </div>
+                        {!colapsed && (
+                            <>
+                                <div className="w-full mb-2 flex items-center justify-center">
+                                    <input
+                                        type="date"
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                        className="w-full p-0.5 bg-secondary border-b-2 border-primary rounded-t-sm text-primary font-medium focus:outline-none focus:border-highlight transition-colors cursor-pointer"
+                                        onClick={(e) => e.currentTarget.showPicker()}
+                                    />
+                                </div>
+                                <GeneratePoints cpf={funcionarioSelecionado} date={selectedDateISO} canDelete={true} canRefresh={true} />
+                            </>
+                        )}
+                    </article>
+                )}
             </main>
         </div>
     );
