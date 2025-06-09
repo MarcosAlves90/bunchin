@@ -11,7 +11,7 @@ interface ThemeOption {
 }
 
 export default function ThemeDropdown() {
-    const { tema, setTema, setUsuario } = useContext(UserContext) as UserContextType;
+    const { tema, setTema, usuario, setUsuario } = useContext(UserContext) as UserContextType;
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
@@ -70,7 +70,8 @@ export default function ThemeDropdown() {
                     <button
                         onClick={handleThemeToggle}
                         aria-label="Alternar tema"
-                        className="w-full flex items-center gap-1 px-1 py-0.5 text-left hover:bg-card hover:text-primary transition-colors duration-200 cursor-pointer border-b-1 border-tertiary"                    >
+                        className={`w-full flex items-center gap-1 px-1 py-0.5 text-left hover:bg-card hover:text-primary transition-colors duration-200 cursor-pointer ${usuario ? "border-b-1 border-tertiary" : ""}`}
+                    >
                         <img
                             src={nextTheme?.icon}
                             alt={nextTheme?.label}
@@ -78,13 +79,17 @@ export default function ThemeDropdown() {
                         />
                         <span className="text-base">{nextTheme?.label}</span>
                     </button>
-                    <button className="w-full flex items-center gap-1 px-1 py-0.5 text-left hover:bg-card hover:text-primary transition-colors duration-200 cursor-pointer text-red"
-                        onClick={handleLogout}
-                        aria-label="Sair da conta"
-                    >
-                        <LogOut className="h-1.5 w-1.5"/>
-                        <span className="text-base">Sair</span>
-                    </button>
+                    {
+                        usuario && (
+                            <button className="w-full flex items-center gap-1 px-1 py-0.5 text-left hover:bg-card hover:text-primary transition-colors duration-200 cursor-pointer text-red"
+                                onClick={handleLogout}
+                                aria-label="Sair da conta"
+                            >
+                                <LogOut className="h-1.5 w-1.5"/>
+                                <span className="text-base">Sair</span>
+                            </button>
+                        )
+                    }
                 </div>
             )}
         </div>
