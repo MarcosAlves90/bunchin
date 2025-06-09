@@ -52,7 +52,8 @@ export default function Perfil() {
                         <ChevronDown strokeWidth={0.9} className="icon bg-highlight rounded-sm text-secondary cursor-pointer" size={50} onClick={handleColapse} />
                     ) : (
                         <ChevronUp strokeWidth={0.9} className="icon bg-highlight rounded-sm text-secondary cursor-pointer" size={50} onClick={handleColapse} />
-                    )}                </div>
+                    )}                
+                </div>
                 {!colapsed && (
                     <>
                         <div className="w-full mb-2 flex items-center justify-center">
