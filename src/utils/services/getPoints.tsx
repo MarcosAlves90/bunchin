@@ -21,25 +21,29 @@ export async function getPoints(
     signal?: AbortSignal
 ): Promise<PontoProcessado[]> {
     try {
-        const { data } = await axios.get<Ponto[]>(`${API_URL}ponto/filtro`, {
-            params: { 
+        const response = await axios.get<Ponto[]>(`${API_URL}ponto/filtro`, {
+            params: {
                 cpf: cpf,
-                dia: date 
+                dia: date
             },
             signal: signal,
         });
+        
+        const data = response.data;
 
         if (!Array.isArray(data)) {
             console.error("Resposta inesperada da API:", data);
             return [];
         }
 
-        return data.map(ponto => ({
-            nome: ponto.nome_tipo,
-            id: ponto.id_ponto,
-            data: new Date(ponto.data_hora),
-            funcionario_fk: ponto.funcionario_fk
-        }));
+        return data
+            .filter(ponto => ponto.funcionario_fk && ponto.funcionario_fk === cpf)
+            .map(ponto => ({
+                nome: ponto.nome_tipo,
+                id: ponto.id_ponto,
+                data: new Date(ponto.data_hora),
+                funcionario_fk: ponto.funcionario_fk ? ponto.funcionario_fk : ''
+            }));
     } catch (error) {
         console.error("Erro ao carregar os registros:", error);
         return [];
