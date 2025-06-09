@@ -5,12 +5,17 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function Perfil() {
     const { usuario } = useContext(UserContext);
-    const [colapsed, setColapsed] = useState(true);    
+    const [colapsed, setColapsed] = useState(true);      
     const [selectedDate, setSelectedDate] = useState(() => {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         return yesterday.toISOString().split('T')[0];
     });
+    const selectedDateISO = useMemo(() => {
+        const [year, month, day] = selectedDate.split('-').map(Number);
+        const date = new Date(year, month - 1, day, 12, 0, 0);
+        return date.toISOString();
+    }, [selectedDate]);
 
     const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
     const handleDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +64,7 @@ export default function Perfil() {
                                 onClick={(e) => e.currentTarget.showPicker()}
                             />
                         </div>
-                        <GeneratePoints />
+                        <GeneratePoints date={selectedDateISO} />
                     </>
                 )}
             </article>

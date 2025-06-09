@@ -24,7 +24,7 @@ interface GeneratePointsProps {
     canRefresh?: boolean;
     cpf?: string;
     onPointsChange?: (registros: RegistroPonto[]) => void;
-    todayOnly?: boolean;
+    date?: string;
 }
 
 export interface GeneratePointsRef {
@@ -82,7 +82,8 @@ const RegistroItem = ({ registro, isAdmin, handleOpenModal, onDeletePonto, editS
         <div className="registro-item relative flex min-h-9 flex-col items-center justify-center gap-1 rounded-sm bg-primary p-0.5 text-secondary transition-colors">
             {!isAdmin && (
                 <OctagonAlert className="absolute top-0.5 right-0.5 cursor-pointer hover:text-red" onClick={() => handleOpenModal(registro)} />
-            )}            {isAdmin && (
+            )}
+            {isAdmin && (
                 <>
                     {onDeletePonto && (
                         <BadgeX className="absolute top-0.5 right-0.5 cursor-pointer hover:text-red" onClick={() => onDeletePonto(registro.id)} />
@@ -121,7 +122,7 @@ const RegistroItem = ({ registro, isAdmin, handleOpenModal, onDeletePonto, editS
     );
 };
 
-export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>(({ canDelete = false, canRefresh = false, cpf, onPointsChange, todayOnly = false }, ref) => {
+export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>(({ canDelete = false, canRefresh = false, cpf, onPointsChange, date }, ref) => {
     const { tema, usuario, API_URL } = useContext(UserContext);
     const location = useLocation();
     const [registros, setRegistros] = useState<RegistroPonto[]>([]);
@@ -132,6 +133,11 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
     const [loadingNewPoint, setLoadingNewPoint] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const abortControllerRef = useRef<AbortController | null>(null);
+    const onPointsChangeRef = useRef(onPointsChange);
+
+    useEffect(() => {
+        onPointsChangeRef.current = onPointsChange;
+    }, [onPointsChange]);
 
     const formatLocalDate = useCallback((date: Date): string =>
         date.toLocaleDateString('pt-BR').replace(/(\d{4})$/, match => match.slice(-2)), []);
@@ -176,7 +182,9 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
             );
             handleCloseModal();
         }
-    }, [usuario, formState, handleCloseModal]);    const getPonto = useCallback(async (): Promise<void> => {
+    }, [usuario, formState, handleCloseModal]);
+
+    const getPonto = useCallback(async (): Promise<void> => {
         const cpfToUse = cpf || usuario?.cpf || '';
         if (cpfToUse) {
             if (abortControllerRef.current) {
@@ -187,11 +195,12 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
 
             setIsLoading(true);
             try {
-                const pontos = await getPoints(cpfToUse, todayOnly, API_URL, controller.signal);
+                const dateToUse = date || new Date().toISOString();
+                const pontos = await getPoints(cpfToUse, dateToUse, API_URL, controller.signal);
                 if (!controller.signal.aborted) {
                     setRegistros(pontos);
-                    if (onPointsChange) {
-                        onPointsChange(pontos);
+                    if (onPointsChangeRef.current) {
+                        onPointsChangeRef.current(pontos);
                     }
                 }
                 
@@ -202,8 +211,8 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 }
                 console.error("Erro ao buscar pontos:", error);
                 setRegistros([]);
-                if (onPointsChange) {
-                    onPointsChange([]);
+                if (onPointsChangeRef.current) {
+                    onPointsChangeRef.current([]);
                 }
             } finally {
                 if (!controller.signal.aborted) {
@@ -211,7 +220,8 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 }
             }
         }
-    }, [cpf, usuario?.cpf, API_URL, todayOnly, onPointsChange]);
+    }, [cpf, usuario?.cpf, API_URL, date]);
+
     useImperativeHandle(ref, () => ({
         refreshPoints: getPonto,
         setLoadingNewPoint
@@ -225,7 +235,9 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 abortControllerRef.current.abort();
             }
         };
-    }, [getPonto]);    const deletePonto = useCallback(async (id: string): Promise<void> => {
+    }, [getPonto]);
+
+    const deletePonto = useCallback(async (id: string): Promise<void> => {
         if (!canDelete) return;
 
         try {
@@ -237,7 +249,9 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
             console.error("Erro ao deletar ponto:", error);
             setIsLoading(false);
         }
-    }, [API_URL, canDelete, getPonto]);    const updatePonto = useCallback(async (registro: RegistroPonto): Promise<void> => {
+    }, [API_URL, canDelete, getPonto]);
+
+    const updatePonto = useCallback(async (registro: RegistroPonto): Promise<void> => {
         try {
             const updatedDate = getUpdatedDate(new Date(registro.data));
             await axios.put(`${API_URL}ponto/${registro.id}`, {
@@ -283,7 +297,8 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 formState={formState}
                 setFormState={setFormState}
                 handleSendMessage={handleSendMessage}
-            />              <article className={`grid grid-cols-4 gap-1`}>
+            />
+            <article className={`grid grid-cols-4 gap-1`}>
                 {isLoading && !loadingNewPoint ? (
                     Array(4).fill(0).map((_, index) => (
                         <PointSkeleton key={`loading-${index}`} tema={tema} />
@@ -323,5 +338,5 @@ GeneratePoints.propTypes = {
     canRefresh: PropTypes.bool,
     cpf: PropTypes.string,
     onPointsChange: PropTypes.func,
-    todayOnly: PropTypes.bool
+    date: PropTypes.string
 };

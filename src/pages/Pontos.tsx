@@ -1,4 +1,4 @@
-import { useContext, useState, useRef, useCallback } from "react";
+import { useContext, useState, useRef, useCallback, useMemo } from "react";
 import { UserContext, UserContextType } from "../utils/context/userContext.js";
 import { v4 as uuidv4 } from 'uuid';
 import { GeneratePoints, RegistroPonto, GeneratePointsRef } from "../components/organisms/PointSystems";
@@ -13,6 +13,9 @@ export default function Pontos() {
     const { usuario, API_URL } = useContext<UserContextType>(UserContext);
     const navigate = useNavigate();
     const generatePointsRef = useRef<GeneratePointsRef>(null);
+    
+    // Memo para evitar recriação desnecessária da data
+    const currentDate = useMemo(() => new Date().toISOString(), []);
 
     const registrosComuns = [
         "Entrada",
@@ -99,10 +102,9 @@ export default function Pontos() {
                     <LiveClock />
                 </div>
                 <button className={`button-session max-w-20 w-full ${locked === 'maxAtingido' ? "!bg-red !text-primary" : !locked ? "!bg-green hover:!bg-secondary hover:!text-green" : ""}`} onClick={handleBaterPontoClick}>{locked === 'maxAtingido' ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
-            </article>
-            <article className={"card-registros font-bold text-start w-full transition-colors rounded-sm p-1.5 bg-tertiary flex gap-1.5 flex-col"}>
+            </article>            <article className={"card-registros font-bold text-start w-full transition-colors rounded-sm p-1.5 bg-tertiary flex gap-1.5 flex-col"}>
                 <p className={"card-registros-title text-xl font-subrayada text-primary"}>Registros recentes</p>
-                <GeneratePoints ref={generatePointsRef} todayOnly={true} onPointsChange={handlePointsChange} />
+                <GeneratePoints ref={generatePointsRef} date={currentDate} onPointsChange={handlePointsChange} />
                 <div className="card-registros-bottom-wrapper max-w-20 w-full rounded-sm text-secondary bg-highlight px-1 py-[0.7rem] mx-auto transition-colors flex gap-1 items-center hover:cursor-pointer hover:bg-primary" onClick={handleMorePointsButtonClick}>
                     <ChevronDown />
                     <p className={"card-registros-bottom-wrapper-title text-lg text-center font-semibold"}>Mais registros</p>
