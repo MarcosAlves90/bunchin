@@ -46,10 +46,11 @@ export default function Login() {
             <img className={`login-penas-right ${tema}`}
                 src={"/penas_direita_login.svg"}
                 alt={"Penas à direita"} />
-            <div className={`login-form ${tema}`}>
-                <div className={"bird-icon-wrapper"}
+            <div className={`login-form flex items-center content-center pb-3 h-[600px] relative ${tema}`}>
+                <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem]"}
                     onClick={handleBackButtonClick}>
                     <img
+<<<<<<< HEAD
                         className="bird-icon"
                         src="/bunchin_bird_icon.svg"
                         alt="Pássaro do bunchin"
@@ -69,17 +70,31 @@ export default function Login() {
                     <img className={"title-sessao"} src="https://res.cloudinary.com/dflvo098t/image/upload/iniciando_sessao_title_d5bzll.svg" alt="" />
 =======
                 <div className={`left-side px-2 flex flex-col h-full ${tema}`}>
+=======
+                        className="bird-icon relative hover:!cursor-pointer"
+                        src="/bunchin_bird_icon.svg"
+                        alt="Pássaro do bunchin"
+                    /> 
+                </div>
+                <div className={`left-side items-center px-2 flex flex-col h-full ${tema}`}>
+>>>>>>> 3a176e0 (transição para tailwind completa (login) restando somente cores)
                     <h2 className={"left-side-h2 text-2xl mt-4"}>Não Possui um Cadastro?</h2>
-                    <img className={"my-[30px]"} src="/login_crow.svg" alt="" />
+                    <img className={"my-[30px] bird-icon"} src="/login_crow.svg" alt="" />
                     <p className={"left-side-p max-w-[340px] lg:text-2xl md:text-lg m-0"}>Entre em contato com o departamento pessoal da sua
                         empresa para que eles criem seu acesso.</p>
                 </div>
                 <div className={"right-side flex flex-col items-center self-start h-full px-4 pb-4"}>
+<<<<<<< HEAD
                     <img className={"title-sessao"} src="/iniciando_sessao_title.svg" alt="" />
 >>>>>>> c6958e5 (feat: Refatorar estilos do login, remover classes CSS e adicionar classes responsivas do tailwind)
 >>>>>>> 5d2684f (feat: Refatorar estilos do login, remover classes CSS e adicionar classes responsivas do tailwind)
                     <form className={"form-login"}>
                         <label htmlFor="email">EMAIL OU CPF</label>
+=======
+                    <img className={"title-sessao h-[60px] mt-3 mb-3"} src="/iniciando_sessao_title.svg" alt="" />
+                    <form className={"form-login min-w-[35vw] w-full flex flex-col items-center"}>
+                        <label htmlFor="email" className="w-full">EMAIL OU CPF</label>
+>>>>>>> 3a176e0 (transição para tailwind completa (login) restando somente cores)
                         <div className={"input-box w-full relative mb-3"}>
                             <input
                                 type="text"
@@ -89,12 +104,12 @@ export default function Login() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 aria-label="Email ou CPF"
                                 autoComplete="username"
-                                className={"w-full !pl-3"}
+                                className={"w-full !pl-3 p-1 font-bold outline-none"}
                             />
                             <UserRound
                                 color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"} />
                         </div>
-                        <label htmlFor="senha">SENHA</label>
+                        <label htmlFor="senha" className="w-full">SENHA</label>
                         <div className={"input-box last w-full relative"}>
                             <input
                                 type={passwordVisibility ? "text" : "password"}
@@ -104,14 +119,14 @@ export default function Login() {
                                 onChange={(e) => setSenha(e.target.value)}
                                 aria-label="Senha"
                                 autoComplete="current-password"
-                                className={"w-full !pl-3"}
+                                className={"w-full !pl-3 p-1 font-bold outline-none"}
                             />
                             <Lock
                                 color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"}
                             />
                             {!passwordVisibility &&
                                 <Eye
-                                    className={"eye"}
+                                    className={"!left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
                                     color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
                                     onClick={handlePasswordVisibility}
                                     aria-label="Mostrar senha"
@@ -121,7 +136,7 @@ export default function Login() {
                             }
                             {passwordVisibility &&
                                 <EyeOff
-                                    className={"eye"}
+                                    className={"!left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
                                     color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
                                     onClick={handlePasswordVisibility}
                                     aria-label="Ocultar senha"
@@ -130,7 +145,7 @@ export default function Login() {
                                 />
                             }
                         </div>
-                        <p className={"reset-password"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>
+                        <p className={"reset-password mt-[5px] mb-2 w-full text-end transition-(--common-transition) hover:!cursor-pointer hover:opacity-20"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>
                         <YellowButton 
                             text={loading? "Carregando..." : error ? error : "Iniciar"}
                             clickFunction={handleLoginButtonClick}
