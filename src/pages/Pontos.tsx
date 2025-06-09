@@ -60,7 +60,8 @@ export default function Pontos() {
                 }, 5000);
             }
         }
-    }    async function salvarPonto(registro: RegistroPonto): Promise<void> {
+    }    
+    async function salvarPonto(registro: RegistroPonto): Promise<void> {
         if (!usuario) return;
 
         try {
@@ -86,7 +87,8 @@ export default function Pontos() {
                 generatePointsRef.current.setLoadingNewPoint(false);
             }
         }
-    }const handleMorePointsButtonClick = () => {
+    }
+    const handleMorePointsButtonClick = () => {
         navigate("/perfil");
     }
 

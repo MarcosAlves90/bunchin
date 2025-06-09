@@ -210,12 +210,12 @@ export default function Administrador() {
             <article className={"flex flex-col gap-0.5"}>
                 {filteredFuncionarios.filter((funcionario: Funcionario) => String(usuario?.n_registro) !== funcionario.n_registro).map((funcionario: Funcionario) => (
                     <div
-                        key={funcionario.cpf}
+                        key={funcionario.n_registro}
                         onClick={() => handleEmployeeButtonClick(funcionario)}
-                        className={`flex items-center justify-between cursor-pointer border-1 p-0.5 rounded-sm transition-colors hover:bg-tertiary ${funcionarioSelecionado === funcionario.cpf ? "border-highlight text-highlight" : "border-tertiary"}`}
+                        className={`flex items-center justify-between cursor-pointer border-1 p-0.5 rounded-sm transition-colors hover:bg-tertiary ${funcionarioSelecionado === funcionario.n_registro ? "border-highlight text-highlight" : "border-tertiary"}`}
                     >
                         <p className="nome truncate max-w-[160px]">{funcionario.nome}</p>
-                        {funcionarioSelecionado === funcionario.cpf ? (
+                        {funcionarioSelecionado === funcionario.n_registro ? (
                             <X
                                 strokeWidth={2.5}
                                 size={16}
@@ -240,7 +240,7 @@ export default function Administrador() {
     };
 
     function handleEmployeeButtonClick(funcionario: Funcionario) {
-        if (funcionarioSelecionado === funcionario.cpf) {
+        if (funcionarioSelecionado === funcionario.n_registro) {
             setFuncionarioSelecionado("");
             setLockInputs(false);
             const defaultValues = {
@@ -256,8 +256,8 @@ export default function Administrador() {
                 handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
             }
         } else {
-            setFuncionarioSelecionado(funcionario.cpf);
-            setIndexFuncionario(funcionarios.findIndex(f => f.cpf === funcionario.cpf));
+            setFuncionarioSelecionado(funcionario.n_registro);
+            setIndexFuncionario(funcionarios.findIndex(f => f.n_registro === funcionario.n_registro));
             setLockInputs(true);
         }
     }
