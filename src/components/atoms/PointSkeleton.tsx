@@ -7,8 +7,8 @@ interface PointSkeletonProps {
 }
 
 export const PointSkeleton = ({ tema }: PointSkeletonProps) => {
-    const baseColor = tema === 'light' ? '#0f0f0f' : '#f0f0f0';
-    const highlightColor = tema === 'light' ? '#212121' : '#d1d1d1';
+    const baseColor = tema === 'dark' ? '#232323' : '#d2d2d2';
+    const highlightColor = tema === 'dark' ? '#494949' : '#f8f8f8';
 
     return (
         <Skeleton
