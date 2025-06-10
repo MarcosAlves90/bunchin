@@ -17,7 +17,7 @@ export default function HelpSystem() {
     return (
         <>            
             <div
-                className="fixed bottom-1 right-1 bg-highlight p-0.5 rounded-full z-5 border-3 border-secondary group cursor-pointer transition-colors duration-200 hover:bg-primary"
+                className="fixed bottom-1 right-1 bg-highlight p-0.5 rounded-lg z-5 border-3 border-secondary group cursor-pointer transition-colors duration-200 hover:bg-primary"
                 onClick={openModal}
             >
                 <LifeBuoy
