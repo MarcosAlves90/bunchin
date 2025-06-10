@@ -10,9 +10,13 @@ import { useLoginForm } from "../utils/useLoginForm";
 import useLoginForm from "../utils/hooks/useLoginForm";
 =======
 import YellowButton from "../components/YellowButton.jsx";
+<<<<<<< HEAD
 import { useLoginForm } from "../utils/useLoginForm";
 >>>>>>> b99ad81 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
 >>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
+=======
+import useLoginForm  from "../utils/hooks/useLoginForm";
+>>>>>>> a513f26 (Altera a importação do hook useLoginForm para o formato padrão)
 
 export default function Login() {
     const navigate = useNavigate();
