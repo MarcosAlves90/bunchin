@@ -53,10 +53,14 @@
 
     --primary: #f0f0f0;
     --secondary: #0f0f0f;
+<<<<<<< HEAD
     --tertiary: rgb(35, 35, 35);
     
     /* --text-card:#C6C6C6; */
     --card: rgb(91, 91, 91);
+=======
+    --card: #5b5b5b;
+>>>>>>> 78d6ad3 (login modificado e cores repostas)
     --story-card: #f0f0f0;
 }
  
@@ -121,6 +125,7 @@
 .mainCommon__resources__box-points__point-wrapper .point-clock {
     animation: cuckoo 2s infinite ease-in-out;
 }
+<<<<<<< HEAD
 
 .Overlay {
     @apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen bg-primary/20 z-50 backdrop-blur-md flex items-center justify-center p-1;
@@ -142,6 +147,9 @@
         border-right: 25px solid transparent;
         border-bottom: 25px solid transparent;
 =======
+=======
+ 
+>>>>>>> 78d6ad3 (login modificado e cores repostas)
 /* Animações */
  
 @keyframes cuckoo {

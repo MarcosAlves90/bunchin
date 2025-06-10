@@ -46,7 +46,7 @@ export default function Login() {
             <img className={`login-penas-right ${tema}`}
                 src={"/penas_direita_login.svg"}
                 alt={"Penas à direita"} />
-            <div className={`login-form flex items-center content-center pb-3 h-[600px] relative ${tema}`}>
+            <div className={`login-form flex items-center content-center pb-3 h-36 relative`}>
                 <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem]"}
                     onClick={handleBackButtonClick}>
                     <img
@@ -104,13 +104,13 @@ export default function Login() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 aria-label="Email ou CPF"
                                 autoComplete="username"
-                                className={"w-full !pl-3 p-1 font-bold outline-none"}
+                                className={"w-full !pl-3 p-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none"}
                             />
                             <UserRound
-                                color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"} />
+                                color={"var(--text-card)"} className="absolute top-[1.1rem] left-1" />
                         </div>
-                        <label htmlFor="senha" className="w-full">SENHA</label>
-                        <div className={"input-box last w-full relative"}>
+                        <label htmlFor="senha" className="w-full text-left">SENHA</label>
+                        <div className={"w-full relative"}>
                             <input
                                 type={passwordVisibility ? "text" : "password"}
                                 id="senha"
@@ -119,14 +119,14 @@ export default function Login() {
                                 onChange={(e) => setSenha(e.target.value)}
                                 aria-label="Senha"
                                 autoComplete="current-password"
-                                className={"w-full !pl-3 p-1 font-bold outline-none"}
+                                className={"w-full !pl-3 p-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none"}
                             />
                             <Lock
-                                color={tema === "dark" ? "var(--background-color-dark-light-theme)" : "var(--background-color-light-dark-theme)"}
+                                 color={"var(--text-card)"} className="absolute top-[1.1rem] left-1"
                             />
                             {!passwordVisibility &&
                                 <Eye
-                                    className={"!left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
+                                    className={"absolute top-[1.3rem] !left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
                                     color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
                                     onClick={handlePasswordVisibility}
                                     aria-label="Mostrar senha"
@@ -136,7 +136,7 @@ export default function Login() {
                             }
                             {passwordVisibility &&
                                 <EyeOff
-                                    className={"!left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
+                                    className={"absolute top-[1.3rem] !left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
                                     color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
                                     onClick={handlePasswordVisibility}
                                     aria-label="Ocultar senha"
@@ -145,9 +145,9 @@ export default function Login() {
                                 />
                             }
                         </div>
-                        <p className={"reset-password mt-[5px] mb-2 w-full text-end transition-(--common-transition) hover:!cursor-pointer hover:opacity-20"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>
-                        <YellowButton 
-                            text={loading? "Carregando..." : error ? error : "Iniciar"}
+                        <p className={"reset-password text-(--highlight) mt-[0.3rem] mb-2 w-full text-end transition-(--common-transition) hover:!cursor-pointer hover:text-(--secondary)"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>
+                        <YellowButton
+                            text={loading ? "Carregando..." : error ? error : "Iniciar"}
                             clickFunction={handleLoginButtonClick}
                             error={error}
                             type={"submit"}

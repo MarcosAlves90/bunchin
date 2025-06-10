@@ -7,7 +7,16 @@ import validator from "validator";
 import { useEffect, useContext } from "react";
 import { SendEmail } from "../utils/sendEmail.jsx";
 import { v4 as uuidv4 } from 'uuid';
+<<<<<<< HEAD
 import { UserContext } from "../utils/userContext.jsx";
+=======
+<<<<<<< HEAD
+import { UserContext } from "../utils/context/userContext.js";
+=======
+import { Undo2 } from "lucide-react";
+import { UserContext } from "../utils/userContext.jsx";
+>>>>>>> b785ae0 (login modificado e cores repostas)
+>>>>>>> 78d6ad3 (login modificado e cores repostas)
 import { useNavigate } from "react-router-dom";
 <<<<<<< HEAD
 import { useResetPasswordForm } from "../utils/hooks/useResetPasswordForm.js";
@@ -210,24 +219,8 @@ export default function ResetarSenha() {
 =======
         <>
             <main className={`mainCommon resetPassword ${tema}`}>
-                <div className="area">
-                    <ul className="circles">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-
-                    </ul>
-                </div>
-                <div className="animated-background"></div>
                 <div className="cardBox">
-                    <button className={"backArrow"} onClick={handleBackButtonClick}><i className="bi bi-arrow-left"></i>
+                    <button className={"backArrow"} onClick={handleBackButtonClick}><Undo2/>
                     </button>
                     <h1>Recuperar conta</h1>
                     {(resetCode && isValidCode) || (usuario && usuario.status === "0") ? (
