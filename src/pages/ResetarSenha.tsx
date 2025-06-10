@@ -4,6 +4,7 @@ import validator from "validator";
 import { useEffect, useContext } from "react";
 import { SendEmail } from "../utils/sendEmail.jsx";
 import { v4 as uuidv4 } from 'uuid';
+import { Undo2 } from "lucide-react";
 import { UserContext } from "../utils/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { useResetPasswordForm } from "../utils/useResetPasswordForm.jsx";
@@ -119,24 +120,8 @@ export default function ResetarSenha() {
     return (
         <>
             <main className={`mainCommon resetPassword ${tema}`}>
-                <div className="area">
-                    <ul className="circles">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-
-                    </ul>
-                </div>
-                <div className="animated-background"></div>
                 <div className="cardBox">
-                    <button className={"backArrow"} onClick={handleBackButtonClick}><i className="bi bi-arrow-left"></i>
+                    <button className={"backArrow"} onClick={handleBackButtonClick}><Undo2/>
                     </button>
                     <h1>Recuperar conta</h1>
                     {(resetCode && isValidCode) || (usuario && usuario.status === "0") ? (

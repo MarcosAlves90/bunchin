@@ -21,6 +21,7 @@
     --primary: #0f0f0f;
     --secondary: #f0f0f0;
     --card: #C6C6C6;
+    --text-card:#5b5b5b;
     --story-card: #0f0f0f;
     --color-green: #68c935;
     --color-red: #e61f1f;
@@ -31,6 +32,7 @@
     --primary: #f0f0f0;
     --secondary: #0f0f0f;
     --card: #5b5b5b;
+    --text-card:#C6C6C6;
     --story-card: #f0f0f0;
 }
  
@@ -77,6 +79,34 @@
     animation: cuckoo 2s infinite ease-in-out;
 }
  
+.login-form{
+    &::after {
+        width: 0;
+        height: 0;
+        background: transparent;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-top: 25px solid var(--highlight);
+        border-left: 25px solid var(--highlight);
+        border-right: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+    }
+    &::before{
+        width: calc(100% - 50px);
+        height: 0;
+        background: transparent;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 50px;
+        border-top: 25px solid var(--highlight);
+        border-left: 25px solid var(--highlight);
+        border-right: 25px solid var(--highlight);
+        border-bottom: 25px solid var(--highlight);
+    }
+}
 /* Animações */
  
 @keyframes cuckoo {
