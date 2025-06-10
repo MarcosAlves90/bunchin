@@ -85,7 +85,7 @@
 }
 
 .Overlay {
-    @apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen bg-black/50 z-50 backdrop-blur-md flex items-center justify-center p-1;
+    @apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen bg-primary/20 z-50 backdrop-blur-md flex items-center justify-center p-1;
 }
 
 /* Animações */

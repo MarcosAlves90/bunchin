@@ -15,6 +15,7 @@ import {toggleClassOnHtml} from "./utils/theme/themeSystems.tsx";
 import Administrador from "./pages/Administrador.tsx";
 import Footer from "./components/organisms/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
+import HelpSystem from './components/organisms/HelpSystem.tsx';
 
 function App() {
 
@@ -92,10 +93,11 @@ function App() {
         </div>
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <NavBar/>}
         
-        {/* Penas decorativas para Home, Sobre e Contato */}
         {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && (
           <DecorativePenas isDown={location.pathname === "/" ? isDown : false} />
         )}
+
+        <HelpSystem/>
         
         <Routes>
           <Route path="/" element={<Home/>}/>
