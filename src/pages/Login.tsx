@@ -1,10 +1,10 @@
 
 import { useContext, useEffect } from "react";
-import { UserContext } from "../utils/userContext.jsx";
+import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { UserRound, Lock, Eye, EyeOff } from "lucide-react";
 import YellowButton from "../components/YellowButton.jsx";
-import { useLoginForm } from "../utils/useLoginForm";
+import { useLoginForm } from "../utils/hooks/useLoginForm";
 
 export default function Login() {
     const navigate = useNavigate();

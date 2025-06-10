@@ -1,23 +1,26 @@
 import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
+// @ts-ignore
 import './App.css';
-import NavBar from './components/NavBar';
+import NavBar from './components/organisms/NavBar';
+import DecorativePenas from './components/molecules/DecorativeFeathers.tsx';
 import Home from './pages/Home.tsx';
 import Sobre from "./pages/Sobre.tsx";
 import Contato from './pages/Contato.tsx';
 import Login from './pages/Login';
 import Perfil from "./pages/Perfil.tsx";
 import Pontos from "./pages/Pontos.tsx";
-import Configuracoes from "./pages/Configuracoes.tsx";
 import {useContext, useEffect, useState} from "react";
-import {UserContext} from "./utils/userContext.tsx";
-import {toggleClassOnHtml} from "./utils/themeSystems.tsx";
+import {UserContext} from "./utils/context/userContext.tsx";
+import {toggleClassOnHtml} from "./utils/theme/themeSystems.tsx";
 import Administrador from "./pages/Administrador.tsx";
-import Footer from "./components/Footer.tsx";
+import Footer from "./components/organisms/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
+import HelpSystem from './components/organisms/HelpSystem.tsx';
 
 function App() {
 
   const [loading, setLoading] = useState(true);
+  const [isDown, setIsDown] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,7 +30,6 @@ function App() {
   useEffect(() => {
     if (!usuario && (location.pathname === "/perfil" ||
         location.pathname === "/pontos" ||
-        location.pathname === "/configuracoes" ||
         location.pathname === "/administrador")) {
       navigate('/login');
     }
@@ -50,6 +52,22 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    // Controle do scroll apenas para a Home
+    if (location.pathname === "/") {
+      const handleScroll = () => {
+        setIsDown(window.scrollY > 0);
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+
+      return () => window.removeEventListener('scroll', handleScroll);
+    } else {
+      setIsDown(false);
+    }
+  }, [location.pathname]);
+
   function handleThemeLocalState() {
     const tema = localStorage.getItem("tema");
     if (tema === "dark") {
@@ -64,7 +82,7 @@ function App() {
   }
 
   return (
-      <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
+      <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
 
         <div className={"page-loader"}>
           {(loading) && (
@@ -74,13 +92,19 @@ function App() {
           )}
         </div>
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <NavBar/>}
+        
+        {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && (
+          <DecorativePenas isDown={location.pathname === "/" ? isDown : false} />
+        )}
+
+        {(usuario && <HelpSystem/>)}
+        
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/sobre" element={<Sobre/>}/>
           <Route path="/contato" element={<Contato/>}/>
           <Route path="/perfil" element={<Perfil/>}/>
           <Route path="/pontos" element={<Pontos/>}/>
-          <Route path="/configuracoes" element={<Configuracoes/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path={"resetar-senha"} element={<ResetarSenha/>}/>

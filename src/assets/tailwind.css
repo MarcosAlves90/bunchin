@@ -8,36 +8,44 @@
  
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
+    --color-tertiary: var(--tertiary);
     --color-highlight: var(--highlight);
     --color-card: var(--card);
     --color-story-card: var(--story-card);
- 
+
     --color-green: var(--color-green);
     --color-red: var(--color-red);
 }
  
 :root {
     --highlight: #FF9900;
+
     --primary: #0f0f0f;
     --secondary: #f0f0f0;
-    --card: #C6C6C6;
+    --tertiary: rgb(210, 210, 210);
+
     --text-card:#5b5b5b;
+    --card: rgb(188, 188, 188);
     --story-card: #0f0f0f;
+
     --color-green: #68c935;
     --color-red: #e61f1f;
 }
  
 .dark {
     --highlight: #FFAE11;
+
     --primary: #f0f0f0;
     --secondary: #0f0f0f;
-    --card: #5b5b5b;
+    --tertiary: rgb(35, 35, 35);
+    
     --text-card:#C6C6C6;
+    --card: rgb(91, 91, 91);
     --story-card: #f0f0f0;
 }
  
 .mainCommon {
-    @apply w-full pt-[90px] box-border min-h-screen max-w-85;
+    @apply w-full pt-[90px] pb-2 box-border min-h-screen max-w-86 px-1;
 }
  
 .mainCommon__hero__penas {
@@ -62,6 +70,7 @@
  
 .button-session {
     @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
+    @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
     &.last {
         @apply mt-3;
     }
@@ -78,6 +87,11 @@
 .mainCommon__resources__box-points__point-wrapper .point-clock {
     animation: cuckoo 2s infinite ease-in-out;
 }
+
+.Overlay {
+    @apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen bg-primary/20 z-50 backdrop-blur-md flex items-center justify-center p-1;
+}
+
  
 .login-form{
     &::after {

@@ -1,6 +1,11 @@
 import emailjs from '@emailjs/browser';
 
-export const SendEmail = (publicKey, serviceKey, templateId, templateParameters) => {
+export const SendEmail = (
+    publicKey: string, 
+    serviceKey: string, 
+    templateId: string, 
+    templateParameters: Record<string, unknown>
+) => {
 
     emailjs
         .send(serviceKey, templateId, templateParameters, {

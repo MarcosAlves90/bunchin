@@ -1,7 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import { Usuario } from "./userContext";
 
-export function useLoginForm(API_URL, setUsuario, navigate) {
+export default function useLoginForm(
+    API_URL: string,
+    setUsuario: React.Dispatch<React.SetStateAction<Usuario | null>>,
+    navigate: (path: string) => void
+) {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [error, setError] = useState("");
@@ -12,7 +17,7 @@ export function useLoginForm(API_URL, setUsuario, navigate) {
         setPasswordVisibility((prev) => !prev);
     };
 
-    const handleLoginButtonClick = async (event) => {
+    const handleLoginButtonClick = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError("");
         if (!email || !senha) {
