@@ -28,6 +28,7 @@ export default function Administrador() {
     const [colapsed, setColapsed] = useState(true);
     const [lockInputs, setLockInputs] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+    const [showEditModeMessage, setShowEditModeMessage] = useState(false);
     const abortControllerRef = useRef<AbortController | null>(null);
     const [selectedDate, setSelectedDate] = useState(() => {
         const yesterday = new Date();
@@ -76,6 +77,15 @@ export default function Administrador() {
         });
     }    const handleSubmit = useCallback(async (event: React.FormEvent) => {
         event.preventDefault();
+        
+        if (funcionarioSelecionado && lockInputs) {
+            setShowEditModeMessage(true);
+            setTimeout(() => {
+                setShowEditModeMessage(false);
+            }, 5000);
+            return;
+        }
+        
         const normalizedEmail = validator.normalizeEmail(inputs.email);
         const isEmailValid = normalizedEmail && validator.isEmail(normalizedEmail);
         
@@ -112,7 +122,7 @@ export default function Administrador() {
         } catch (error) {
             console.error("Erro ao processar funcionário:", error);
         }
-    }, [API_URL, funcionarioSelecionado, inputs]);
+    }, [API_URL, funcionarioSelecionado, inputs, lockInputs]);
 
     const getUsers = useCallback(async (): Promise<void> => {
         if (abortControllerRef.current) {
@@ -189,7 +199,7 @@ export default function Administrador() {
         if (isLoading) {
             return (
                 <article className={"flex flex-col gap-0.5"}>
-                    {Array.from({ length: 4 }).map((_, index) => (
+                    {Array.from({ length: 14 }).map((_, index) => (
                         <EmployeeSkeleton tema={tema} key={`skeleton-${index}`} />
                     ))}
                 </article>
@@ -296,12 +306,92 @@ export default function Administrador() {
 
     const handleLockInputs = useCallback(() => setLockInputs(prev => !prev), []);
 
-    function GenerateLockIcon() {
+    const userFields = useMemo(() => [
+        {
+            label: "NOME COMPLETO",
+            name: "nome",
+            type: "input",
+            inputType: "text",
+            placeholder: "exemplo da silva paiva",
+            colSpan: "col-span-3",
+            disabled: funcionarioSelecionado ? lockInputs : false
+        },
+        {
+            label: "EMAIL",
+            name: "email",
+            type: "input",
+            inputType: "email",
+            placeholder: "exemplo@gmail.com",
+            colSpan: "col-span-2",
+            disabled: funcionarioSelecionado ? lockInputs : false
+        },
+        {
+            label: "REGISTRO",
+            name: "n_registro",
+            type: "input",
+            inputType: "number",
+            placeholder: "1234567890",
+            colSpan: "col-span-1",
+            disabled: true,
+            locked: true
+        },
+        {
+            label: "CPF",
+            name: "cpf",
+            type: "input",
+            inputType: "number",
+            placeholder: "12345678900",
+            colSpan: "col-span-3",
+            disabled: funcionarioSelecionado ? lockInputs : false
+        },
+        {
+            label: "FUNÇÃO",
+            name: "funcao",
+            type: "select",
+            placeholder: "",
+            colSpan: "col-span-3",
+            disabled: funcionarioSelecionado ? lockInputs : false,
+            options: [
+                { value: "comum", label: "Comum" },
+                { value: "administrador", label: "Administrador" }
+            ]
+        },
+        {
+            label: "CARGO",
+            name: "cargo",
+            type: "select",
+            placeholder: "",
+            colSpan: "col-span-3",
+            disabled: funcionarioSelecionado ? lockInputs : false,
+            options: [
+                { value: "estagiario", label: "Estagiário" },
+                { value: "auxiliar-administrativo", label: "Auxiliar administrativo" },
+                { value: "gerente", label: "Gerente" },
+                { value: "diretor", label: "Diretor" }
+            ]
+        },
+        {
+            label: "DEPARTAMENTO",
+            name: "departamento",
+            type: "select",
+            placeholder: "",
+            colSpan: "col-span-3",
+            disabled: funcionarioSelecionado ? lockInputs : false,
+            options: [
+                { value: "administrativo", label: "Administrativo" },
+                { value: "financeiro", label: "Financeiro" },
+                { value: "marketing", label: "Marketing" },
+                { value: "producao", label: "Produção" }
+            ]
+        }
+    ], [lockInputs, funcionarioSelecionado]);
+
+    function GenerateLockIcon({}: { className?: string }) {
         return (
             <>
-                {lockInputs &&
+                {funcionarioSelecionado && lockInputs &&
                     <Lock
-                        color={tema === "light" ? "var(--background-color-light-dark-theme)" : "var(--background-color-dark-light-theme)"}
+                        className={"absolute right-0.5 top-1/2"}
                     />
                 }
             </>
@@ -311,13 +401,13 @@ export default function Administrador() {
     return (
         <div className={`flex`}>
             <article className={"sidebar pt-[90px] pb-2 pl-1 flex items-center justify-center text-primary"}>
-                <div className={"bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm gap-1"}>
+                <div className={"bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm min-w-17 gap-1"}>
                     <div className={"div-title flex justify-between items-center"}>
                         <p className={"text-lg"}>Funcionários</p>
                         <CircleUserRound className="cursor-pointer" onClick={clearSelection} />
                     </div>
                     <div className={"relative"}>
-                        <input className={"border-b-2 border-primary p-0.5 pr-[2.2rem] bg-tertiary rounded-t-sm"} value={searchTerm} onChange={handleSearchChange} placeholder="Pesquisar funcionários" />
+                        <input className={"border-b-2 w-full border-primary p-0.5 pr-[2.2rem] bg-tertiary rounded-t-sm"} value={searchTerm} onChange={handleSearchChange} placeholder="Pesquisar funcionários" />
                         <Search
                             className="absolute right-0.5 top-1/2 transform -translate-y-1/2 text-primary"
                         />
@@ -325,95 +415,83 @@ export default function Administrador() {
                     <GenerateEmployeesButtons funcionarios={funcionarios} />
                 </div>
             </article>
-            <main className={`mainCommon text-base flex justify-start items-center flex-col gap-2`}>
-                <article className={"bg-tertiary rounded-sm p-1.5"}>
-                    <div className={"div-title"}>
-                        <h1 className={"title"}>DADOS DO PERFIL</h1>
+            <main className={`mainCommon text-base flex justify-start items-center flex-col gap-2 text-primary`}>
+                <article className={"bg-tertiary rounded-sm p-1.5 flex flex-col"}>
+                    <div className={"flex gap-1 items-center justify-center"}>
+                        <h1 className={"text-4xl font-subrayada w-full text-left"}>DADOS DO PERFIL</h1>
                         {funcionarioSelecionado &&
                             <Trash
-                                strokeWidth={1}
-                                size={43}
+                                strokeWidth={1.5}
+                                size={40}
+                                className="transition-colors hover:text-red cursor-pointer"
                                 onClick={() => deleteUser(funcionarioSelecionado)}
                             />
                         }
                         {funcionarioSelecionado &&
                             (lockInputs ?
                                 <PenOff
-                                    strokeWidth={1}
-                                    size={43}
+                                    strokeWidth={1.5}
+                                    size={40}
+                                    className="cursor-pointer"
                                     onClick={handleLockInputs}
                                 /> :
                                 <Pen
-                                    strokeWidth={1}
-                                    size={43}
+                                    strokeWidth={1.5}
+                                    size={40}
+                                    className="cursor-pointer"
                                     onClick={handleLockInputs}
                                 />
                             )
                         }
                     </div>
                     <form onSubmit={handleSubmit}>
-                        <article className={"article-inputs"}>
-                            <div className={`article-inputs-input nome ${lockInputs ? "locked" : ""}`}>
-                                <label>NOME COMPLETO</label>
-                                <input value={inputs.nome || ""} placeholder={"exemplo da silva paiva"} type={"text"}
-                                    name={"nome"} onChange={handleChange} disabled={lockInputs} />
-                                <GenerateLockIcon />
-                            </div>
-                            <div className={`article-inputs-input email ${lockInputs ? "locked" : ""}`}>
-                                <label>EMAIL</label>
-                                <input value={inputs.email || ""} placeholder={"exemplo@gmail.com"} type={"email"}
-                                    name={"email"} onChange={handleChange} disabled={lockInputs} />
-                                <GenerateLockIcon />
-                            </div>
-                            <div className={"article-inputs-input n-registro locked"}>
-                                <label>REGISTRO</label>
-                                <input value={inputs.n_registro || ""} placeholder={"1234567890"} type={"number"}
-                                    name={"n_registro"} disabled />
-                                <Shield
-                                    color={tema === "light" ? "var(--background-color-light-dark-theme)" : "var(--background-color-dark-light-theme)"}
-                                />
-                            </div>
-                            <div className={`article-inputs-input cpf ${lockInputs ? "locked" : ""}`}>
-                                <label>CPF</label>
-                                <input value={inputs.cpf || ""} placeholder={"12345678900"} type={"number"} name={"cpf"}
-                                    onChange={handleChange} disabled={lockInputs} />
-                                <GenerateLockIcon />
-                            </div>
-                            <div className={`article-inputs-input funcao ${lockInputs ? "locked" : ""}`}>
-                                <label>FUNÇÃO</label>
-                                <select value={inputs.funcao} defaultValue={"comum"} name={"funcao"}
-                                    onChange={handleChange} disabled={lockInputs}>
-                                    <option value={"comum"}>Comum</option>
-                                    <option value={"administrador"}>Administrador</option>
-                                </select>
-                                <GenerateLockIcon />
-                            </div>
-                            <div className={`article-inputs-input cargo ${lockInputs ? "locked" : ""}`}>
-                                <label>CARGO</label>
-                                <select value={inputs.cargo} defaultValue={"estagiario"} name={"cargo"}
-                                    onChange={handleChange} disabled={lockInputs}>
-                                    <option value={"estagiario"}>Estagiário</option>
-                                    <option value={"auxiliar-administrativo"}>Auxiliar administrativo</option>
-                                    <option value={"gerente"}>Gerente</option>
-                                    <option value={"diretor"}>Diretor</option>
-                                </select>
-                                <GenerateLockIcon />
-                            </div>
-                            <div className={`article-inputs-input departamento ${lockInputs ? "locked" : ""}`}>
-                                <label>DEPARTAMENTO</label>
-                                <select value={inputs.departamento} defaultValue={"administrativo"} name={"departamento"}
-                                    onChange={handleChange} disabled={lockInputs}>
-                                    <option value={"administrativo"}>Administrativo</option>
-                                    <option value={"financeiro"}>Financeiro</option>
-                                    <option value={"marketing"}>Marketing</option>
-                                    <option value={"producao"}>Produção</option>
-                                </select>
-                                <GenerateLockIcon />
-                            </div>
+                        <article className={"my-2 grid grid-cols-6 gap-2"}>
+                            {userFields.map(field => (
+                                <div key={field.name} className={`flex flex-col ${field.colSpan} relative`}>
+                                    <label className="w-full text-start">{field.label}</label>
+                                    {field.type === "input" ? (
+                                        <input
+                                            className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm ${field.disabled ? 'pointer-events-none' : ''}`}
+                                            value={inputs[field.name] || ""}
+                                            placeholder={field.placeholder}
+                                            type={field.inputType}
+                                            name={field.name}
+                                            onChange={handleChange}
+                                            disabled={field.disabled}
+                                        />
+                                    ) : (
+                                        <select
+                                            className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm ${field.disabled ? 'pointer-events-none appearance-none' : ''}`}
+                                            value={inputs[field.name] || field.options?.[0]?.value}
+                                            name={field.name}
+                                            onChange={handleChange}
+                                            disabled={field.disabled}
+                                        >
+                                            {field.options?.map(option => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
+                                    {field.locked ? (
+                                        <Shield className="absolute right-0.5 top-1/2"/>
+                                    ) : (
+                                        <GenerateLockIcon />
+                                    )}
+                                </div>
+                            ))}
                         </article>
                         <div className={"container-save-button"}>
                             <button
-                                className={`save-button ${lockInputs ? "locked" : ""}`} disabled={lockInputs}>{!funcionarioSelecionado ? "Criar perfil" : "Salvar alterações"}</button>
+                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${showEditModeMessage ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"}`} 
+                                type="submit"
+                            >
+                                {showEditModeMessage 
+                                    ? "Modo de Edição Necessário" 
+                                    : (!funcionarioSelecionado ? "Criar perfil" : "Salvar alterações")
+                                }
+                            </button>
                         </div>
                     </form>                
                 </article>
@@ -434,7 +512,7 @@ export default function Administrador() {
                                         type="date"
                                         value={selectedDate}
                                         onChange={handleDateChange}
-                                        className="w-full p-0.5 bg-secondary border-b-2 border-primary rounded-t-sm text-primary font-medium focus:outline-none focus:border-highlight transition-colors cursor-pointer"
+                                        className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
                                         onClick={(e) => e.currentTarget.showPicker()}
                                     />
                                 </div>
