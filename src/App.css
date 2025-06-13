@@ -55,24 +55,6 @@ body {
 /*Fim da declaração de regras simples*/
 
 
-.login-penas-left, .login-penas-right {
-    transition: var(--common-transition);
-    position: fixed;
-    animation: float 3s ease-in-out infinite;
-    &.dark {
-        filter: invert(1);
-    }
-}
-
-.login-penas-left {
-    left: -155px;
-}
-.login-penas-right {
-    right: -155px;
-}
-
-
-
 .mainCommon {
     p {
         transition: var(--common-transition);

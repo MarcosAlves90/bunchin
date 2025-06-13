@@ -9,8 +9,13 @@ import './index.css'
 import './assets/tailwind.css';
 // @ts-ignore
 import 'leaflet/dist/leaflet.css';
+// @ts-ignore
+import './assets/animations.css'
 
-createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error("Raiz do site não encontrada.");
+
+createRoot(rootElement).render(
   <StrictMode>
     <BrowserRouter>
         <UserProvider>

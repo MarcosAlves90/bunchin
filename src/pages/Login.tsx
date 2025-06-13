@@ -2,9 +2,9 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
-import { UserRound, Lock, Eye, EyeOff } from "lucide-react";
-import YellowButton from "../components/YellowButton.jsx";
-import useLoginForm  from "../utils/hooks/useLoginForm";
+import { UserRound, Eye, EyeOff } from "lucide-react";
+import useLoginForm from "../utils/hooks/useLoginForm";
+import useLoadingDots from "../utils/hooks/useLoadingDots";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -20,6 +20,8 @@ export default function Login() {
         handlePasswordVisibility,
         handleLoginButtonClick,
     } = useLoginForm(API_URL, setUsuario, navigate);
+    
+    const loadingDots = useLoadingDots(loading);
 
     useEffect(() => {
         if (usuario) {
@@ -32,91 +34,90 @@ export default function Login() {
 
     return (
         <>
-            <img className={`login-penas-left fixed animate-(float) ${tema}`} 
-                src={"/penas_esquerda_login.svg"}
+            <img className={`login-penas-left ${tema === "dark" ? "invert" : ""}`}
+                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"}
                 alt={"Penas à esquerda"} />
-            <img className={`login-penas-right ${tema}`}
-                src={"/penas_direita_login.svg"}
+            <img className={`login-penas-right ${tema === "dark" ? "invert" : ""}`}
+                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_direita_login_c14tob.svg"}
                 alt={"Penas à direita"} />
-            <div className={`login-form flex items-center content-center pb-3 h-36 relative`}>
-                <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem]"}
+            <div className={`login-form flex items-center content-center pb-3 max-h-36 h-full relative`}>
+                <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem] cursor-pointer"}
                     onClick={handleBackButtonClick}>
                     <img
-                        className={`relative hover:!cursor-pointer ${tema == 'dark' ? 'invert' : ''}`}
-                        src="/bunchin_bird_icon.svg"
+                        className={`bird-icon ${tema === "dark" ? "invert" : ""}`}
+                        src="https://res.cloudinary.com/dflvo098t/image/upload/bunchin_bird_icon_r8mgim.svg"
                         alt="Pássaro do bunchin"
-                    /> 
+                    />
                 </div>
-                <div className={`bg-(--highlight) text-(--primary) items-center px-2 flex flex-col h-full`}>
-                    <h2 className={"text-2xl mt-4 font-(family-name:--font-subrayada)"}>Não Possui um Cadastro?</h2>
-                    <img className={`my-2 ${tema == 'dark' ? 'invert' : ''}`} src="/login_crow.svg" alt="" />
-                    <p className={"left-side-p max-w-20 lg:text-2xl md:text-lg m-0"}>Entre em contato com o departamento pessoal da sua
+                <div className={`bg-highlight text-primary items-center justify-center px-2 pt-2 flex flex-col h-full max-w-27 rounded-tl-sm`}>
+                    <h2 className={"text-2xl font-subrayada font-bold"}>Não Possui um Cadastro?</h2>
+                    <img className={`left-side-crow my-2 h-14 ${tema === "dark" ? "invert" : ""}`} src="https://res.cloudinary.com/dflvo098t/image/upload/login_crow_tq7jng.svg" alt="" />
+                    <p className={"left-side-p text-xl m-0"}>Entre em contato com o departamento pessoal da sua
                         empresa para que eles criem seu acesso.</p>
                 </div>
-                <div className={"bg-(--card) text-(--text-card) flex flex-col items-center self-start h-full px-4 pb-4"}>
-                    <img className={`title-sessao h-4 mt-3 mb-3 ${tema == 'dark' ? 'invert' : ''}`} src="/iniciando_sessao_title.svg" alt="" />
-                    <form className={"form-login min-w-[35vw] w-full flex flex-col items-center"}>
-                        <label htmlFor="email" className="w-full text-left">EMAIL OU CPF</label>
-                        <div className={"w-full relative mb-3"}>
-                            <input
-                                type="text"
-                                id="email"
-                                placeholder="Email ou CPF"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                aria-label="Email ou CPF"
-                                autoComplete="username"
-                                className={"w-full !pl-3 p-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none"}
-                            />
-                            <UserRound
-                                color={"var(--text-card)"} className="absolute top-[1.1rem] left-1" />
-                        </div>
-                        <label htmlFor="senha" className="w-full text-left">SENHA</label>
-                        <div className={"w-full relative"}>
-                            <input
-                                type={passwordVisibility ? "text" : "password"}
-                                id="senha"
-                                placeholder="Senha"
-                                value={senha}
-                                onChange={(e) => setSenha(e.target.value)}
-                                aria-label="Senha"
-                                autoComplete="current-password"
-                                className={"w-full !pl-3 p-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none"}
-                            />
-                            <Lock
-                                 color={"var(--text-card)"} className="absolute top-[1.1rem] left-1"
-                            />
-                            {!passwordVisibility &&
-                                <Eye
-                                    className={"absolute top-[1.3rem] !left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
-                                    color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
-                                    onClick={handlePasswordVisibility}
-                                    aria-label="Mostrar senha"
-                                    role="button"
-                                    tabIndex={0}
+                <div className={"bg-tertiary text-primary flex flex-col text-base items-center justify-center self-start h-full px-2 rounded-tr-sm"}>
+                    <img className={`mb-4.5 w-[90%] ${tema === "dark" ? "invert" : ""}`} src="https://res.cloudinary.com/dflvo098t/image/upload/iniciando_sessao_title_d5bzll.svg" alt="" />
+                    <form className={"form-login w-full flex flex-col items-center"} onSubmit={handleLoginButtonClick}>
+                        <div className={"flex flex-col w-full"}>
+                            <label htmlFor="email" className="w-full text-start">EMAIL OU CPF</label>
+                            <div className="wrapper relative w-full flex items-center group">
+                                <input
+                                    type="text"
+                                    id="email"
+                                    placeholder="Email ou CPF"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    aria-label="Email ou CPF"
+                                    autoComplete="username"
+                                    className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
                                 />
-                            }
-                            {passwordVisibility &&
-                                <EyeOff
-                                    className={"absolute top-[1.3rem] !left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
-                                    color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
-                                    onClick={handlePasswordVisibility}
-                                    aria-label="Ocultar senha"
-                                    role="button"
-                                    tabIndex={0}
-                                />
-                            }
+                                <UserRound className="absolute right-0.5 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-highlight pointer-events-none" />
+                            </div>
                         </div>
-                        <p className={"reset-password text-(--highlight) mt-[0.3rem] mb-2 w-full text-end transition-(--common-transition) hover:!cursor-pointer hover:text-(--secondary)"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>
-                        <YellowButton
-                            text={loading ? "Carregando..." : error ? error : "Iniciar"}
-                            clickFunction={handleLoginButtonClick}
-                            error={error}
+                        <div className={"flex flex-col w-full mt-2"}>
+                            <label htmlFor="senha" className="w-full text-start">SENHA</label>
+                            <div className="wrapper relative w-full flex items-center group">
+                                <input
+                                    type={passwordVisibility ? "text" : "password"}
+                                    id="senha"
+                                    placeholder="Senha"
+                                    value={senha}
+                                    onChange={(e) => setSenha(e.target.value)}
+                                    aria-label="Senha"
+                                    autoComplete="current-password"
+                                    className={"border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"}
+                                />
+                                {passwordVisibility &&
+                                    <Eye
+                                        className={"absolute right-0.5 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-highlight cursor-pointer"}
+                                        onClick={handlePasswordVisibility}
+                                        aria-label="Mostrar senha"
+                                        role="button"
+                                        tabIndex={0}
+                                    />
+                                }
+                                {!passwordVisibility &&
+                                    <EyeOff
+                                        className={"absolute right-0.5 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-highlight cursor-pointer"}
+                                        onClick={handlePasswordVisibility}
+                                        aria-label="Ocultar senha"
+                                        role="button"
+                                        tabIndex={0}
+                                    />
+                                }
+                            </div>
+                        </div>
+                        <p className={"reset-password place-self-end text-highlight mt-[0.3rem] mb-2 transition-colors cursor-pointer hover:text-primary"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>                        <button
                             type={"submit"}
                             value={"Submit"}
+                            className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${error ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"}`}
                             disabled={loading}
                             aria-label="Iniciar sessão"
-                        />
+                        >
+                            <i className="bi bi-feather2 left"></i>
+                            {loading ? `Carregando${loadingDots}` : error ? error : "Iniciar"}
+                            <i className="bi bi-feather2 right"></i>
+                        </button>
                     </form>
                 </div>
             </div>

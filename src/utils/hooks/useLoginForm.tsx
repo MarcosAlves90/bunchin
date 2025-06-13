@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Usuario } from "./userContext";
+import { Usuario } from "../context/userContext";
 
 export default function useLoginForm(
     API_URL: string,
@@ -13,15 +13,25 @@ export default function useLoginForm(
     const [loading, setLoading] = useState(false);
     const [passwordVisibility, setPasswordVisibility] = useState(false);
 
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError("");
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
     const handlePasswordVisibility = () => {
         setPasswordVisibility((prev) => !prev);
     };
-
-    const handleLoginButtonClick = async (event: React.FormEvent<HTMLFormElement>) => {
+    
+    const handleLoginButtonClick = async (event: React.FormEvent) => {
         event.preventDefault();
         setError("");
         if (!email || !senha) {
-            setError("Preencha todos os campos.");
+            setError("Preencha todos os campos");
             return;
         }
         setLoading(true);
@@ -40,7 +50,7 @@ export default function useLoginForm(
                 setError(response.data.message);
             }
         } catch (error) {
-            setError("Erro ao tentar fazer login.");
+            setError("Erro ao tentar fazer login");
         } finally {
             setLoading(false);
         }

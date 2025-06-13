@@ -34,11 +34,10 @@ export default function Home() {
     return (
         <main className={`mainCommon-home flex justify-start items-center flex-col box-border min-h-screen max-w-85 w-full`}>            <article className={"mainCommon__hero flex flex-col items-center justify-center h-[calc(100vh-90px)] mt-[90px]"}>
                 <img className={`mainCommon__hero__title-svg h-[150px] transition ${tema === "dark" ? "invert-100" : ""}`} src={"https://res.cloudinary.com/dflvo098t/image/upload/bunchin_title_gb3kdr.svg"} alt={"Título do site"} />
-                <p className={"mainCommon__hero__subtitle mt-0 text-xl text-primary transition duration-200"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>
-                <button className={"button-session mt-5"} onClick={handleLoginButtonClick}>
+                <p className={"mainCommon__hero__subtitle mt-0 text-xl text-primary transition duration-200"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>                <button className={"button-session mt-5"} onClick={handleLoginButtonClick}>
                     Iniciar sessão
                 </button>
-                <ChevronDown className="mainCommon__hero__chevron transition-colors cursor-pointer text-primary absolute bottom-2" onClick={handleArrowClick} size={48} strokeWidth={2} />
+                <ChevronDown className="transition-colors cursor-pointer text-primary absolute bottom-2 animate-bounce-ping" onClick={handleArrowClick} size={48} strokeWidth={2} />
             </article>
             <article className={`mainCommon__resources mt-7`}>
                 <p ref={secondTitleRef} className={"mainCommon__resources__title"}>NOSSOS RECURSOS</p>
