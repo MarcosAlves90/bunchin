@@ -318,6 +318,7 @@ export default function Home() {
     }
 
     return (
+<<<<<<< HEAD
         <main className={`mainCommon flex justify-start items-center !py-0 flex-col`}>
             <article className={"mainCommon__hero flex flex-col items-center justify-center h-[calc(100vh-90px)] mt-[90px]"}>
                 <img className={`mainCommon__hero__title-svg h-[150px] transition ${tema === "dark" ? "invert-100" : ""}`} src={"/bunchin_title.svg"} alt={"Título do site"} />
@@ -327,9 +328,14 @@ export default function Home() {
                 <img className={`mainCommon__hero__penas ${isDown ? "down" : ""} right right-[-180px] ${tema === "light" ? "invert-100" : ""}`} src={"/penas_direita_home.svg"}
                     alt={"Penas à direita"} />
                 <button className={"button-session mt-5 transition-colors duration-200 text-secondary !bg-highlight hover:!bg-primary"} onClick={handleLoginButtonClick}>
+=======
+        <main className={`mainCommon-home flex justify-start items-center flex-col box-border min-h-screen max-w-85 w-full`}>            <article className={"mainCommon__hero flex flex-col items-center justify-center h-[calc(100vh-90px)] mt-[90px]"}>
+                <img className={`mainCommon__hero__title-svg h-[150px] transition ${tema === "dark" ? "invert-100" : ""}`} src={"https://res.cloudinary.com/dflvo098t/image/upload/bunchin_title_gb3kdr.svg"} alt={"Título do site"} />
+                <p className={"mainCommon__hero__subtitle mt-0 text-xl text-primary transition duration-200"}>Sua solução completa para gestão de ponto e dados de funcionários.</p>                <button className={"button-session mt-5"} onClick={handleLoginButtonClick}>
+>>>>>>> e3fcf0b (Refactors styles and animations; enhances login form)
                     Iniciar sessão
                 </button>
-                <ChevronDown className="mainCommon__hero__chevron transition-colors cursor-pointer text-primary absolute bottom-2" onClick={handleArrowClick} size={48} strokeWidth={2} />
+                <ChevronDown className="transition-colors cursor-pointer text-primary absolute bottom-2 animate-bounce-ping" onClick={handleArrowClick} size={48} strokeWidth={2} />
             </article>
             <article className={`mainCommon__resources mt-7`}>
                 <p ref={secondTitleRef} className={"mainCommon__resources__title mb-0"}>NOSSOS RECURSOS</p>

@@ -1,12 +1,12 @@
 @import "tailwindcss";
- 
+
 @theme {
     --spacing: 1rem;
- 
+
     --font-subrayada: "Montserrat Subrayada", sans-serif;
 <<<<<<< HEAD
     --font-montserrat: "Montserrat", sans-serif;
- 
+
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
     --color-tertiary: var(--tertiary);
@@ -25,7 +25,7 @@
     --color-card: var(--card);
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
- 
+
 :root {
     --highlight: #FF9900;
 <<<<<<< HEAD
@@ -46,7 +46,7 @@
     --card: #C6C6C6;
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
- 
+
 .dark {
     --highlight: #FFAE11;
 <<<<<<< HEAD
@@ -60,10 +60,17 @@
     --card: rgb(91, 91, 91);
 =======
     --card: #5b5b5b;
+<<<<<<< HEAD
 >>>>>>> 78d6ad3 (login modificado e cores repostas)
+=======
+    --tertiary: rgb(35, 35, 35);
+    
+    /* --text-card:#C6C6C6; */
+    --card: rgb(91, 91, 91);
+>>>>>>> e3fcf0b (Refactors styles and animations; enhances login form)
     --story-card: #f0f0f0;
 }
- 
+
 .mainCommon {
     @apply w-full pt-[90px] pb-2 box-border min-h-screen max-w-86 px-1;
 =======
@@ -76,7 +83,7 @@
     @apply w-full pt-[90px] box-border min-h-screen max-w-85;
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 }
- 
+
 .mainCommon__hero__penas {
     animation: float 3s ease-in-out infinite;
     @apply absolute transition-all duration-200 bottom-[-180px];
@@ -96,7 +103,7 @@
         }
     }
 }
- 
+
 .button-session {
 <<<<<<< HEAD
     @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
@@ -109,6 +116,7 @@
     }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
@@ -118,10 +126,13 @@
 }
  
 >>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
+=======
+
+>>>>>>> e3fcf0b (Refactors styles and animations; enhances login form)
 .mainCommon__resources__title {
     @apply text-4xl font-subrayada mb-2 text-primary transition-colors duration-200;
 }
- 
+
 .mainCommon__resources__box-points__point-wrapper .point-clock {
     animation: cuckoo 2s infinite ease-in-out;
 }
@@ -333,7 +344,59 @@
     }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 =======
  
 >>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
+=======
+ 
+
+.Overlay {
+    @apply fixed top-0 left-0 right-0 bottom-0 h-screen w-screen bg-primary/20 z-50 backdrop-blur-md flex items-center justify-center p-1;
+}
+
+
+.login-form{
+    &::after {
+        width: 0;
+        height: 0;
+        background: transparent;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-top: 25px solid var(--highlight);
+        border-left: 25px solid var(--highlight);
+        border-right: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+    }
+    &::before{
+        width: calc(100% - 50px);
+        height: 0;
+        background: transparent;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 50px;
+        border-bottom-left-radius: var(--radius-sm);
+        border-top: 25px solid var(--highlight);
+        border-left: 25px solid var(--highlight);
+        border-right: 25px solid var(--highlight);
+        border-bottom: 25px solid var(--highlight);
+    }
+}
+
+.login-penas-left, .login-penas-right {
+    transition: var(--common-transition);
+    position: fixed;
+    animation: float 3s ease-in-out infinite;
+}
+
+.login-penas-left {
+    left: -155px;
+}
+.login-penas-right {
+    right: -155px;
+}
+>>>>>>> e3fcf0b (Refactors styles and animations; enhances login form)

@@ -12,6 +12,7 @@ import './assets/tailwind.css';
 import 'leaflet/dist/leaflet.css';
 // @ts-ignore
 import './assets/animations.css'
+<<<<<<< HEAD
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error("Raiz do site não encontrada.");
@@ -24,6 +25,13 @@ import './assets/tailwind.css';
 
 createRoot(document.getElementById('root')).render(
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error("Raiz do site não encontrada.");
+
+createRoot(rootElement).render(
+>>>>>>> e3fcf0b (Refactors styles and animations; enhances login form)
   <StrictMode>
     <BrowserRouter>
         <UserProvider>

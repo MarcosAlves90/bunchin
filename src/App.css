@@ -231,6 +231,7 @@ footer {
     }
 }
 
+<<<<<<< HEAD
 .login-penas-left, .login-penas-right {
     transition: var(--common-transition);
     position: fixed;
@@ -377,6 +378,8 @@ footer {
 }
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
 
+=======
+>>>>>>> e3fcf0b (Refactors styles and animations; enhances login form)
 .mainCommon {
     p {
         transition: var(--common-transition);
