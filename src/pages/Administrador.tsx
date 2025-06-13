@@ -4,7 +4,7 @@ import validator from "validator";
 import { useCallback, useContext, useEffect, useState, useMemo, useRef } from "react";
 import { UserContext } from "../utils/context/userContext.js";
 import { GeneratePoints } from "../components/organisms/PointSystems.jsx";
-import { ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield, CircleUserRound } from "lucide-react";
+import { ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield, UserRoundPlus, PanelLeft, PanelLeftDashed } from "lucide-react";
 import { SendEmail } from "../utils/services/sendEmail.js";
 import { EmployeeSkeleton } from "../components/atoms/EmployeeSkeleton.tsx";
 
@@ -23,9 +23,9 @@ export default function Administrador() {
     const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
-    const { tema, usuario, API_URL } = useContext(UserContext);
-    const [inputs, setInputs] = useState<Record<string, string>>({});
+    const { tema, usuario, API_URL } = useContext(UserContext);    const [inputs, setInputs] = useState<Record<string, string>>({});
     const [colapsed, setColapsed] = useState(true);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [lockInputs, setLockInputs] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModeMessage, setShowEditModeMessage] = useState(false);
@@ -39,9 +39,8 @@ export default function Administrador() {
         const [year, month, day] = selectedDate.split('-').map(Number);
         const date = new Date(year, month - 1, day, 12, 0, 0);
         return date.toISOString();
-    }, [selectedDate]);
-
-    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
+    }, [selectedDate]);    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
+    const handleSidebarCollapse = useCallback(() => setSidebarCollapsed(prev => !prev), []);
     const handleDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);
     }, []);
@@ -396,20 +395,19 @@ export default function Administrador() {
                 }
             </>
         );
-    }
-
-    return (
+    }    return (
         <div className={`flex`}>
-            <article className={"sidebar pt-[90px] pb-2 pl-1 flex items-center justify-center text-primary"}>
-                <div className={"bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm min-w-17 gap-1"}>
+            <article className={`sidebar pt-[90px] pb-2 flex items-center justify-center text-primary transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'max-w-0 pl-0 overflow-hidden' : 'max-w-[280px] pl-1'}`}>
+                <div className={`bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm min-w-17 gap-1 transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
                     <div className={"div-title flex justify-between items-center"}>
-                        <p className={"text-lg"}>Funcionários</p>
-                        <CircleUserRound className="cursor-pointer" onClick={clearSelection} />
+                        <p className={"text-lg"}>Funcionários</p>                        <div>
+                        <UserRoundPlus className="cursor-pointer transition-colors hover:text-highlight" onClick={clearSelection} />
+                        </div>
                     </div>
-                    <div className={"relative"}>
-                        <input className={"border-b-2 w-full border-primary p-0.5 pr-[2.2rem] bg-tertiary rounded-t-sm"} value={searchTerm} onChange={handleSearchChange} placeholder="Pesquisar funcionários" />
+                    <div className={"relative group"}>
+                        <input className={"border-b-2 w-full border-primary p-0.5 pr-[2.2rem] bg-tertiary rounded-t-sm group-focus-within:border-highlight"} value={searchTerm} onChange={handleSearchChange} placeholder="Pesquisar funcionários" />
                         <Search
-                            className="absolute right-0.5 top-1/2 transform -translate-y-1/2 text-primary"
+                            className="absolute right-0.5 top-1/2 transform -translate-y-1/2 text-primary group-focus-within:text-highlight"
                         />
                     </div>
                     <GenerateEmployeesButtons funcionarios={funcionarios} />
@@ -418,6 +416,12 @@ export default function Administrador() {
             <main className={`mainCommon text-base flex justify-start items-center flex-col gap-2 text-primary`}>
                 <article className={"bg-tertiary rounded-sm p-1.5 flex flex-col"}>
                     <div className={"flex gap-1 items-center justify-center"}>
+                        {!sidebarCollapsed &&
+                            <PanelLeft strokeWidth={1.5} size={40} className="cursor-pointer transition-colors hover:text-highlight" onClick={handleSidebarCollapse} />
+                        }
+                        {sidebarCollapsed &&
+                            <PanelLeftDashed strokeWidth={1.5} size={40} className="cursor-pointer transition-colors hover:text-highlight" onClick={handleSidebarCollapse} />
+                        }
                         <h1 className={"text-4xl font-subrayada w-full text-left"}>DADOS DO PERFIL</h1>
                         {funcionarioSelecionado &&
                             <Trash
