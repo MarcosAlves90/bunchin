@@ -266,7 +266,7 @@ export default function Administrador() {
             }
         } else {
             setFuncionarioSelecionado(String(funcionario.n_registro));
-            setIndexFuncionario(funcionarios.findIndex(f => f.n_registro === Number(funcionarioSelecionado)));
+            setIndexFuncionario(funcionarios.findIndex(f => f.n_registro === funcionario.n_registro));
             setLockInputs(true);
         }
     }
@@ -284,7 +284,7 @@ export default function Administrador() {
             });
         }
         console.log(funcionarioSelecionado);
-    }, [funcionarioSelecionado]);
+    }, [funcionarioSelecionado, indexFuncionario]);
 
     const clearSelection = useCallback(() => {
         setFuncionarioSelecionado("");
