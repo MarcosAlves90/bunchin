@@ -104,7 +104,8 @@ export default function Pontos() {
                     <LiveClock />
                 </div>
                 <button className={`button-session max-w-20 w-full ${locked === 'maxAtingido' ? "!bg-red !text-primary" : !locked ? "!bg-green hover:!bg-secondary hover:!text-green" : ""}`} onClick={handleBaterPontoClick}>{locked === 'maxAtingido' ? "Máximo atingido!" : locked ? "Bater ponto" : "Confirmar?"}</button>
-            </article>            <article className={"card-registros font-bold text-start w-full transition-colors rounded-sm p-1.5 bg-tertiary flex gap-1.5 flex-col"}>
+            </article>            
+            <article className={"card-registros font-bold text-start w-full transition-colors rounded-sm p-1.5 bg-tertiary flex gap-1.5 flex-col"}>
                 <p className={"card-registros-title text-xl font-subrayada text-primary"}>Registros recentes</p>
                 <GeneratePoints ref={generatePointsRef} date={currentDate} onPointsChange={handlePointsChange} />
                 <div className="card-registros-bottom-wrapper max-w-20 w-full rounded-sm text-secondary bg-highlight px-1 py-[0.7rem] mx-auto transition-colors flex gap-1 items-center hover:cursor-pointer hover:bg-primary" onClick={handleMorePointsButtonClick}>

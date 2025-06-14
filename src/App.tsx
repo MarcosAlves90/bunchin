@@ -97,7 +97,7 @@ function App() {
           <DecorativePenas isDown={location.pathname === "/" ? isDown : false} />
         )}
 
-        <HelpSystem/>
+        {(usuario && <HelpSystem/>)}
         
         <Routes>
           <Route path="/" element={<Home/>}/>
