@@ -438,7 +438,7 @@ export default function Administrador() {
                                         onClick={(e) => e.currentTarget.showPicker()}
                                     />
                                 </div>
-                                <GeneratePoints cpf={funcionarioSelecionado} date={selectedDateISO} canDelete={true} canRefresh={true} />
+                                <GeneratePoints funcionario_id={funcionarioSelecionado} date={selectedDateISO} canDelete={true} canRefresh={true} />
                             </>
                         )}
                     </article>

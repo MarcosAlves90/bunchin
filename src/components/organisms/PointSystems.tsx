@@ -14,7 +14,7 @@ ReactModal.setAppElement('#root');
 
 export interface RegistroPonto {
     id: string;
-    funcionario_fk: string;
+    funcionario_fk: number | string;
     nome: string;
     data: Date;
 }
@@ -22,7 +22,7 @@ export interface RegistroPonto {
 interface GeneratePointsProps {
     canDelete?: boolean;
     canRefresh?: boolean;
-    cpf?: string;
+    funcionario_id?: string;
     onPointsChange?: (registros: RegistroPonto[]) => void;
     date?: string;
 }
@@ -122,7 +122,7 @@ const RegistroItem = ({ registro, isAdmin, handleOpenModal, onDeletePonto, editS
     );
 };
 
-export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>(({ canDelete = false, canRefresh = false, cpf, onPointsChange, date }, ref) => {
+export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>(({ canDelete = false, canRefresh = false, funcionario_id, onPointsChange, date }, ref) => {
     const { tema, usuario, API_URL } = useContext(UserContext);
     const location = useLocation();
     const [registros, setRegistros] = useState<RegistroPonto[]>([]);
@@ -185,8 +185,8 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
     }, [usuario, formState, handleCloseModal]);
 
     const getPonto = useCallback(async (): Promise<void> => {
-        const cpfToUse = cpf || usuario?.cpf || '';
-        if (cpfToUse) {
+        const funcionarioIdToUse = funcionario_id || String(usuario?.n_registro) || '';
+        if (funcionarioIdToUse) {
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
             }
@@ -196,7 +196,7 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
             setIsLoading(true);
             try {
                 const dateToUse = date || new Date().toISOString();
-                const pontos = await getPoints(cpfToUse, dateToUse, API_URL, controller.signal);
+                const pontos = await getPoints(funcionarioIdToUse, dateToUse, API_URL, controller.signal);
                 if (!controller.signal.aborted) {
                     setRegistros(pontos);
                     if (onPointsChangeRef.current) {
@@ -220,7 +220,7 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
                 }
             }
         }
-    }, [cpf, usuario?.cpf, API_URL, date]);
+    }, [funcionario_id, usuario?.n_registro, API_URL, date]);
 
     useImperativeHandle(ref, () => ({
         refreshPoints: getPonto,
@@ -336,7 +336,7 @@ export const GeneratePoints = forwardRef<GeneratePointsRef, GeneratePointsProps>
 GeneratePoints.propTypes = {
     canDelete: PropTypes.bool,
     canRefresh: PropTypes.bool,
-    cpf: PropTypes.string,
+    funcionario_id: PropTypes.string,
     onPointsChange: PropTypes.func,
     date: PropTypes.string
 };

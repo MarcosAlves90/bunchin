@@ -15,7 +15,7 @@ interface PontoProcessado {
 }
 
 export async function getPoints(
-    cpf: string,
+    funcionario_id: string,
     date: string,
     API_URL: string,
     signal?: AbortSignal
@@ -23,7 +23,7 @@ export async function getPoints(
     try {
         const response = await axios.get<Ponto[]>(`${API_URL}ponto/filtro`, {
             params: {
-                cpf: cpf,
+                funcionario_id: funcionario_id,
                 dia: date
             },
             signal: signal,
@@ -37,7 +37,7 @@ export async function getPoints(
         }
 
         return data
-            .filter(ponto => ponto.funcionario_fk && ponto.funcionario_fk === cpf)
+            .filter(ponto => ponto.funcionario_fk && ponto.funcionario_fk === funcionario_id)
             .map(ponto => ({
                 nome: ponto.nome_tipo,
                 id: ponto.id_ponto,
