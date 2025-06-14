@@ -69,7 +69,7 @@ export default function NavBar() {
                             </Link>
                             <Link
                                 className={`nav-link text-lg text-secondary bg-highlight border-2 border-highlight hover:bg-primary hover:border-primary transition-colors duration-300 px-2 py-[0.2rem] rounded-sm w-con`}
-                                to={"/"}
+                                to={"/registro"}
                             >
                                 Registro
                             </Link>

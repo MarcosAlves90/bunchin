@@ -31,6 +31,9 @@
     &.login {
         height: 100vh;
     }
+    &.registro {
+        height: 100vh;
+    }
 }
 
 body {

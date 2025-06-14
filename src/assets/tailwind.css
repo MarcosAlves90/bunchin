@@ -167,6 +167,35 @@
     transform: scale(1.05);
 }
 
+.registro-form{
+    &::after {
+        width: 0;
+        height: 0;
+        background: transparent;
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        border-top: 25px solid var(--card);
+        border-left: 25px solid transparent;
+        border-right: 25px solid var(--card);
+        border-bottom: 25px solid transparent;
+    }
+    &::before{
+        width: calc(100% - 50px);
+        height: 0;
+        background: transparent;
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50px;
+        border-top: 25px solid var(--card);
+        border-left: 25px solid var(--card);
+        border-right: 25px solid var(--card);
+        border-bottom: 25px solid var(--card);
+    }
+}
+
 /* Responsividade para grid layouts */
 @media (max-width: 1024px) {
     .grid-cols-4 {

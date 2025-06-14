@@ -7,6 +7,7 @@ import Home from './pages/Home.tsx';
 import Sobre from "./pages/Sobre.tsx";
 import Contato from './pages/Contato.tsx';
 import Login from './pages/Login';
+import Registro from './pages/Registro';
 import Perfil from "./pages/Perfil.tsx";
 import Pontos from "./pages/Pontos.tsx";
 import {useContext, useEffect, useState} from "react";
@@ -82,7 +83,7 @@ function App() {
   }
 
   return (
-      <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
+      <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""} ${location.pathname === "/registro" ? "registro" : ""}`}>
 
         <div className={"page-loader"}>
           {(loading) && (
@@ -91,7 +92,7 @@ function App() {
               </div>
           )}
         </div>
-        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <NavBar/>}
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" && <NavBar/>}
         
         {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && (
           <DecorativePenas isDown={location.pathname === "/" ? isDown : false} />
@@ -107,9 +108,10 @@ function App() {
           <Route path="/pontos" element={<Pontos/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/registro" element={<Registro/>}/>
           <Route path={"resetar-senha"} element={<ResetarSenha/>}/>
         </Routes>
-        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <Footer/>}
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" &&<Footer/>}
       </main>
   );
 }
