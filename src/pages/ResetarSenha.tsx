@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
 import axios from "axios";
 import validator from "validator";
 import { useEffect, useContext } from "react";
@@ -21,9 +24,12 @@ import { useNavigate } from "react-router-dom";
 <<<<<<< HEAD
 import { useResetPasswordForm } from "../utils/hooks/useResetPasswordForm.js";
 import { Undo2 } from "lucide-react";
+<<<<<<< HEAD
 =======
 import { useResetPasswordForm } from "../utils/useResetPasswordForm.jsx";
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
 
 export default function ResetarSenha() {
     const navigate = useNavigate();
@@ -129,15 +135,20 @@ export default function ResetarSenha() {
 
     if (resetCode && !isValidCode) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         return <h1 className="text-center text-2xl mt-10">404 - Código inválido</h1>;
 =======
         return <h1>404 - Código inválido</h1>;
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+        return <h1 className="text-center text-2xl mt-10">404 - Código inválido</h1>;
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
     }
 
     const handleBackButtonClick = () => navigate("/login");
 
     return (
+<<<<<<< HEAD
 <<<<<<< HEAD
         <main className={`mainCommon resetPassword ${tema} min-h-screen flex items-center justify-center bg-[var(--secondary)] relative`}>
             <div className="absolute top-6 left-1">
@@ -217,39 +228,98 @@ export default function ResetarSenha() {
             </div>
         </main>
 =======
+=======
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
         <>
             <main className={`mainCommon resetPassword ${tema}`}>
                 <div className="cardBox">
                     <button className={"backArrow"} onClick={handleBackButtonClick}><Undo2/>
                     </button>
                     <h1>Recuperar conta</h1>
+=======
+        <main className={`mainCommon resetPassword ${tema} min-h-screen flex items-center justify-center bg-[var(--secondary)] relative`}>
+            <div className="absolute top-6 left-1">
+                <button onClick={handleBackButtonClick} aria-label="Voltar">
+                    <Undo2
+                        className={`mb-0 hover:!cursor-pointer ${tema == 'dark' ? 'invert' : ''}`}
+                        size={32}
+                        color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
+                    />
+                </button>
+            </div>
+            <div className="flex flex-col items-center w-full">
+                <div className="bg-(--card) text-(--text-card) rounded-lg shadow-lg px-8 py-8 flex flex-col items-center gap-y-2 h-40 w-full relative">
+                    <h1 className="text-2xl font-bold text-(--primary) font-(family-name:--font-subrayada)">Recuperar conta</h1>
+>>>>>>> 7e93f61 (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
                     {(resetCode && isValidCode) || (usuario && usuario.status === "0") ? (
                         <>
-                            <p className={"p-title"}>Nova Senha</p>
-                            <input type="text" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                            <div className="password-strength-bar" style={{
-                                backgroundColor: getPasswordStrengthColor(),
-                                width: `${(passwordStrength / 6) * 100}%`
-                            }}></div>
-                            <p className={"p-title"}>Confirme a Nova Senha</p>
-                            <input type="text" value={confirmNewPassword}
-                                onChange={(e) => setConfirmNewPassword(e.target.value)} />
-                            {error && <p className="error">{error}</p>}
-                            <button onClick={handlePasswordChange}>Redefinir Senha</button>
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left">Nova Senha</label>
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    className="w-full mb-2 pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="new-password"
+                                />
+                            </div> 
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left mb-1">Confirme a Nova Senha</label>
+                                <input
+                                    type="password"
+                                    value={confirmNewPassword}
+                                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                    className="w-full pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="new-password"
+                                />
+                            </div>
+                            {error && <p className="error text-red-500 text-sm">{error}</p>}
+                            <button
+                                onClick={handlePasswordChange}
+                                className="w-full mt-3 bg-(--highlight) text-(--primary) font-bold py-2 rounded transition-all hover:bg-(--text-card)"
+                            >
+                                Redefinir Senha
+                            </button>
                         </>
                     ) : (
                         <>
-                            <p className={"p-title"}>Email</p>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <p className={"p-title"}>Insira o email novamente</p>
-                            <input value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} />
-                            {error && <p className="error">{error}</p>}
-                            <button onClick={sendEmail}>Enviar</button>
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left mb-0">Email</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="email"
+                                />
+                            </div>
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left mb-0">Insira o email novamente</label>
+                                <input
+                                    type="email"
+                                    value={confirmEmail}
+                                    onChange={(e) => setConfirmEmail(e.target.value)}
+                                    className="w-full pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="email"
+                                />
+                            </div>
+                            {error && <p className="error text-red-500 text-sm">{error}</p>}
+                            <button
+                                onClick={sendEmail}
+                                className="w-full mt-3 bg-(--highlight) text-(--primary) font-bold py-1 rounded transition-all hover:bg-(--text-card)"
+                            >
+                                Enviar
+                            </button>
                         </>
                     )}
                 </div>
+<<<<<<< HEAD
             </main>
         </>
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+            </div>
+        </main>
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
     );
 }

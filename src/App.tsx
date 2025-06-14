@@ -18,6 +18,9 @@ import Contato from './pages/Contato.tsx';
 import Login from './pages/Login';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
 import Registro from './pages/Registro';
 import Perfil from "./pages/Perfil.tsx";
 import Pontos from "./pages/Pontos.tsx";
@@ -122,6 +125,7 @@ function App() {
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""} ${location.pathname === "/registro" ? "registro" : ""}`}>
 =======
       <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
@@ -129,6 +133,9 @@ function App() {
 =======
       <main className={`appMain display-flex-center bg-secondary px-1 ${tema} ${location.pathname === "/login" ? "login" : ""}`}>
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+      <main className={`appMain display-flex-center bg-secondary ${tema} ${location.pathname === "/login" ? "login" : ""} ${location.pathname === "/registro" ? "registro" : ""}`}>
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
 
         <div className={"page-loader"}>
           {(loading) && (
@@ -138,6 +145,9 @@ function App() {
           )}
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" && <NavBar/>}
         
         {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && (
@@ -166,10 +176,15 @@ function App() {
           <Route path="/configuracoes" element={<Configuracoes/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/registro" element={<Registro/>}/>
           <Route path={"resetar-senha"} element={<ResetarSenha/>}/>
         </Routes>
+<<<<<<< HEAD
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && <Footer/>}
 >>>>>>> bea5ea5 (feat: Add main application pages and user context management)
+=======
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" &&<Footer/>}
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
       </main>
   );
 }

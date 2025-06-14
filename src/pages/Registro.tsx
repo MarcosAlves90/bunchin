@@ -2,6 +2,10 @@ import { useContext, useState } from "react";
 import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { Undo2} from "lucide-react";
+<<<<<<< HEAD
+=======
+import YellowButton from "../components/YellowButton.jsx";
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
 
 function ProgressIndicator({ step }: { step: number }) {
     return (
@@ -136,7 +140,11 @@ export default function Registro() {
                                     </select>
                                 </div>
                             </div>
+<<<<<<< HEAD
                             <button
+=======
+                            <YellowButton
+>>>>>>> 2cced5f (Adiciona página de registro com formulário e navegação, e atualiza estilos para registro)
                                 text="Avançar"
                                 type="submit"
                                 aria-label="Avançar"
