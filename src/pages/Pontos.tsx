@@ -68,10 +68,14 @@ export default function Pontos() {
                 id: uuid,
                 data: new Date(),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 funcionario_fk: Number(usuario?.n_registro) || 0
 =======
                 funcionario_fk: String(usuario?.n_registro) || ''
 >>>>>>> 06dfafe (Refatora sistema de pontos para usar funcionario_id em vez de cpf, ajustando a lógica de filtragem e as interfaces correspondentes.)
+=======
+                funcionario_fk: Number(usuario?.n_registro) || 0
+>>>>>>> f289d35 (Ajusta tipos de dados para funcionario_fk e n_registro, garantindo consistência nas interfaces e na lógica de filtragem.)
             };
             await salvarPonto(novoRegistro);
 =======
@@ -111,10 +115,14 @@ export default function Pontos() {
             const response = await axios.post(`${API_URL}ponto`, {
                 id_ponto: registro.id,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 funcionario_fk: Number(usuario.n_registro),
 =======
                 funcionario_fk: String(usuario.n_registro),
 >>>>>>> 06dfafe (Refatora sistema de pontos para usar funcionario_id em vez de cpf, ajustando a lógica de filtragem e as interfaces correspondentes.)
+=======
+                funcionario_fk: Number(usuario.n_registro),
+>>>>>>> f289d35 (Ajusta tipos de dados para funcionario_fk e n_registro, garantindo consistência nas interfaces e na lógica de filtragem.)
                 nome_tipo: registro.nome,
                 data_hora: registro.data
             });
