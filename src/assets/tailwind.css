@@ -132,3 +132,64 @@
 .login-penas-right {
     right: -155px;
 }
+
+/* Novos estilos para componentes profissionais */
+.stat-card {
+    @apply bg-secondary/30 backdrop-blur-sm border border-tertiary rounded-sm p-4 text-center hover:bg-secondary/50 transition-all duration-300;
+}
+
+.feature-card {
+    @apply bg-secondary/20 backdrop-blur-sm border border-tertiary rounded-sm p-6 hover:bg-secondary/30 transition-all duration-300;
+}
+
+.pricing-card {
+    @apply bg-secondary/20 backdrop-blur-sm border border-tertiary rounded-sm p-6 hover:bg-secondary/30 transition-all duration-300;
+}
+
+.pricing-card.popular {
+    @apply border-highlight border-2 transform scale-105;
+}
+
+.faq-item {
+    @apply border border-tertiary rounded-sm overflow-hidden bg-secondary/10 backdrop-blur-sm;
+}
+
+.newsletter-section {
+    @apply bg-highlight/10 border border-highlight/30 rounded-sm p-8 text-center;
+}
+
+/* Animações suaves para interações */
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Responsividade para grid layouts */
+@media (max-width: 1024px) {
+    .grid-cols-4 {
+        @apply grid-cols-2;
+    }
+    
+    .grid-cols-3 {
+        @apply grid-cols-2;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-cols-4,
+    .grid-cols-3,
+    .grid-cols-2 {
+        @apply grid-cols-1;
+    }
+    
+    .text-4xl {
+        @apply text-3xl;
+    }
+    
+    .text-3xl {
+        @apply text-2xl;
+    }
+}
