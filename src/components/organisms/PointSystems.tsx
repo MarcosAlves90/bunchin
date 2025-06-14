@@ -14,7 +14,11 @@ ReactModal.setAppElement('#root');
 
 export interface RegistroPonto {
     id: string;
+<<<<<<< HEAD
     funcionario_fk: number;
+=======
+    funcionario_fk: number | string;
+>>>>>>> 06dfafe (Refatora sistema de pontos para usar funcionario_id em vez de cpf, ajustando a lógica de filtragem e as interfaces correspondentes.)
     nome: string;
     data: Date;
 }
