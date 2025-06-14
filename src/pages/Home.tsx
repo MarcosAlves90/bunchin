@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 54d4c4f (Adds UI enhancements and new components for improved functionality)
 import { useRef, useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -53,6 +56,7 @@ export default function Home() {
     const [isDown, setIsDown] = useState(false);
     const secondTitleRef = useRef(null);
     const { tema } = useContext(UserContext) as UserContextType;
+    const [email, setEmail] = useState("");
 
     useEffect(() => {
         const handleScroll = () => {
@@ -72,6 +76,9 @@ export default function Home() {
             window.scrollTo({ top: offset, behavior: 'smooth' });
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 54d4c4f (Adds UI enhancements and new components for improved functionality)
     };    function handleLoginButtonClick() {
         navigate("/login");
     }
@@ -117,6 +124,7 @@ export default function Home() {
                             description="Acompanhe o desempenho e a produtividade da sua equipe em tempo real. Analise métricas importantes, defina metas e incentive o crescimento profissional dos seus colaboradores."
                         />
                     </div>
+<<<<<<< HEAD
                 </div>
 
                 <div data-aos="fade-up">
@@ -421,6 +429,199 @@ export default function Home() {
 >>>>>>> 25f0f53 (feat: Adicionar componente YellowButton com estilos e funcionalidade de clique)
                 </div>
                 <button className={"button-session last"}>
+=======
+                </div>
+
+                <div data-aos="fade-up">
+                    <p className={"mainCommon__resources__title mt-15"}>HISTÓRIAS DE SUCESSO</p>
+                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>Relatos de clientes satisfeitos com a nossa plataforma e serviços de alto nível</p>
+                    <div className={"box-stories grid grid-cols-3 gap-3 group"}>
+                        <Story
+                            starNumber={4}
+                            text="Desde que implementamos a plataforma, a motivação do time disparou! As metas são claras e as recompensas são um incentivo constante para todos. Acredito que estamos mais alinhados e engajados como nunca!"
+                            author="— Ana L., Gerente de RH da [Empresa ABC]"
+                        />
+                        <Story
+                            starNumber={5}
+                            text="A plataforma nos ajudou a acompanhar o desempenho de todos os colaboradores em tempo real. Agora, temos relatórios precisos e podemos dar feedbacks rápidos. Está facilitando muito nosso trabalho!"
+                            author="— Carlos M., Diretor de Operações da [Empresa XYZ]"
+                        />
+                        <Story
+                            starNumber={5}
+                            text="Ficamos surpresos com a facilidade de implementação. A integração foi rápida e a equipe de suporte foi excelente, nos guiando em cada etapa. O uso da plataforma no dia a dia também é muito intuitivo!"
+                            author="— Juliana S., CEO da [Empresa DEF]"
+                        />
+                    </div>
+                </div>
+
+                <div data-aos="fade-up">
+                    <p className={"mainCommon__resources__title mt-15"}>COMO FUNCIONA</p>
+                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>
+                        Implementação simples em 3 passos
+                    </p>
+                    <div className="grid grid-cols-3 gap-3">
+                        <FeatureCard
+                            inverse={true}
+                            title="1. Cadastro Rápido"
+                            description="Registre sua empresa e funcionários em minutos. Nossa interface intuitiva torna o processo de configuração extremamente simples."
+                            icon={<CheckCircle size={64} strokeWidth={1.5} />}
+                        />
+                        <FeatureCard
+                            inverse={true}
+                            title="2. Configuração Personalizada"
+                            description="Configure horários, turnos e regras específicas da sua empresa. Adaptamos o sistema às suas necessidades únicas."
+                            icon={<BarChart3 size={64} strokeWidth={1.5} />}
+                        />
+                        <FeatureCard
+                            inverse={true}
+                            title="3. Funcionamento Completo"
+                            description="Seus funcionários começam a registrar pontos imediatamente via web ou mobile, com total segurança e precisão."
+                            icon={<Smartphone size={64} strokeWidth={1.5} />}
+                        />
+                    </div>
+                </div>
+
+                <div data-aos="fade-up">
+                    <p className={"mainCommon__resources__title mt-15"}>BENEFÍCIOS EXCLUSIVOS</p>
+                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>
+                        Vantagens que fazem a diferença no seu negócio
+                    </p>
+                    <div className="grid grid-cols-3 gap-3">
+                        <FeatureCard
+                            title="Acesso Global"
+                            description="Funciona em qualquer lugar do mundo com acesso à internet. Perfeito para empresas com equipes remotas ou múltiplas filiais."
+                            icon={<Globe size={64} strokeWidth={1.5} />}
+                        />
+                        <FeatureCard
+                            title="Segurança Máxima"
+                            description="Dados criptografados e armazenados com os mais altos padrões de segurança. Compliance total com LGPD e regulamentações internacionais."
+                            icon={<Lock size={64} strokeWidth={1.5} />}
+                        />
+                        <FeatureCard
+                            title="Relatórios Inteligentes"
+                            description="Analytics avançado com insights sobre produtividade, pontualidade e padrões de trabalho. Tome decisões baseadas em dados."
+                            icon={<BarChart3 size={64} strokeWidth={1.5} />}
+                        />
+                    </div>
+                </div>
+
+                {/* Seção de Preços */}
+                <div className="mt-15" data-aos="fade-up">
+                    <p className={"mainCommon__resources__title"}>PLANOS E PREÇOS</p>
+                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-8 text-primary"}>
+                        Escolha o plano ideal para sua empresa
+                    </p>
+                    <div className="grid grid-cols-3 gap-3">
+                        <PricingCard
+                            title="Básico"
+                            price="R$ 29"
+                            period="/mês"
+                            features={[
+                                "Até 10 funcionários",
+                                "Registro de ponto básico",
+                                "Relatórios simples",
+                                "Suporte por email"
+                            ]}
+                            buttonText="Começar Agora"
+                        />
+                        <PricingCard
+                            title="Profissional"
+                            price="R$ 79"
+                            period="/mês"
+                            features={[
+                                "Até 50 funcionários",
+                                "Ponto por proximidade",
+                                "Relatórios avançados",
+                                "Integração com outros sistemas",
+                                "Suporte prioritário"
+                            ]}
+                            isPopular={true}
+                            buttonText="Teste Grátis"
+                        />
+                        <PricingCard
+                            title="Enterprise"
+                            price="R$ 199"
+                            period="/mês"
+                            features={[
+                                "Funcionários ilimitados",
+                                "Recursos personalizados",
+                                "API completa",
+                                "Gerente de conta dedicado",
+                                "Suporte 24/7"
+                            ]}
+                            buttonText="Falar com Vendas"
+                        />
+                    </div>
+                </div>
+
+                {/* TODO: Finalizar seções abaixo  */}
+
+                {/* Seção FAQ */}
+                <div className="mt-16" data-aos="fade-up">
+                    <p className={"mainCommon__resources__title"}>PERGUNTAS FREQUENTES</p>
+                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-8 text-primary"}>
+                        Esclarecemos as principais dúvidas sobre nossa plataforma
+                    </p>
+                    <div className="max-w-4xl mx-auto space-y-4">
+                        {faqData.slice(0, 6).map((faq, index) => (
+                            <FAQItem
+                                key={index}
+                                question={faq.pergunta}
+                                answer={faq.resposta}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Newsletter */}
+                <div className="mt-16 bg-highlight/10 border border-highlight/30 rounded-sm p-8 text-center" data-aos="fade-up">
+                    <div className="max-w-2xl mx-auto">
+                        <Mail className="text-highlight mx-auto mb-4" size={48} strokeWidth={1.5} />
+                        <h3 className="text-2xl font-semibold text-primary mb-3 transition-colors duration-200">
+                            Fique por dentro das novidades
+                        </h3>
+                        <p className="text-primary/80 mb-6 transition-colors duration-200">
+                            Receba atualizações sobre novas funcionalidades, dicas de gestão e conteúdo exclusivo diretamente no seu email.
+                        </p>
+                        <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Seu melhor email"
+                                className="flex-1 px-4 py-3 rounded-sm border border-tertiary bg-secondary/20 text-primary placeholder-primary/60 focus:border-highlight focus:outline-none transition-colors duration-200"
+                                required
+                            />
+                            <button
+                                type="submit"
+                                className="px-6 py-3 bg-highlight hover:bg-primary text-secondary rounded-sm font-medium transition-colors duration-300"
+                            >
+                                Inscrever-se
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {/* Call to Action Final */}
+                <div className="mt-16 text-center" data-aos="fade-up">
+                    <h3 className="text-3xl font-bold text-primary mb-4 transition-colors duration-200">
+                        Pronto para revolucionar a gestão da sua empresa?
+                    </h3>
+                    <p className="text-xl text-primary/80 mb-8 transition-colors duration-200">
+                        Junte-se a centenas de empresas que já transformaram sua gestão de ponto e equipe.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button className="button-session">
+                            Teste Grátis por 14 dias
+                        </button>
+                        <button className="border-2 border-highlight text-highlight hover:bg-highlight hover:text-secondary px-6 py-3 rounded-sm font-medium transition-all duration-300">
+                            Agendar Demonstração
+                        </button>
+                    </div>
+                </div>
+
+                <button className={"button-session last mt-5"}>
+>>>>>>> 54d4c4f (Adds UI enhancements and new components for improved functionality)
                     Registre sua empresa
                 </button>
             </article>
