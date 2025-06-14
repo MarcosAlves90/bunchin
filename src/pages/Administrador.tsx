@@ -12,7 +12,7 @@ interface Funcionario {
     cpf: string;
     nome: string;
     email: string;
-    n_registro: string;
+    n_registro: number;
     funcao: string;
     cargo: string;
     departamento: string;
@@ -198,7 +198,7 @@ export default function Administrador() {
         if (isLoading) {
             return (
                 <article className={"flex flex-col gap-0.5"}>
-                    {Array.from({ length: 14 }).map((_, index) => (
+                    {Array.from({ length: 4 }).map((_, index) => (
                         <EmployeeSkeleton tema={tema} key={`skeleton-${index}`} />
                     ))}
                 </article>
@@ -217,14 +217,14 @@ export default function Administrador() {
 
         return (
             <article className={"flex flex-col gap-0.5"}>
-                {filteredFuncionarios.filter((funcionario: Funcionario) => String(usuario?.n_registro) !== funcionario.n_registro).map((funcionario: Funcionario) => (
+                {filteredFuncionarios.filter((funcionario: Funcionario) => usuario?.n_registro !== funcionario.n_registro).map((funcionario: Funcionario) => (
                     <div
                         key={funcionario.n_registro}
                         onClick={() => handleEmployeeButtonClick(funcionario)}
-                        className={`flex items-center justify-between cursor-pointer border-1 p-0.5 rounded-sm transition-colors hover:bg-tertiary ${funcionarioSelecionado === funcionario.n_registro ? "border-highlight text-highlight" : "border-tertiary"}`}
+                        className={`flex items-center justify-between cursor-pointer border-1 p-0.5 rounded-sm transition-colors hover:bg-tertiary ${funcionarioSelecionado === String(funcionario.n_registro) ? "border-highlight text-highlight" : "border-tertiary"}`}
                     >
                         <p className="nome truncate max-w-[160px]">{funcionario.nome}</p>
-                        {funcionarioSelecionado === funcionario.n_registro ? (
+                        {funcionarioSelecionado === String(funcionario.n_registro) ? (
                             <X
                                 strokeWidth={2.5}
                                 size={16}
@@ -249,7 +249,7 @@ export default function Administrador() {
     };
 
     function handleEmployeeButtonClick(funcionario: Funcionario) {
-        if (funcionarioSelecionado === funcionario.n_registro) {
+        if (funcionarioSelecionado === String(funcionario.n_registro)) {
             setFuncionarioSelecionado("");
             setLockInputs(false);
             const defaultValues = {
@@ -265,8 +265,8 @@ export default function Administrador() {
                 handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
             }
         } else {
-            setFuncionarioSelecionado(funcionario.n_registro);
-            setIndexFuncionario(funcionarios.findIndex(f => f.n_registro === funcionario.n_registro));
+            setFuncionarioSelecionado(String(funcionario.n_registro));
+            setIndexFuncionario(funcionarios.findIndex(f => f.n_registro === Number(funcionarioSelecionado)));
             setLockInputs(true);
         }
     }
@@ -274,7 +274,7 @@ export default function Administrador() {
         if (funcionarioSelecionado && funcionarios[indexFuncionario]) {
             const funcionario = funcionarios[indexFuncionario];
             setInputs({
-                n_registro: funcionario.n_registro,
+                n_registro: String(funcionario.n_registro),
                 nome: funcionario.nome,
                 email: funcionario.email,
                 cpf: funcionario.cpf,
@@ -516,7 +516,7 @@ export default function Administrador() {
                                         type="date"
                                         value={selectedDate}
                                         onChange={handleDateChange}
-                                        className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
+                                        className="w-full border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
                                         onClick={(e) => e.currentTarget.showPicker()}
                                     />
                                 </div>

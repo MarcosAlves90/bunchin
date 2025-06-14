@@ -43,7 +43,7 @@ export default function Pontos() {
                 nome: registrosComuns[registros.length],
                 id: uuid,
                 data: new Date(),
-                funcionario_fk: String(usuario?.n_registro) || ''
+                funcionario_fk: Number(usuario?.n_registro) || 0
             };
             await salvarPonto(novoRegistro);
             if (timeoutRef.current) {
@@ -71,7 +71,7 @@ export default function Pontos() {
 
             const response = await axios.post(`${API_URL}ponto`, {
                 id_ponto: registro.id,
-                funcionario_fk: String(usuario.n_registro),
+                funcionario_fk: Number(usuario.n_registro),
                 nome_tipo: registro.nome,
                 data_hora: registro.data
             });

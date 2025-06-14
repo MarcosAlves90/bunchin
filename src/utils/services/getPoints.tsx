@@ -4,14 +4,14 @@ interface Ponto {
     id_ponto: string;
     data_hora: string;
     nome_tipo: string;
-    funcionario_fk: string;
+    funcionario_fk: number;
 }
 
 interface PontoProcessado {
     nome: string;
     id: string;
     data: Date;
-    funcionario_fk: string;
+    funcionario_fk: number;
 }
 
 export async function getPoints(
@@ -37,12 +37,12 @@ export async function getPoints(
         }
 
         return data
-            .filter(ponto => ponto.funcionario_fk && ponto.funcionario_fk === funcionario_id)
+            .filter(ponto => ponto.funcionario_fk && ponto.funcionario_fk === parseInt(funcionario_id))
             .map(ponto => ({
                 nome: ponto.nome_tipo,
                 id: ponto.id_ponto,
                 data: new Date(ponto.data_hora),
-                funcionario_fk: ponto.funcionario_fk ? ponto.funcionario_fk : ''
+                funcionario_fk: ponto.funcionario_fk
             }));
     } catch (error) {
         console.error("Erro ao carregar os registros:", error);

@@ -14,7 +14,7 @@ ReactModal.setAppElement('#root');
 
 export interface RegistroPonto {
     id: string;
-    funcionario_fk: number | string;
+    funcionario_fk: number;
     nome: string;
     data: Date;
 }
