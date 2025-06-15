@@ -95,7 +95,14 @@ export default function Administrador() {
                 await getUsers();
             } else if (isEmailValid) {
                 const newPassword = generatePassword();
-                const inputsClone = { ...inputs, senha: newPassword };
+                const inputsClone = { 
+                    ...inputs, 
+                    senha: newPassword,
+                    organizacao: { 
+                        idOrganizacao: usuario?.organizacao?.idOrganizacao || 1 
+                    }
+                };
+                delete inputsClone.n_registro;
                 sendEmail(newPassword);
                 console.log(newPassword);
                 await axios.post(`${API_URL}funcionario`, inputsClone);
