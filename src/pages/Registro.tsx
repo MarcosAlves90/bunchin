@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { Undo2} from "lucide-react";
-import YellowButton from "../components/YellowButton.jsx";
 
 function ProgressIndicator({ step }: { step: number }) {
     return (
@@ -137,7 +136,7 @@ export default function Registro() {
                                     </select>
                                 </div>
                             </div>
-                            <YellowButton
+                            <button
                                 text="Avançar"
                                 type="submit"
                                 aria-label="Avançar"
