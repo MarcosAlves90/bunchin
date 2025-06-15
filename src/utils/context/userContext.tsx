@@ -1,24 +1,5 @@
-import { createContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
-
-export interface Usuario {
-    id: string;
-    n_registro: number;
-    nome: string;
-    email: string;
-    funcao: string;
-    cargo: string;
-    departamento: string;
-    cpf: string;
-    status: string;
-}
-
-export interface UserContextType {
-    tema: string;
-    setTema: Dispatch<SetStateAction<string>>;
-    usuario: Usuario | null;
-    setUsuario: Dispatch<SetStateAction<Usuario | null>>;
-    API_URL: string;
-}
+import { createContext, useState } from "react";
+import { Usuario, UserContextType, UserProviderProps } from "../../types/interfaces";
 
 export const UserContext = createContext<UserContextType>({
     tema: "light",
@@ -27,10 +8,6 @@ export const UserContext = createContext<UserContextType>({
     setUsuario: () => {},
     API_URL: "",
 });
-
-interface UserProviderProps {
-    children: ReactNode;
-}
 
 export function UserProvider({ children }: UserProviderProps) {
     const [tema, setTema] = useState<string>("light");

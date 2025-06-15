@@ -1,14 +1,7 @@
 import { useEffect, useRef, useContext, useMemo } from 'react';
 import L from 'leaflet';
 import { UserContext } from '../../utils/context/userContext';
-
-interface MapViewProps {
-    latitude: number;
-    longitude: number;
-    zoom?: number;
-    height?: string;
-    width?: string;
-}
+import { MapViewProps } from "../../types/interfaces";
 
 export default function MapView({
     latitude,

@@ -1,18 +1,5 @@
 import axios from "axios";
-
-interface Ponto {
-    id_ponto: string;
-    data_hora: string;
-    nome_tipo: string;
-    funcionario_fk: number;
-}
-
-interface PontoProcessado {
-    nome: string;
-    id: string;
-    data: Date;
-    funcionario_fk: number;
-}
+import { Ponto, PontoProcessado } from "../../types/interfaces";
 
 export async function getPoints(
     funcionario_id: string,

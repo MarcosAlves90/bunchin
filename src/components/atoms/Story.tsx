@@ -1,11 +1,6 @@
 import React from "react";
 import { Star } from "lucide-react";
-
-interface StoryProps {
-    text: string;
-    author: string;
-    starNumber: number;
-} 
+import { StoryProps } from "../../types/interfaces";
 
 const Story: React.FC<StoryProps> = ({ text, author, starNumber }) => (
     <div className="story transition flex flex-col items-center justify-start p-1 bg-story-card rounded-sm text-start hover:scale-110 hover:opacity-100 cursor-pointer text-secondary group-hover:opacity-50">

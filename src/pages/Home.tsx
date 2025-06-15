@@ -19,13 +19,10 @@ import PricingCard from "../components/molecules/PricingCard";
 import { UserContext } from "../utils/context/userContext";
 import Story from "../components/atoms/Story";
 import { faqData } from "../utils/data/faqData";
+import { UserContextType } from "../types/interfaces";
 import AOS from "aos";
 // @ts-ignore
 import "aos/dist/aos.css";
-
-interface UserContextType {
-    tema: string;
-}
 
 export default function Home() {
     const navigate = useNavigate();

@@ -7,47 +7,18 @@ import { useLocation } from "react-router-dom";
 import { SendEmail } from "../../utils/services/sendEmail";
 import { CalendarDays, BadgeX, Pencil, PencilOff, OctagonAlert } from "lucide-react";
 import { getPoints } from "../../utils/services/getPoints";
-import { ErrorModal, FormState } from "../molecules/ErrorModal";
+import { ErrorModal } from "../molecules/ErrorModal";
 import { PointSkeleton } from "../atoms/PointSkeleton";
+import { 
+    RegistroPonto, 
+    GeneratePointsProps, 
+    GeneratePointsRef, 
+    EditState, 
+    RegistroItemProps,
+    FormState
+} from "../../types/interfaces";
 
 ReactModal.setAppElement('#root');
-
-export interface RegistroPonto {
-    id: string;
-    funcionario_fk: number;
-    nome: string;
-    data: Date;
-}
-
-interface GeneratePointsProps {
-    canDelete?: boolean;
-    canRefresh?: boolean;
-    funcionario_id?: string;
-    onPointsChange?: (registros: RegistroPonto[]) => void;
-    date?: string;
-}
-
-export interface GeneratePointsRef {
-    refreshPoints: () => Promise<void>;
-    setLoadingNewPoint: (loading: boolean) => void;
-}
-
-interface EditState {
-    id: string | null;
-    date: string;
-    time: string;
-}
-
-interface RegistroItemProps {
-    registro: RegistroPonto;
-    isAdmin: boolean;
-    handleOpenModal: (registro: RegistroPonto) => void;
-    onDeletePonto?: (id: string) => void;
-    editState: EditState;
-    setEditState: React.Dispatch<React.SetStateAction<EditState>>;
-    updatePonto: (registro: RegistroPonto) => Promise<void>;
-    formatLocalDate: (date: Date) => string;
-}
 
 const RegistroItem = ({ registro, isAdmin, handleOpenModal, onDeletePonto, editState,
     setEditState, updatePonto, formatLocalDate }: RegistroItemProps) => {

@@ -1,8 +1,4 @@
-export interface FAQ {
-    pergunta: string;
-    resposta: string;
-    categoria: 'geral' | 'pontos' | 'conta' | 'sistema';
-}
+import { FAQ } from "../../types/interfaces";
 
 export const faqData: FAQ[] = [
     {

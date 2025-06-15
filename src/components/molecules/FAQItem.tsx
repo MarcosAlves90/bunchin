@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-
-interface FAQItemProps {
-    question: string;
-    answer: string;
-}
+import { FAQItemProps } from "../../types/interfaces";
 
 export default function FAQItem({ question, answer }: FAQItemProps) {
     const [isOpen, setIsOpen] = useState(false);

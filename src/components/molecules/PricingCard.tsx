@@ -1,13 +1,6 @@
-interface PricingCardProps {
-    title: string;
-    price: string;
-    period: string;
-    features: string[];
-    isPopular?: boolean;
-    buttonText: string;
-}
+import { PricingCardProps } from "../../types/interfaces";
 
-export default function PricingCard({ 
+export default function PricingCard({
     title, 
     price, 
     period, 

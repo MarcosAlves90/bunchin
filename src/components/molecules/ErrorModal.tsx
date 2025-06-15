@@ -1,19 +1,5 @@
 import ReactModal from 'react-modal';
-import { RegistroPonto } from '../organisms/PointSystems';
-
-interface FormState {
-    message: string;
-    reason: string;
-}
-
-interface ErrorModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    selectedItem: RegistroPonto | null;
-    formState: FormState;
-    setFormState: React.Dispatch<React.SetStateAction<FormState>>;
-    handleSendMessage: (data: Date) => void;
-}
+import { ErrorModalProps } from '../../types/interfaces';
 
 export const ErrorModal = ({ isOpen, onClose, selectedItem, formState, setFormState, handleSendMessage }: ErrorModalProps) => (
     <ReactModal
@@ -50,9 +36,6 @@ export const ErrorModal = ({ isOpen, onClose, selectedItem, formState, setFormSt
             <button className="button-cancel w-full max-w-15 cursor-pointer rounded-sm border-3 border-primary px-3.5 py-0.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-secondary" onClick={onClose}>Cancelar</button>
             <button className="button-send w-full max-w-15 cursor-pointer rounded-sm border-3 border-highlight px-3.5 py-0.5 text-sm font-semibold text-highlight transition-colors hover:bg-highlight hover:text-secondary" onClick={() => selectedItem && handleSendMessage(selectedItem.data)} disabled={!selectedItem}>
                 Enviar
-            </button>
-        </div>
+            </button>        </div>
     </ReactModal>
 );
-
-export type { ErrorModalProps, FormState };

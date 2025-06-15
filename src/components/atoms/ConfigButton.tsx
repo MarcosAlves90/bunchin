@@ -1,14 +1,8 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { UserContext } from "../../utils/context/userContext";
-import { UserContextType } from "../../utils/context/userContext";
+import { UserContextType, ThemeOption } from "../../types/interfaces";
 import { Cog, LogOut } from "lucide-react";
 import {useNavigate} from "react-router-dom";
-
-interface ThemeOption {
-    value: string;
-    label: string;
-    icon: string;
-}
 
 export default function ThemeDropdown() {
     const { tema, setTema, usuario, setUsuario } = useContext(UserContext) as UserContextType;

@@ -1,11 +1,5 @@
-import { ReactNode } from "react";
 import { Clock3 } from "lucide-react";
-
-interface ResourcePointProps {
-    icon: ReactNode;
-    title: string;
-    description: string;
-}
+import { ResourcePointProps } from "../../types/interfaces";
 
 export default function ResourcePoint({
     icon,

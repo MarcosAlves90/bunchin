@@ -7,16 +7,7 @@ import { GeneratePoints } from "../components/organisms/PointSystems.jsx";
 import { ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenOff, Shield, UserRoundPlus, PanelLeft, PanelLeftDashed } from "lucide-react";
 import { SendEmail } from "../utils/services/sendEmail.js";
 import { EmployeeSkeleton } from "../components/atoms/EmployeeSkeleton.tsx";
-
-interface Funcionario {
-    cpf: string;
-    nome: string;
-    email: string;
-    n_registro: number;
-    funcao: string;
-    cargo: string;
-    departamento: string;
-}
+import { InputsType, Funcionario } from "../types/interfaces";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
@@ -95,14 +86,16 @@ export default function Administrador() {
                 await getUsers();
             } else if (isEmailValid) {
                 const newPassword = generatePassword();
-                const inputsClone = { 
+                const inputsClone: InputsType = { 
                     ...inputs, 
                     senha: newPassword,
                     organizacao: { 
                         idOrganizacao: usuario?.organizacao?.idOrganizacao || 1 
                     }
                 };
-                delete inputsClone.n_registro;
+                if ('n_registro' in inputsClone) {
+                    delete inputsClone.n_registro;
+                }
                 sendEmail(newPassword);
                 console.log(newPassword);
                 await axios.post(`${API_URL}funcionario`, inputsClone);

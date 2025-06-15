@@ -1,13 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../../utils/context/userContext";
-
-interface DecorativePenasProps {
-    isDown?: boolean;
-}
-
-interface UserContextType {
-    tema: string;
-}
+import { DecorativePenasProps, UserContextType } from "../../types/interfaces";
 
 export default function DecorativePenas({ isDown = false }: DecorativePenasProps) {
     const { tema } = useContext(UserContext) as UserContextType;

@@ -1,12 +1,9 @@
 import Skeleton from 'react-loading-skeleton';
 // @ts-ignore
 import 'react-loading-skeleton/dist/skeleton.css';
+import { EmployeeSkeletonProps } from "../../types/interfaces";
 
-interface PointSkeletonProps {
-    tema: string;
-}
-
-export const EmployeeSkeleton = ({ tema }: PointSkeletonProps) => {
+export const EmployeeSkeleton = ({ tema }: EmployeeSkeletonProps) => {
     const baseColor = tema === 'dark' ? '#0f0f0f' : '#f0f0f0';
     const highlightColor = tema === 'dark' ? '#212121' : '#d1d1d1';
 

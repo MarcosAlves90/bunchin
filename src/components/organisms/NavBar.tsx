@@ -1,12 +1,8 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useContext } from "react";
-import { UserContext, UserContextType } from "../../utils/context/userContext";
+import { UserContext } from "../../utils/context/userContext";
+import { UserContextType, NavLink } from "../../types/interfaces";
 import ThemeDropdown from "../atoms/ConfigButton";
-
-interface NavLink {
-    to: string;
-    label: string;
-}
 
 export default function NavBar() {
     const navigate = useNavigate();
