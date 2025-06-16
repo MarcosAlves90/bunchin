@@ -1,83 +1,87 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
-
-function ProgressIndicator({ step }: { step: number }) {
-    return (
-        <div className="flex items-center justify-center mt-2 opacity-80">
-            <div
-                className={`w-2 h-2 rounded-full flex items-center justify-center
-                    ${step >= 1 ? "bg-(--highlight)": "bg-(--primary)"}
-                `}
-            />
-            <div className={`h-0.5 w-1 ${step === 2 ? "bg-(--highlight)" : "bg-(--primary)"}`}></div>
-            <div
-                className={`w-2 h-2 rounded-full flex items-center justify-center
-                    ${step === 2 ? "bg-(--highlight)" : "bg-(--primary)"}
-                `}
-            />
-        </div>
-    );
-}
+import ProgressIndicator from "../components/molecules/ProgressIndicator";
 
 export default function Registro() {
     const navigate = useNavigate();
-    const { tema } = useContext(UserContext);
+    const { tema, usuario } = useContext(UserContext);
 
-    const [step, setStep] = useState(1);
+    useEffect(() => {
+        if (usuario) {
+            navigate('/pontos');
+        }
+    }, [usuario, navigate]);
 
-    const [nomeEmpresa, setNomeEmpresa] = useState("");
-    const [segmento, setSegmento] = useState("");
-    const [numFuncionarios, setNumFuncionarios] = useState("");
+    const [step, setStep] = useState(1); const [nomeEmpresa, setNomeEmpresa] = useState("");
+    const [cnpjEmpresa, setCnpjEmpresa] = useState("");
+    const [enderecoEmpresa, setEnderecoEmpresa] = useState("");
+    const [telefoneEmpresa, setTelefoneEmpresa] = useState("");
+    const [emailEmpresa, setEmailEmpresa] = useState("");
 
     const [nomeCompleto, setNomeCompleto] = useState("");
     const [nRegistro, setNRegistro] = useState("");
     const [cpf, setCpf] = useState("");
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-
-    const segmentos = [
-        "Tecnologia",
-        "Comércio",
-        "Indústria",
-        "Educação",
-        "Saúde",
-        "Serviços",
-        "Outro"
-    ];
-
-    const faixasFuncionarios = [
-        "1-20 funcionários",
-        "21-50 funcionários",
-        "51-100 funcionários",
-        "Mais de 100 funcionários"
-    ];
-
-    const handleNextStepButtonClick = (e: React.FormEvent) => {
+    const [senha, setSenha] = useState(""); const handleNextStepButtonClick = (e: React.FormEvent) => {
         e.preventDefault();
         setStep(2);
+    };
+    const isStep1Complete = () => {
+        return nomeEmpresa.trim() !== "" &&
+            cnpjEmpresa.trim() !== "" &&
+            enderecoEmpresa.trim() !== "" &&
+            telefoneEmpresa.trim() !== "" &&
+            emailEmpresa.trim() !== "";
+    };
+
+    const isStep2Complete = () => {
+        return nomeCompleto.trim() !== "" &&
+            nRegistro.trim() !== "" &&
+            cpf.trim() !== "" &&
+            email.trim() !== "" &&
+            senha.trim() !== "";
+    };
+
+    const canNavigateToStep = (targetStep: number) => {
+        if (targetStep === 1) {
+            return true;
+        }
+        if (targetStep === 2) {
+            return isStep1Complete();
+        }
+        return false;
+    };
+
+    const handleStepClick = (targetStep: number) => {
+        if (canNavigateToStep(targetStep)) {
+            setStep(targetStep);
+        }
     };
 
     const handleBackButtonClick = () => navigate('/');
     return (
         <div className={`registro-form flex items-center content-center pb-3 h-36 relative`}>
             <img className={`login-penas-left ${tema === "dark" ? "invert" : ""}`}
-                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"} 
+                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"}
                 alt={"Penas à esquerda"} />
             <img className={`login-penas-right ${tema === "dark" ? "invert" : ""}`}
                 src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_direita_login_c14tob.svg"}
                 alt={"Penas à direita"} />
-                <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem] cursor-pointer"}
-                    onClick={handleBackButtonClick}>
-                    <img
-                        className={`bird-icon ${tema === "dark" ? "invert" : ""}`}
-                        src="https://res.cloudinary.com/dflvo098t/image/upload/bunchin_bird_icon_r8mgim.svg"
-                        alt="Pássaro do bunchin"
-                    />
-                </div>
-                        <div className="absolute left-1/2 bottom-[0.5rem]">
-                            <ProgressIndicator step={step} />
-                        </div>
+            <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem] cursor-pointer"}
+                onClick={handleBackButtonClick}>
+                <img
+                    className={`bird-icon ${tema === "dark" ? "invert" : ""}`}
+                    src="https://res.cloudinary.com/dflvo098t/image/upload/bunchin_bird_icon_r8mgim.svg"
+                    alt="Pássaro do bunchin"
+                />
+            </div>                        <div className="absolute left-1/2 bottom-[0.5rem]">
+                <ProgressIndicator
+                    step={step}
+                    onStepClick={handleStepClick}
+                    canNavigateToStep={canNavigateToStep}
+                />
+            </div>
             {step === 1 ? (
                 <>
                     <div className={`bg-(--highlight) text-(--primary) items-center px-2 flex flex-col h-full`}>
@@ -86,14 +90,14 @@ export default function Registro() {
                             Preencha os dados iniciais da sua empresa para começar o cadastro.
                         </p>
                     </div>
-                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center self-start h-full px-2 pt-8 relative"}>
+                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2 relative"}>
                         <form
-                            className="form-login min-w-[35vw] w-full h-full flex flex-col items-center justify-end"
+                            className="form-login min-w-[35vw] w-full h-full flex flex-col items-center justify-end gap-2"
                             onSubmit={handleNextStepButtonClick}
                         >
-                            <div className="text-(--primary) grid grid-cols-1 md:grid-cols-2 gap-2 w-full mb-8">
+                            <div className="text-(--primary) grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
                                 <div className="flex flex-col col-span-2 group">
-                                    <label htmlFor="nomeEmpresa" className="text-left">Nome da empresa</label>
+                                    <label htmlFor="nomeEmpresa" className="text-left">Nome da Empresa</label>
                                     <input
                                         type="text"
                                         id="nomeEmpresa"
@@ -105,56 +109,72 @@ export default function Registro() {
                                     />
                                 </div>
                                 <div className="flex flex-col w-full group">
-                                    <label htmlFor="segmento" className="text-left">Segmento da empresa</label>
-                                    <select
-                                        id="segmento"
-                                        value={segmento}
-                                        onChange={e => setSegmento(e.target.value)}
+                                    <label htmlFor="cnpjEmpresa" className="text-left">CNPJ</label>
+                                    <input
+                                        type="text"
+                                        id="cnpjEmpresa"
+                                        placeholder="00.000.000/0000-00"
+                                        value={cnpjEmpresa}
+                                        onChange={e => setCnpjEmpresa(e.target.value)}
                                         className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
                                         required
-                                    >
-                                        <option value="" disabled>Selecione o segmento</option>
-                                        {segmentos.map(seg => (
-                                            <option key={seg} value={seg}>{seg}</option>
-                                        ))}
-                                    </select>
+                                    />
                                 </div>
                                 <div className="flex flex-col w-full group">
-                                    <label htmlFor="numFuncionarios" className="text-left">Número de funcionários</label>
-                                    <select
-                                        id="numFuncionarios"
-                                        value={numFuncionarios}
-                                        onChange={e => setNumFuncionarios(e.target.value)}
+                                    <label htmlFor="telefoneEmpresa" className="text-left">Telefone</label>
+                                    <input
+                                        type="tel"
+                                        id="telefoneEmpresa"
+                                        placeholder="(00) 00000-0000"
+                                        value={telefoneEmpresa}
+                                        onChange={e => setTelefoneEmpresa(e.target.value)}
                                         className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
                                         required
-                                    >
-                                        <option value="" disabled>Selecione a faixa</option>
-                                        {faixasFuncionarios.map(faixa => (
-                                            <option key={faixa} value={faixa}>{faixa}</option>
-                                        ))}
-                                    </select>
+                                    />
                                 </div>
-                            </div>
-                        <button
-                            type={"submit"}
-                            value={"Submit"}
-                            className={`border-none transition text-lg mb-3 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${"bg-highlight"/*error ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"*/}`}
-                            //disabled={loading}
-                            aria-label="Avançar"
-                        >
-                            <i className="bi bi-feather2 left"></i>
-                            Avançar
-                            {/* {loading ? `Carregando${loadingDots}` : error ? error : "Iniciar"} */}
-                            <i className="bi bi-feather2 right"></i>
-                        </button>
+                                <div className="flex flex-col col-span-2 group">
+                                    <label htmlFor="enderecoEmpresa" className="text-left">Endereço</label>
+                                    <input
+                                        type="text"
+                                        id="enderecoEmpresa"
+                                        placeholder="Endereço completo da empresa"
+                                        value={enderecoEmpresa}
+                                        onChange={e => setEnderecoEmpresa(e.target.value)}
+                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
+                                        required
+                                    />
+                                </div>
+                                <div className="flex flex-col col-span-2 group">
+                                    <label htmlFor="emailEmpresa" className="text-left">Email da Empresa</label>
+                                    <input
+                                        type="email"
+                                        id="emailEmpresa"
+                                        placeholder="contato@empresa.com"
+                                        value={emailEmpresa}
+                                        onChange={e => setEmailEmpresa(e.target.value)}
+                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
+                                        required
+                                    />
+                                </div>
+                            </div><button
+                                type={"submit"}
+                                value={"Submit"}
+                                className={`border-none transition text-lg mb-3 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${isStep1Complete() ? "bg-highlight hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}
+                                disabled={!isStep1Complete()}
+                                aria-label="Avançar"
+                            >
+                                <i className="bi bi-feather2 left"></i>
+                                Avançar
+                                <i className="bi bi-feather2 right"></i>
+                            </button>
                         </form>
                     </div>
                 </>
             ) : (
                 <>
-                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center self-start h-full px-4 py-3"}>
+                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2"}>
                         <form
-                            className="form-login min-w-[35vw] w-full flex flex-col gap-2 mt-2 items-center"
+                            className="form-login min-w-[35vw] w-full flex flex-col gap-2 items-center"
                         >
                             <div className="wrapper relative w-full flex flex-col items-start group">
                                 <label htmlFor="nomeCompleto" className="text-left">Nome completo</label>
@@ -169,7 +189,6 @@ export default function Registro() {
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-start w-full">
-                                
                                 <div className="wrapper relative w-full flex flex-col items-start group">
                                     <label htmlFor="nRegistro" className="text-left">Nº de registro</label>
                                     <input
@@ -217,7 +236,7 @@ export default function Registro() {
                                         className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
                                         required
                                     />
-                                    
+
                                     {/* {!passwordVisibility &&
                                         <Eye
                                             className={"absolute top-[1.3rem] !left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
@@ -229,19 +248,18 @@ export default function Registro() {
                                         />
                                     } */}
                                 </div>
-                            </div>
+                                </div>
                             <button
                                 type={"submit"}
                                 value={"Submit"}
-                                className={`border-none transition text-lg mt-2 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${"bg-highlight"/*error ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"*/}`}
-                                //disabled={loading}
-                                aria-label="Avançar"
+                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${isStep2Complete() ? "bg-highlight hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}
+                                disabled={!isStep2Complete()}
+                                aria-label="Finalizar cadastro"
                             >
                                 <i className="bi bi-feather2 left"></i>
-                                Avançar
-                                {/* {loading ? `Carregando${loadingDots}` : error ? error : "Iniciar"} */}
+                                Finalizar
                                 <i className="bi bi-feather2 right"></i>
-                        </button>
+                            </button>
                         </form>
                     </div>
                     <div className={`bg-(--highlight) text-(--primary) items-center px-2 flex flex-col h-full`}>
