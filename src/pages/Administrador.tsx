@@ -90,7 +90,7 @@ export default function Administrador() {
                     ...inputs, 
                     senha: newPassword,
                     organizacao: { 
-                        idOrganizacao: usuario?.organizacao?.idOrganizacao || 1 
+                        idOrganizacao: usuario.organizacao_id
                     }
                 };
                 if ('n_registro' in inputsClone) {
@@ -415,7 +415,7 @@ export default function Administrador() {
                 </div>
             </article>
             <main className={`mainCommon text-base flex justify-start items-center flex-col gap-2 text-primary`}>
-                <article className={"bg-tertiary rounded-sm p-1.5 flex flex-col w-full"}>
+                <article className={"bg-tertiary rounded-sm p-1.5 flex flex-col"}>
                     <div className={"flex gap-1 items-center justify-center"}>
                         {!sidebarCollapsed &&
                             <PanelLeft strokeWidth={1.5} size={40} className="cursor-pointer transition-colors hover:text-highlight" onClick={handleSidebarCollapse} />
