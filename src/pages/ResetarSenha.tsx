@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import validator from "validator";
 import { useEffect, useContext } from "react";
@@ -7,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { UserContext } from "../utils/context/userContext.js";
 import { useNavigate } from "react-router-dom";
 import { useResetPasswordForm } from "../utils/hooks/useResetPasswordForm.js";
+import { Undo2 } from "lucide-react";
 
 export default function ResetarSenha() {
     const navigate = useNavigate();
@@ -111,60 +111,102 @@ export default function ResetarSenha() {
     };
 
     if (resetCode && !isValidCode) {
-        return <h1>404 - Código inválido</h1>;
+        return <h1 className="text-center text-2xl mt-10">404 - Código inválido</h1>;
     }
 
     const handleBackButtonClick = () => navigate("/login");
 
     return (
-        <>
-            <main className={`mainCommon resetPassword ${tema}`}>
-                <div className="area">
-                    <ul className="circles">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-
-                    </ul>
-                </div>
-                <div className="animated-background"></div>
-                <div className="cardBox">
-                    <button className={"backArrow"} onClick={handleBackButtonClick}><i className="bi bi-arrow-left"></i>
-                    </button>
-                    <h1>Recuperar conta</h1>
+        <main className={`mainCommon resetPassword ${tema} min-h-screen flex flex-col !items-start bg-[var(--secondary)] relative`}>
+            <div className="flex flex-col mb-1">
+                <button onClick={handleBackButtonClick} aria-label="Voltar">
+                    <Undo2
+                        className={`mb-0 hover:!cursor-pointer`}
+                        size={32}
+                        color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
+                    />
+                </button>
+            </div>
+            <div className="flex flex-col items-center w-full">
+                <div className="bg-(--tertiary) text-(--primary) rounded-lg shadow-lg px-8 py-8 flex flex-col items-center gap-y-2 h-40 w-full relative">
+                    <h1 className="text-2xl font-bold text-(--primary) font-(family-name:--font-subrayada)">Recuperar conta</h1>
                     {(resetCode && isValidCode) || (usuario && usuario.status === "0") ? (
                         <>
-                            <p className={"p-title"}>Nova Senha</p>
-                            <input type="text" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                            <div className="password-strength-bar" style={{
-                                backgroundColor: getPasswordStrengthColor(),
-                                width: `${(passwordStrength / 6) * 100}%`
-                            }}></div>
-                            <p className={"p-title"}>Confirme a Nova Senha</p>
-                            <input type="text" value={confirmNewPassword}
-                                onChange={(e) => setConfirmNewPassword(e.target.value)} />
-                            {error && <p className="error">{error}</p>}
-                            <button onClick={handlePasswordChange}>Redefinir Senha</button>
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left">Nova Senha</label>
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    className="w-full mb-2 pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="new-password"
+                                />
+                            </div> 
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left mb-1">Confirme a Nova Senha</label>
+                                <input
+                                    type="password"
+                                    value={confirmNewPassword}
+                                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                    className="w-full pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="new-password"
+                                />
+                            </div>
+                            {error && <p className="error text-red-500 text-sm">{error}</p>}
+                            <button
+                                type={"submit"}
+                                value={"Submit"}
+                                onClick={sendEmail}
+                                className={`border-none transition text-lg mt-2 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${"bg-highlight"/*error ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"*/}`}
+                                //disabled={loading}
+                                aria-label="Avançar"
+                            >
+                                <i className="bi bi-feather2 left"></i>
+                                Enviar
+                                {/* {loading ? `Carregando${loadingDots}` : error ? error : "Iniciar"} */}
+                                <i className="bi bi-feather2 right"></i>
+                        </button>
                         </>
                     ) : (
                         <>
-                            <p className={"p-title"}>Email</p>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <p className={"p-title"}>Insira o email novamente</p>
-                            <input value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} />
-                            {error && <p className="error">{error}</p>}
-                            <button onClick={sendEmail}>Enviar</button>
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left mb-0">Email</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="email"
+                                />
+                            </div>
+                            <div className="w-full flex flex-col items-start">
+                                <label className="p-title w-full text-left mb-0">Insira o email novamente</label>
+                                <input
+                                    type="email"
+                                    value={confirmEmail}
+                                    onChange={(e) => setConfirmEmail(e.target.value)}
+                                    className="w-full pl-3 py-1 bg-(--secondary) border-4 border-(--text-card) font-bold outline-none rounded"
+                                    autoComplete="email"
+                                />
+                            </div>
+                            {error && <p className="error text-red-500 text-sm">{error}</p>}
+                            <button
+                                type={"submit"}
+                                value={"Submit"}
+                                onClick={sendEmail}
+                                className={`border-none transition text-lg mt-2 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${"bg-highlight"/*error ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"*/}`}
+                                //disabled={loading}
+                                aria-label="Avançar"
+                            >
+                                <i className="bi bi-feather2 left"></i>
+                                Enviar
+                                {/* {loading ? `Carregando${loadingDots}` : error ? error : "Iniciar"} */}
+                                <i className="bi bi-feather2 right"></i>
+                        </button>
                         </>
                     )}
                 </div>
-            </main>
-        </>
+            </div>
+        </main>
     );
 }
