@@ -132,19 +132,21 @@ export default function Registro() {
             </div>
             {step === 1 ? (
                 <>
-                    <div className={`bg-(--highlight) text-(--primary) items-center px-2 flex flex-col h-full`}>
-                        <h2 className={"text-2xl mt-4 font-(family-name:--font-subrayada) font-bold"}>Cadastrando sua empresa!</h2>
-                        <p className={"max-w-20 lg:text-xl md:text-md mt-5"}>
-                            Preencha os dados iniciais da sua empresa para começar o cadastro.
+                    <div className={`bg-(--highlight) text-(--primary) items-center px-2 flex flex-col h-full justify-center`}>
+                        <p className={"max-w-20 text-xl text-justify"}>
+                            Preencha os dados iniciais da sua empresa para começar o cadastro.<br />
+                            Essas informações são essenciais para criar o perfil da organização e garantir a segurança dos dados.<br />
+                            Certifique-se de preencher todos os campos corretamente antes de avançar para a próxima etapa.
                         </p>
                     </div>
                     <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2 relative"}>
+                        <h2 className={"text-3xl font-(family-name:--font-subrayada) font-bold mb-2"}>Cadastrando sua empresa!</h2>
                         <form
-                            className="form-login min-w-[35vw] w-full h-full flex flex-col items-center justify-end gap-2"
+                            className="form-login min-w-[35vw] w-full flex flex-col items-center justify-end gap-2"
                             onSubmit={handleNextStepButtonClick}
                         >
                             <div className="text-(--primary) grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
-                                <div className="flex flex-col col-span-2 group">
+                                <div className="flex flex-col group">
                                     <label htmlFor="nomeEmpresa" className="text-left">Nome da Empresa</label>
                                     <input
                                         type="text"
@@ -180,6 +182,18 @@ export default function Registro() {
                                         required
                                     />
                                 </div>
+                                <div className="flex flex-col group">
+                                    <label htmlFor="emailEmpresa" className="text-left">Email da Empresa</label>
+                                    <input
+                                        type="email"
+                                        id="emailEmpresa"
+                                        placeholder="contato@empresa.com"
+                                        value={emailEmpresa}
+                                        onChange={e => setEmailEmpresa(e.target.value)}
+                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
+                                        required
+                                    />
+                                </div>
                                 <div className="flex flex-col col-span-2 group">
                                     <label htmlFor="enderecoEmpresa" className="text-left">Endereço</label>
                                     <input
@@ -192,22 +206,10 @@ export default function Registro() {
                                         required
                                     />
                                 </div>
-                                <div className="flex flex-col col-span-2 group">
-                                    <label htmlFor="emailEmpresa" className="text-left">Email da Empresa</label>
-                                    <input
-                                        type="email"
-                                        id="emailEmpresa"
-                                        placeholder="contato@empresa.com"
-                                        value={emailEmpresa}
-                                        onChange={e => setEmailEmpresa(e.target.value)}
-                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
-                                        required
-                                    />
-                                </div>
                             </div><button
                                 type={"submit"}
                                 value={"Submit"}
-                                className={`border-none transition text-lg mb-3 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${isStep1Complete() ? "bg-highlight hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}
+                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${isStep1Complete() ? "bg-highlight hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}
                                 disabled={!isStep1Complete()}
                                 aria-label="Avançar"
                             >
@@ -221,23 +223,24 @@ export default function Registro() {
             ) : (
                 <>
                     <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2"}>
+                        <h2 className={"text-3xl mb-2 font-(family-name:--font-subrayada) font-bold"}>Estamos Quase lá!</h2>
                         <form
                             className="form-login min-w-[35vw] w-full flex flex-col gap-2 items-center"
                             onSubmit={handleFinishRegistration}
                         >
-                            <div className="wrapper relative w-full flex flex-col items-start group">
-                                <label htmlFor="nomeCompleto" className="text-left">Nome completo</label>
-                                <input
-                                    type="text"
-                                    id="nomeCompleto"
-                                    placeholder="Seu nome completo"
-                                    value={nomeCompleto}
-                                    onChange={e => setNomeCompleto(e.target.value)}
-                                    className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
-                                    required
-                                />
-                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-start w-full">
+                                <div className="wrapper relative w-full flex flex-col items-start group">
+                                    <label htmlFor="nomeCompleto" className="text-left">Nome completo</label>
+                                    <input
+                                        type="text"
+                                        id="nomeCompleto"
+                                        placeholder="Seu nome completo"
+                                        value={nomeCompleto}
+                                        onChange={e => setNomeCompleto(e.target.value)}
+                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
+                                        required
+                                    />
+                                </div>
                                 <div className="wrapper relative w-full flex flex-col items-start group">
                                     <label htmlFor="cpf" className="text-left">CPF</label>
                                     <input
@@ -299,9 +302,8 @@ export default function Registro() {
                             </button>
                         </form>
                     </div>
-                    <div className={`bg-(--highlight) text-(--primary) items-center px-2 flex flex-col h-full`}>
-                        <h2 className={"text-2xl mt-4 font-(family-name:--font-subrayada) font-bold"}>Quase lá!</h2>
-                        <p className={"left-side-p max-w-20 lg:text-2xl md:text-lg mt-3"}>
+                    <div className={`bg-(--highlight) text-(--primary) px-2 flex flex-col h-full items-center justify-center`}>
+                        <p className={"left-side-p max-w-20 text-xl text-justify"}>
                             Por padrão, o primeiro funcionário é cadastrado como um administrador do RH, podendo atualizar dados e cadastrar outros funcionários na plataforma. Essas informações poderão ser alteradas posteriormente na página de perfil do usuário.
                         </p>
                     </div>
