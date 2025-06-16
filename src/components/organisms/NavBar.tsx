@@ -33,9 +33,10 @@ export default function NavBar() {
     );
 
     const guestLinks: NavLink[] = [
-        { to: "/sobre", label: "Sobre" },
         { to: "/", label: "Início" },
-        { to: "/contato", label: "Contato" }
+        { to: "/sobre", label: "Sobre" },
+        { to: "/contato", label: "Contato" },
+        { to: "/faq", label: "FAQ" },
     ];
 
     const userLinks: NavLink[] = [

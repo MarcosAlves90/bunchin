@@ -14,11 +14,9 @@ import {
 } from "lucide-react";
 import ResourcePoint from "../components/molecules/ResourcePoint";
 import FeatureCard from "../components/molecules/FeatureCard";
-import FAQItem from "../components/molecules/FAQItem";
 import PricingCard from "../components/molecules/PricingCard";
 import { UserContext } from "../utils/context/userContext";
 import Story from "../components/atoms/Story";
-import { faqData } from "../utils/data/faqData";
 import { UserContextType } from "../types/interfaces";
 import AOS from "aos";
 // @ts-ignore
@@ -36,7 +34,7 @@ export default function Home() {
 
     const handleArrowClick = () => {
         if (secondTitleRef.current) {
-            const offset = (secondTitleRef.current as HTMLElement).offsetTop - 140;
+            const offset = (secondTitleRef.current as HTMLElement).offsetTop - 200;
             window.scrollTo({ top: offset, behavior: 'smooth' });
         }
     };    function handleLoginButtonClick() {
@@ -159,10 +157,9 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Seção de Preços */}
-                <div className="mt-15" data-aos="fade-up">
-                    <p className={"mainCommon__resources__title"}>PLANOS E PREÇOS</p>
-                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-8 text-primary"}>
+                <div data-aos="fade-up">
+                    <p className={"mainCommon__resources__title mt-15"}>PLANOS E PREÇOS</p>
+                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-5 text-primary"}>
                         Escolha o plano ideal para sua empresa
                     </p>
                     <div className="grid grid-cols-3 gap-3">
@@ -208,47 +205,27 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* TODO: Finalizar seções abaixo  */}
-
-                {/* Seção FAQ */}
-                <div className="mt-15" data-aos="fade-up">
-                    <p className={"mainCommon__resources__title"}>PERGUNTAS FREQUENTES</p>
-                    <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-8 text-primary"}>
-                        Esclarecemos as principais dúvidas sobre nossa plataforma
-                    </p>
-                    <div className="max-w-4xl mx-auto space-y-4">
-                        {faqData.slice(0, 6).map((faq, index) => (
-                            <FAQItem
-                                key={index}
-                                question={faq.pergunta}
-                                answer={faq.resposta}
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                {/* Newsletter */}
-                <div className="mt-16 bg-highlight/10 border border-highlight/30 rounded-sm p-8 text-center" data-aos="fade-up">
+                <div className="mt-15 bg-highlight/10 border border-highlight/30 rounded-sm p-2 text-center" data-aos="fade-up">
                     <div className="max-w-2xl mx-auto">
-                        <Mail className="text-highlight mx-auto mb-4" size={48} strokeWidth={1.5} />
-                        <h3 className="text-2xl font-semibold text-primary mb-3 transition-colors duration-200">
+                        <Mail className="text-highlight mx-auto mb-1" size={48} strokeWidth={1.5} />
+                        <h3 className="text-2xl font-semibold text-primary mb-2 transition-colors duration-200">
                             Fique por dentro das novidades
                         </h3>
-                        <p className="text-primary/80 mb-6 transition-colors duration-200">
+                        <p className="text-primary/80 mb-2 transition-colors duration-200">
                             Receba atualizações sobre novas funcionalidades, dicas de gestão e conteúdo exclusivo diretamente no seu email.
                         </p>
-                        <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                        <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2 w-full">
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Seu melhor email"
-                                className="flex-1 px-4 py-3 rounded-sm border border-tertiary bg-secondary/20 text-primary placeholder-primary/60 focus:border-highlight focus:outline-none transition-colors duration-200"
+                                className="w-full border-b-2 p-0.5 rounded-t-sm focus:border-highlight bg-secondary text-primary border-primary"
                                 required
                             />
                             <button
                                 type="submit"
-                                className="px-6 py-3 bg-highlight hover:bg-primary text-secondary rounded-sm font-medium transition-colors duration-300"
+                                className="button-session max-w-10 w-full"
                             >
                                 Inscrever-se
                             </button>
@@ -256,8 +233,7 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Call to Action Final */}
-                <div className="mt-16 text-center" data-aos="fade-up">
+                <div className="mt-15 text-center" data-aos="fade-up">
                     <h3 className="text-3xl font-bold text-primary mb-4 transition-colors duration-200">
                         Pronto para revolucionar a gestão da sua empresa?
                     </h3>

@@ -17,6 +17,7 @@ import Administrador from "./pages/Administrador.tsx";
 import Footer from "./components/organisms/Footer.tsx";
 import ResetarSenha from "./pages/ResetarSenha.tsx";
 import HelpSystem from './components/organisms/HelpSystem.tsx';
+import Faq from './pages/Faq.tsx';
 
 function App() {
 
@@ -93,8 +94,8 @@ function App() {
           )}
         </div>
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" && <NavBar/>}
-        
-        {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato") && (
+
+        {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato" || location.pathname === "/faq") && (
           <DecorativePenas isDown={location.pathname === "/" ? isDown : false} />
         )}
 
@@ -103,7 +104,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/sobre" element={<Sobre/>}/>
-          <Route path="/contato" element={<Contato/>}/>
+          <Route path="/contato" element={<Contato />} />
+          <Route path="/faq" element={<Faq />} />
           <Route path="/perfil" element={<Perfil/>}/>
           <Route path="/pontos" element={<Pontos/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
