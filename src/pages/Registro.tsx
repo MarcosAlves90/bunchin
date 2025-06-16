@@ -20,7 +20,6 @@ export default function Registro() {
     const [telefoneEmpresa, setTelefoneEmpresa] = useState("");
     const [emailEmpresa, setEmailEmpresa] = useState("");
     const [nomeCompleto, setNomeCompleto] = useState("");
-    const [nRegistro, setNRegistro] = useState("");
     const [cpf, setCpf] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -39,7 +38,6 @@ export default function Registro() {
 
     const isStep2Complete = () => {
         return nomeCompleto.trim() !== "" &&
-            nRegistro.trim() !== "" &&
             cpf.trim() !== "" &&
             email.trim() !== "" &&
             senha.trim() !== "";
@@ -77,18 +75,22 @@ export default function Registro() {
         setError("");
 
         try {
-            const organizacaoData = {
+            const requestBody = {
                 nome: nomeEmpresa,
                 cnpj: cnpjEmpresa,
                 endereco: enderecoEmpresa,
                 telefone: telefoneEmpresa,
-                email: emailEmpresa
+                email: emailEmpresa,
+                adminNome: nomeCompleto,
+                adminEmail: email,
+                adminSenha: senha,
+                adminCpf: cpf
             };
 
-            console.log('Dados da organização:', organizacaoData);
+            console.log('Dados do registro:', requestBody);
             console.log('URL completa:', `${API_URL}organizacao`);
 
-            const response = await axios.post(`${API_URL}organizacao`, organizacaoData);
+            const response = await axios.post(`${API_URL}organizacao`, requestBody);
 
             console.log('Organização cadastrada com sucesso:', response.data);
             
@@ -236,18 +238,6 @@ export default function Registro() {
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-start w-full">
-                                <div className="wrapper relative w-full flex flex-col items-start group">
-                                    <label htmlFor="nRegistro" className="text-left">Nº de registro</label>
-                                    <input
-                                        type="text"
-                                        id="nRegistro"
-                                        placeholder="Número de registro"
-                                        value={nRegistro}
-                                        onChange={e => setNRegistro(e.target.value)}
-                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
-                                        required
-                                    />
-                                </div>
                                 <div className="wrapper relative w-full flex flex-col items-start group">
                                     <label htmlFor="cpf" className="text-left">CPF</label>
                                     <input
