@@ -3,6 +3,7 @@ import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
 import './App.css';
 import NavBar from './components/organisms/NavBar';
 import DecorativePenas from './components/molecules/DecorativeFeathers.tsx';
+import LoginFeathers from './components/molecules/LoginFeathers.tsx';
 import Home from './pages/Home.tsx';
 import Sobre from "./pages/Sobre.tsx";
 import Contato from './pages/Contato.tsx';
@@ -93,10 +94,12 @@ function App() {
               </div>
           )}
         </div>
-        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" && <NavBar/>}
-
-        {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato" || location.pathname === "/faq") && (
+        {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" && <NavBar/>}        {(location.pathname === "/" || location.pathname === "/sobre" || location.pathname === "/contato" || location.pathname === "/faq") && (
           <DecorativePenas isDown={location.pathname === "/" ? isDown : false} />
+        )}
+
+        {(location.pathname === "/login" || location.pathname === "/registro" || location.pathname === "/resetar-senha") && (
+          <LoginFeathers />
         )}
 
         {(usuario && <HelpSystem/>)}
@@ -111,7 +114,7 @@ function App() {
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/registro" element={<Registro/>}/>
-          <Route path={"resetar-senha"} element={<ResetarSenha/>}/>
+          <Route path={"/resetar-senha"} element={<ResetarSenha/>}/>
         </Routes>
         {location.pathname !== "/login" && location.pathname !== "/resetar-senha" && location.pathname !== "/registro" && <Footer/>}
       </main>

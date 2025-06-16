@@ -110,12 +110,6 @@ export default function Registro() {
     const handleBackButtonClick = () => navigate('/');
     return (
         <div className={`registro-form flex items-center content-center pb-3 h-36 relative`}>
-            <img className={`login-penas-left ${tema === "dark" ? "invert" : ""}`}
-                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"}
-                alt={"Penas à esquerda"} />
-            <img className={`login-penas-right ${tema === "dark" ? "invert" : ""}`}
-                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_direita_login_c14tob.svg"}
-                alt={"Penas à direita"} />
             <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem] cursor-pointer"}
                 onClick={handleBackButtonClick}>
                 <img
@@ -206,7 +200,8 @@ export default function Registro() {
                                         required
                                     />
                                 </div>
-                            </div><button
+                            </div>
+                            <button
                                 type={"submit"}
                                 value={"Submit"}
                                 className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${isStep1Complete() ? "bg-highlight hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}

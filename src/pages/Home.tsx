@@ -243,14 +243,6 @@ export default function Home() {
                     <button className={"button-session"}>
                         Registre sua empresa
                     </button>
-                    {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button className="button-session">
-                            Teste Grátis por 14 dias
-                        </button>
-                        <button className="button-session">
-                            Agendar Demonstração
-                        </button>
-                    </div> */}
                 </div>
 
             </article>

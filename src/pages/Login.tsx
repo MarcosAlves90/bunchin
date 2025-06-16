@@ -34,12 +34,6 @@ export default function Login() {
 
     return (
         <>
-            <img className={`login-penas-left ${tema === "dark" ? "invert" : ""}`}
-                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"} 
-                alt={"Penas à esquerda"} />
-            <img className={`login-penas-right ${tema === "dark" ? "invert" : ""}`}
-                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_direita_login_c14tob.svg"}
-                alt={"Penas à direita"} />
             <div className={`login-form flex items-center content-center pb-3 max-h-36 h-full relative`}>
                 <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem] cursor-pointer"}
                     onClick={handleBackButtonClick}>
@@ -109,9 +103,15 @@ export default function Login() {
                         </div>
                         <p className={"reset-password place-self-end text-highlight mt-[0.3rem] mb-2 transition-colors cursor-pointer hover:text-primary"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>                       
                         <button
-                            type={"submit"}
-                            value={"Submit"}
-                            className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${error ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"}`}
+                            type="submit"
+                            value="Submit"
+                            className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${
+                                loading
+                                    ? "bg-gray-400 cursor-not-allowed pointer-events-none"
+                                    : error
+                                    ? "bg-red hover:bg-secondary hover:text-red"
+                                    : "bg-highlight hover:bg-primary"
+                            }`}
                             disabled={loading}
                             aria-label="Iniciar sessão"
                         >
