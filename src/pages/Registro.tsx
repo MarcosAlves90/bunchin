@@ -2,10 +2,11 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import ProgressIndicator from "../components/molecules/ProgressIndicator";
+import axios from "axios";
 
 export default function Registro() {
     const navigate = useNavigate();
-    const { tema, usuario } = useContext(UserContext);
+    const { tema, usuario, API_URL } = useContext(UserContext);
 
     useEffect(() => {
         if (usuario) {
@@ -18,12 +19,12 @@ export default function Registro() {
     const [enderecoEmpresa, setEnderecoEmpresa] = useState("");
     const [telefoneEmpresa, setTelefoneEmpresa] = useState("");
     const [emailEmpresa, setEmailEmpresa] = useState("");
-
     const [nomeCompleto, setNomeCompleto] = useState("");
-    const [nRegistro, setNRegistro] = useState("");
     const [cpf, setCpf] = useState("");
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState(""); const handleNextStepButtonClick = (e: React.FormEvent) => {
+    const [senha, setSenha] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(""); const handleNextStepButtonClick = (e: React.FormEvent) => {
         e.preventDefault();
         setStep(2);
     };
@@ -37,7 +38,6 @@ export default function Registro() {
 
     const isStep2Complete = () => {
         return nomeCompleto.trim() !== "" &&
-            nRegistro.trim() !== "" &&
             cpf.trim() !== "" &&
             email.trim() !== "" &&
             senha.trim() !== "";
@@ -56,6 +56,54 @@ export default function Registro() {
     const handleStepClick = (targetStep: number) => {
         if (canNavigateToStep(targetStep)) {
             setStep(targetStep);
+        }
+    };
+
+    const handleFinishRegistration = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        console.log('handleFinishRegistration chamada');
+        console.log('isStep2Complete():', isStep2Complete());
+        console.log('API_URL:', API_URL);
+        
+        if (!isStep2Complete()) {
+            console.log('Step 2 não está completo, retornando');
+            return;
+        }
+
+        setIsLoading(true);
+        setError("");
+
+        try {
+            const requestBody = {
+                nome: nomeEmpresa,
+                cnpj: cnpjEmpresa,
+                endereco: enderecoEmpresa,
+                telefone: telefoneEmpresa,
+                email: emailEmpresa,
+                adminNome: nomeCompleto,
+                adminEmail: email,
+                adminSenha: senha,
+                adminCpf: cpf
+            };
+
+            console.log('Dados do registro:', requestBody);
+            console.log('URL completa:', `${API_URL}organizacao`);
+
+            const response = await axios.post(`${API_URL}organizacao`, requestBody);
+
+            console.log('Organização cadastrada com sucesso:', response.data);
+            
+            navigate('/login');
+            
+        } catch (error: any) {
+            console.error('Erro ao cadastrar organização:', error);
+            setError(
+                error.response?.data?.message || 
+                'Erro ao cadastrar organização. Tente novamente.'
+            );
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -175,6 +223,7 @@ export default function Registro() {
                     <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2"}>
                         <form
                             className="form-login min-w-[35vw] w-full flex flex-col gap-2 items-center"
+                            onSubmit={handleFinishRegistration}
                         >
                             <div className="wrapper relative w-full flex flex-col items-start group">
                                 <label htmlFor="nomeCompleto" className="text-left">Nome completo</label>
@@ -189,18 +238,6 @@ export default function Registro() {
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-start w-full">
-                                <div className="wrapper relative w-full flex flex-col items-start group">
-                                    <label htmlFor="nRegistro" className="text-left">Nº de registro</label>
-                                    <input
-                                        type="text"
-                                        id="nRegistro"
-                                        placeholder="Número de registro"
-                                        value={nRegistro}
-                                        onChange={e => setNRegistro(e.target.value)}
-                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
-                                        required
-                                    />
-                                </div>
                                 <div className="wrapper relative w-full flex flex-col items-start group">
                                     <label htmlFor="cpf" className="text-left">CPF</label>
                                     <input
@@ -236,28 +273,28 @@ export default function Registro() {
                                         className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
                                         required
                                     />
-
-                                    {/* {!passwordVisibility &&
-                                        <Eye
-                                            className={"absolute top-[1.3rem] !left-[unset] right-1 !transition-(--common-transition) hover:!cursor-pointer hover:!scale-[1.2]"}
-                                            color={tema === "dark" ? "var(--background-color-navbar-dark)" : "var(--background-color-navbar-light)"}
-                                            onClick={handlePasswordVisibility}
-                                            aria-label="Mostrar senha"
-                                            role="button"
-                                            tabIndex={0}
-                                        />
-                                    } */}
                                 </div>
                                 </div>
+                            
+                            {error && (
+                                <div className="text-red-500 text-sm mt-2 text-center">
+                                    {error}
+                                </div>
+                            )}
+                            
                             <button
                                 type={"submit"}
                                 value={"Submit"}
-                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${isStep2Complete() ? "bg-highlight hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}
-                                disabled={!isStep2Complete()}
+                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${
+                                    isStep2Complete() && !isLoading 
+                                        ? "bg-highlight hover:bg-primary" 
+                                        : "bg-gray-400 cursor-not-allowed"
+                                }`}
+                                disabled={!isStep2Complete() || isLoading}
                                 aria-label="Finalizar cadastro"
                             >
                                 <i className="bi bi-feather2 left"></i>
-                                Finalizar
+                                {isLoading ? 'Cadastrando...' : 'Finalizar'}
                                 <i className="bi bi-feather2 right"></i>
                             </button>
                         </form>
