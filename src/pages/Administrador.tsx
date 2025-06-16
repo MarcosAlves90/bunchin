@@ -456,7 +456,7 @@ export default function Administrador() {
                                     <label className="w-full text-start">{field.label}</label>
                                     {field.type === "input" ? (
                                         <input
-                                            className={`border-b-2 p-0.5 rounded-t-sm ${field.disabled ? 'pointer-events-none' : ''} ${field.name === 'n_registro' ? 'bg-card border-placeholder' : 'bg-secondary border-primary'}`}
+                                            className={`border-b-2 p-0.5 rounded-t-sm focus:border-highlight ${field.disabled ? 'pointer-events-none' : ''} ${field.name === 'n_registro' ? 'bg-card border-placeholder' : 'bg-secondary border-primary'}`}
                                             value={inputs[field.name] || ""}
                                             placeholder={field.placeholder}
                                             type={field.inputType}

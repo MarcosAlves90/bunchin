@@ -40,7 +40,7 @@ export default function Perfil() {
                     {userFields.map(field => (
                         <div key={field.name} className={`flex flex-col ${field.name === "n_registro" ? "col-span-1" : field.name === "email" ? "col-span-2" : "col-span-3"}`}>
                             <label className="w-full text-start">{field.label}</label>
-                            <input className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm pointer-events-none`} value={field.value || ""} placeholder={field.placeholder} type={field.type} name={field.name} readOnly />
+                            <input className={`border-b-2 border-placeholder p-0.5 bg-card rounded-t-sm pointer-events-none`} value={field.value || ""} placeholder={field.placeholder} type={field.type} name={field.name} readOnly />
                         </div>
                     ))}
                 </div>
