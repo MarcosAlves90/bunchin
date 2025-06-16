@@ -9,6 +9,7 @@ import Contato from './pages/Contato.tsx';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import Perfil from "./pages/Perfil.tsx";
+import Projetos from "./pages/Projetos.tsx";
 import Pontos from "./pages/Pontos.tsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./utils/context/userContext.tsx";
@@ -105,6 +106,7 @@ function App() {
           <Route path="/sobre" element={<Sobre/>}/>
           <Route path="/contato" element={<Contato/>}/>
           <Route path="/perfil" element={<Perfil/>}/>
+          <Route path="/projetos" element={<Projetos/>}/>
           <Route path="/pontos" element={<Pontos/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>
