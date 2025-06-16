@@ -211,7 +211,7 @@ export default function Home() {
                 {/* TODO: Finalizar seções abaixo  */}
 
                 {/* Seção FAQ */}
-                <div className="mt-16" data-aos="fade-up">
+                <div className="mt-15" data-aos="fade-up">
                     <p className={"mainCommon__resources__title"}>PERGUNTAS FREQUENTES</p>
                     <p className={"mainCommon__resources__subtitle mt-0 text-lg mb-8 text-primary"}>
                         Esclarecemos as principais dúvidas sobre nossa plataforma
