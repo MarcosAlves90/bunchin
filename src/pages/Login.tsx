@@ -35,7 +35,7 @@ export default function Login() {
     return (
         <>
             <img className={`login-penas-left ${tema === "dark" ? "invert" : ""}`}
-                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"}
+                src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_esquerda_login_rmo2aj.svg"} 
                 alt={"Penas à esquerda"} />
             <img className={`login-penas-right ${tema === "dark" ? "invert" : ""}`}
                 src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_direita_login_c14tob.svg"}
@@ -107,7 +107,8 @@ export default function Login() {
                                 }
                             </div>
                         </div>
-                        <p className={"reset-password place-self-end text-highlight mt-[0.3rem] mb-2 transition-colors cursor-pointer hover:text-primary"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>                        <button
+                        <p className={"reset-password place-self-end text-highlight mt-[0.3rem] mb-2 transition-colors cursor-pointer hover:text-primary"} onClick={handleResetPasswordButtonClick} aria-label="Esqueci a senha">Esqueci a senha</p>                       
+                        <button
                             type={"submit"}
                             value={"Submit"}
                             className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${error ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"}`}
