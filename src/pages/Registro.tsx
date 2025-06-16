@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
-import { Undo2} from "lucide-react";
 
 function ProgressIndicator({ step }: { step: number }) {
     return (
@@ -68,14 +67,14 @@ export default function Registro() {
             <img className={`login-penas-right ${tema === "dark" ? "invert" : ""}`}
                 src={"https://res.cloudinary.com/dflvo098t/image/upload/penas_direita_login_c14tob.svg"}
                 alt={"Penas à direita"} />
-            <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem]"}
+                <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem] cursor-pointer"}
                     onClick={handleBackButtonClick}>
                     <img
                         className={`bird-icon ${tema === "dark" ? "invert" : ""}`}
                         src="https://res.cloudinary.com/dflvo098t/image/upload/bunchin_bird_icon_r8mgim.svg"
                         alt="Pássaro do bunchin"
                     />
-            </div>
+                </div>
                         <div className="absolute left-1/2 bottom-[0.5rem]">
                             <ProgressIndicator step={step} />
                         </div>
@@ -87,7 +86,7 @@ export default function Registro() {
                             Preencha os dados iniciais da sua empresa para começar o cadastro.
                         </p>
                     </div>
-                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center self-start h-full px-4 pt-8 relative"}>
+                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center self-start h-full px-2 pt-8 relative"}>
                         <form
                             className="form-login min-w-[35vw] w-full h-full flex flex-col items-center justify-end"
                             onSubmit={handleNextStepButtonClick}
