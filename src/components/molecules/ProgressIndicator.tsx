@@ -19,7 +19,7 @@ export default function ProgressIndicator({
                 onClick={() => canNavigateToStep(1) && onStepClick(1)}
                 title="Etapa 1: Dados da empresa"
             />
-            <div className={`h-[0.3rem] w-1 ${step === 2 ? "bg-(--highlight)" : "bg-(--primary)"}`}></div>
+            <div className={`h-[0.3rem] w-2 ${step === 2 ? "bg-(--highlight)" : "bg-(--primary)"}`}></div>
             <div
                 className={`w-1 h-1 rounded-full flex items-center justify-center transition-colors cursor-pointer
                     ${step === 2 ? "bg-(--highlight)" : "bg-(--primary)"}
