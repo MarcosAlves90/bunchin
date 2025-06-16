@@ -134,7 +134,7 @@ export default function Administrador() {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(`${API_URL}funcionario`, {
+            const response = await axios.get(`${API_URL}funcionario/organizacao/${usuario.organizacao_id}`, {
                 signal: controller.signal
             });
             
