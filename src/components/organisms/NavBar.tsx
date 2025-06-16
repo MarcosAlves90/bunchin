@@ -20,9 +20,9 @@ export default function NavBar() {
             {links.map(({ to, label }: NavLink) => (
                 <Link
                     key={to}
-                    className={`nav-link text-sm md:text-lg relative ${
-                        location.pathname === to ? "text-primary" : ""
-                    } text-card hover:text-primary hover:bg-tertiary transition-colors duration-300 px-1 md:px-2 py-[0.2rem] rounded-sm whitespace-nowrap ${isMobile ? 'w-full text-center py-3 text-lg' : ''}`}
+                    className={`nav-link text-lg relative ${
+                        location.pathname === to ? "text-primary border-primary" : ""
+                    } text-card transition-colors duration-300 px-2 py-[0.2rem] rounded-sm whitespace-nowrap ${isMobile ? 'w-full text-center px-2 py-[0.7rem] text-lg border-card border-2' : 'hover:text-primary hover:bg-tertiary'}`}
                     to={to}
                     onClick={isMobile ? closeMenu : undefined}
                 >

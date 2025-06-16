@@ -311,7 +311,7 @@ export default function Administrador() {
             name: "nome",
             type: "input",
             inputType: "text",
-            placeholder: "exemplo da silva paiva",
+            placeholder: "Digite seu nome aqui",
             colSpan: "col-span-3",
             disabled: funcionarioSelecionado ? lockInputs : false
         },
@@ -329,7 +329,7 @@ export default function Administrador() {
             name: "n_registro",
             type: "input",
             inputType: "number",
-            placeholder: "1234567890",
+            placeholder: "",
             colSpan: "col-span-1",
             disabled: true,
             locked: true
