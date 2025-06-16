@@ -234,25 +234,25 @@ export default function Home() {
                 </div>
 
                 <div className="mt-15 text-center" data-aos="fade-up">
-                    <h3 className="text-3xl font-bold text-primary mb-4 transition-colors duration-200">
+                    <h3 className="text-3xl font-bold text-primary mb-2 transition-colors duration-200">
                         Pronto para revolucionar a gestão da sua empresa?
                     </h3>
-                    <p className="text-xl text-primary/80 mb-8 transition-colors duration-200">
+                    <p className="text-xl text-primary/80 mb-5 transition-colors duration-200">
                         Junte-se a centenas de empresas que já transformaram sua gestão de ponto e equipe.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button className={"button-session"}>
+                        Registre sua empresa
+                    </button>
+                    {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="button-session">
                             Teste Grátis por 14 dias
                         </button>
-                        <button className="border-2 border-highlight text-highlight hover:bg-highlight hover:text-secondary px-6 py-3 rounded-sm font-medium transition-all duration-300">
+                        <button className="button-session">
                             Agendar Demonstração
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
-                <button className={"button-session last mt-5"}>
-                    Registre sua empresa
-                </button>
             </article>
         </main>
     );
