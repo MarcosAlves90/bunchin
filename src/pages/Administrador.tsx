@@ -8,19 +8,33 @@ import { ChevronRight, X, Trash, Search, Pen, ChevronDown, ChevronUp, Lock, PenO
 import { SendEmail } from "../utils/services/sendEmail.js";
 import { EmployeeSkeleton } from "../components/atoms/EmployeeSkeleton.tsx";
 import { InputsType, Funcionario } from "../types/interfaces";
+import useLoadingDots from "../utils/hooks/useLoadingDots.tsx";
 
 export default function Administrador() {
     const [indexFuncionario, setIndexFuncionario] = useState(0);
     const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
-    const [funcionarioSelecionado, setFuncionarioSelecionado] = useState("");
-    const [searchTerm, setSearchTerm] = useState("");
-    const { tema, usuario, API_URL } = useContext(UserContext);    const [inputs, setInputs] = useState<Record<string, string>>({});
+    const [funcionarioSelecionado, setFuncionarioSelecionado] = useState(""); const [searchTerm, setSearchTerm] = useState("");
+    const { tema, usuario, API_URL } = useContext(UserContext);
+    const [inputs, setInputs] = useState<Record<string, string>>({
+        n_registro: "",
+        nome: "",
+        email: "",
+        cpf: "",
+        funcao: "comum",
+        cargo: "estagiario",
+        departamento: "administrativo"
+    });
     const [colapsed, setColapsed] = useState(true);
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [lockInputs, setLockInputs] = useState(true);
-    const [isLoading, setIsLoading] = useState(true);
-    const [showEditModeMessage, setShowEditModeMessage] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false); const [lockInputs, setLockInputs] = useState(true);
+    const [isLoading, setIsLoading] = useState(true); const [showEditModeMessage, setShowEditModeMessage] = useState(false);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const abortControllerRef = useRef<AbortController | null>(null);
+    const loadingDots = useLoadingDots(loadingSubmit);
+
+    // TODO [1]: fazer com que o cpf seja verificado corretamente
+    // TODO [3]: fazer o email só ser enviado caso o funcionário seja criado com sucesso
+
     const [selectedDate, setSelectedDate] = useState(() => {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
@@ -30,7 +44,8 @@ export default function Administrador() {
         const [year, month, day] = selectedDate.split('-').map(Number);
         const date = new Date(year, month - 1, day, 12, 0, 0);
         return date.toISOString();
-    }, [selectedDate]);    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
+    }, [selectedDate]);
+    const handleColapse = useCallback(() => setColapsed(prev => !prev), []);
     const handleSidebarCollapse = useCallback(() => setSidebarCollapsed(prev => !prev), []);
     const handleDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);
@@ -54,7 +69,8 @@ export default function Administrador() {
             password += charset.charAt(Math.floor(Math.random() * n));
         }
         return password;
-    }    function sendEmail(password: string) {
+    }
+    function sendEmail(password: string) {
         // @ts-ignore
         SendEmail(import.meta.env.VITE_PUBLIC_API_KEY_S,
             // @ts-ignore
@@ -65,9 +81,10 @@ export default function Administrador() {
             password: password,
             name: inputs.nome
         });
-    }    const handleSubmit = useCallback(async (event: React.FormEvent) => {
+    }
+    const handleSubmit = useCallback(async (event: React.FormEvent) => {
         event.preventDefault();
-        
+
         if (funcionarioSelecionado && lockInputs) {
             setShowEditModeMessage(true);
             setTimeout(() => {
@@ -75,22 +92,27 @@ export default function Administrador() {
             }, 5000);
             return;
         }
-        
+
         const normalizedEmail = validator.normalizeEmail(inputs.email);
         const isEmailValid = normalizedEmail && validator.isEmail(normalizedEmail);
-        
+
+        setLoadingSubmit(true);
         try {
             if (funcionarioSelecionado) {
                 await axios.put(`${API_URL}funcionario/${funcionarioSelecionado}`, inputs);
                 console.log("Funcionário atualizado com sucesso!");
                 await getUsers();
+                setShowSuccessMessage(true);
+                setTimeout(() => {
+                    setShowSuccessMessage(false);
+                }, 5000);
             } else if (isEmailValid) {
                 const newPassword = generatePassword();
-                const inputsClone: InputsType = { 
-                    ...inputs, 
+                const inputsClone: InputsType = {
+                    ...inputs,
                     senha: newPassword,
-                    organizacao: { 
-                        idOrganizacao: usuario.organizacao_id
+                    organizacao: {
+                        idOrganizacao: usuario?.organizacao?.idOrganizacao ?? 1
                     }
                 };
                 if ('n_registro' in inputsClone) {
@@ -103,6 +125,10 @@ export default function Administrador() {
                 await getUsers();
                 setFuncionarioSelecionado("");
                 setLockInputs(false);
+                setShowSuccessMessage(true);
+                setTimeout(() => {
+                    setShowSuccessMessage(false);
+                }, 5000);
                 const defaultValues = {
                     n_registro: "",
                     nome: "",
@@ -120,6 +146,8 @@ export default function Administrador() {
             }
         } catch (error) {
             console.error("Erro ao processar funcionário:", error);
+        } finally {
+            setLoadingSubmit(false);
         }
     }, [API_URL, funcionarioSelecionado, inputs, lockInputs]);
 
@@ -134,10 +162,10 @@ export default function Administrador() {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(`${API_URL}funcionario/organizacao/${usuario.organizacao_id}`, {
+            const response = await axios.get(`${API_URL}funcionario/organizacao/${usuario?.organizacao?.idOrganizacao ?? 1}`, {
                 signal: controller.signal
             });
-            
+
             if (!controller.signal.aborted) {
                 console.log(response.data);
                 setFuncionarios(response.data);
@@ -147,7 +175,7 @@ export default function Administrador() {
                 console.log("Requisição de funcionários cancelada:", error.message);
                 return;
             }
-            
+
             console.error("Erro ao buscar funcionários:", error);
             setFuncionarios([]);
         } finally {
@@ -160,14 +188,14 @@ export default function Administrador() {
     useEffect(() => {
         getUsers();
     }, [getUsers]);
-    
+
     useEffect(() => {
         return () => {
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
             }
         };
-    }, []);    const deleteUser = useCallback(async (cpf: string): Promise<void> => {
+    }, []); const deleteUser = useCallback(async (cpf: string): Promise<void> => {
         try {
             await axios.delete(`${API_URL}funcionario/${cpf}`);
             console.log("Funcionário deletado com sucesso!");
@@ -187,8 +215,9 @@ export default function Administrador() {
                 handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
             }
         } catch (error) {
-            console.error("Erro ao deletar funcionário:", error);        }
-    }, [API_URL, getUsers]);      function GenerateEmployeesButtons({ funcionarios }: { funcionarios: Funcionario[] }) {
+            console.error("Erro ao deletar funcionário:", error);
+        }
+    }, [API_URL, getUsers]); function GenerateEmployeesButtons({ funcionarios }: { funcionarios: Funcionario[] }) {
         const filteredFuncionarios = useMemo(() => {
             return funcionarios.filter((funcionario: Funcionario) =>
                 funcionario.nome.toLowerCase().includes(searchTerm.toLowerCase())
@@ -385,7 +414,7 @@ export default function Administrador() {
         }
     ], [lockInputs, funcionarioSelecionado]);
 
-    function GenerateLockIcon({}: { className?: string }) {
+    function GenerateLockIcon({ }: { className?: string }) {
         return (
             <>
                 {funcionarioSelecionado && lockInputs &&
@@ -395,14 +424,14 @@ export default function Administrador() {
                 }
             </>
         );
-    }    return (
+    } return (
         <div className={`flex`}>
             <article className={`sidebar pt-[90px] pb-2 flex items-center justify-center text-primary transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'max-w-0 pl-0 overflow-hidden' : 'max-w-[280px] pl-1'}`}>
                 <div className={`bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm min-w-17 gap-1 transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
                     <div className={"div-title flex justify-between items-center"}>
                         <p className={"text-lg"}>Funcionários</p>
                         <div>
-                        <UserRoundPlus className="cursor-pointer transition-colors hover:text-highlight" onClick={clearSelection} />
+                            <UserRoundPlus className="cursor-pointer transition-colors hover:text-highlight" onClick={clearSelection} />
                         </div>
                     </div>
                     <div className={"relative group"}>
@@ -464,41 +493,46 @@ export default function Administrador() {
                                             onChange={handleChange}
                                             disabled={field.disabled}
                                         />
-                                    ) : (
-                                        <select
-                                            className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm ${field.disabled ? 'pointer-events-none appearance-none' : ''}`}
-                                            value={inputs[field.name] || field.options?.[0]?.value}
-                                            name={field.name}
-                                            onChange={handleChange}
-                                            disabled={field.disabled}
-                                        >
-                                            {field.options?.map(option => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </option>
-                                            ))}
-                                        </select>
+                                    ) : (<select
+                                        className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm ${field.disabled ? 'pointer-events-none appearance-none' : ''}`}
+                                        value={inputs[field.name] || field.options?.[0]?.value || ""}
+                                        name={field.name}
+                                        onChange={handleChange}
+                                        disabled={field.disabled}
+                                    >
+                                        {field.options?.map(option => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
                                     )}
                                     {field.locked ? (
-                                        <Shield className="absolute right-0.5 top-1/2 text-placeholder"/>
+                                        <Shield className="absolute right-0.5 top-1/2 text-placeholder" />
                                     ) : (
                                         <GenerateLockIcon />
                                     )}
                                 </div>
                             ))}
                         </article>
-                        <div className={"container-save-button"}>
-                            <button
-                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${showEditModeMessage ? "bg-red hover:bg-secondary hover:text-red" : "bg-highlight hover:bg-primary"}`} 
-                                type="submit"
-                            >
-                                {showEditModeMessage 
-                                    ? "Modo de Edição Necessário" 
-                                    : (!funcionarioSelecionado ? "Criar perfil" : "Salvar alterações")
-                                }
-                            </button>
+                        <div className={"container-save-button"}>                            <button
+                            className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${loadingSubmit ? "bg-gray-400 cursor-not-allowed pointer-events-none" :
+                                    showSuccessMessage ? "bg-green hover:bg-green-600" :
+                                        showEditModeMessage ? "bg-red hover:bg-secondary hover:text-red" :
+                                            "bg-highlight hover:bg-primary"
+                                }`}
+                            type="submit"
+                            disabled={loadingSubmit}
+                        >
+                            {loadingSubmit ? `Carregando${loadingDots}` :
+                                showSuccessMessage ? (funcionarioSelecionado ? "Funcionário atualizado!" : "Funcionário criado!") :
+                                    showEditModeMessage
+                                        ? "Modo de Edição Necessário"
+                                        : (!funcionarioSelecionado ? "Criar usuário" : "Salvar alterações")
+                            }
+                        </button>
                         </div>
-                    </form>                
+                    </form>
                 </article>
                 {funcionarioSelecionado && (
                     <article className="w-full bg-tertiary p-1.5 rounded-sm">
@@ -508,7 +542,7 @@ export default function Administrador() {
                                 <ChevronDown strokeWidth={0.9} className="icon bg-highlight rounded-sm text-secondary cursor-pointer" size={50} onClick={handleColapse} />
                             ) : (
                                 <ChevronUp strokeWidth={0.9} className="icon bg-highlight rounded-sm text-secondary cursor-pointer" size={50} onClick={handleColapse} />
-                            )}                
+                            )}
                         </div>
                         {!colapsed && (
                             <>
