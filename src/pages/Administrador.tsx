@@ -400,7 +400,8 @@ export default function Administrador() {
             <article className={`sidebar pt-[90px] pb-2 flex items-center justify-center text-primary transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'max-w-0 pl-0 overflow-hidden' : 'max-w-[280px] pl-1'}`}>
                 <div className={`bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm min-w-17 gap-1 transition-all duration-500 ease-in-out ${sidebarCollapsed ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
                     <div className={"div-title flex justify-between items-center"}>
-                        <p className={"text-lg"}>Funcionários</p>                        <div>
+                        <p className={"text-lg"}>Funcionários</p>
+                        <div>
                         <UserRoundPlus className="cursor-pointer transition-colors hover:text-highlight" onClick={clearSelection} />
                         </div>
                     </div>
@@ -455,7 +456,7 @@ export default function Administrador() {
                                     <label className="w-full text-start">{field.label}</label>
                                     {field.type === "input" ? (
                                         <input
-                                            className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm ${field.disabled ? 'pointer-events-none' : ''}`}
+                                            className={`border-b-2 p-0.5 rounded-t-sm ${field.disabled ? 'pointer-events-none' : ''} ${field.name === 'n_registro' ? 'bg-card border-placeholder' : 'bg-secondary border-primary'}`}
                                             value={inputs[field.name] || ""}
                                             placeholder={field.placeholder}
                                             type={field.inputType}
@@ -479,7 +480,7 @@ export default function Administrador() {
                                         </select>
                                     )}
                                     {field.locked ? (
-                                        <Shield className="absolute right-0.5 top-1/2"/>
+                                        <Shield className="absolute right-0.5 top-1/2 text-placeholder"/>
                                     ) : (
                                         <GenerateLockIcon />
                                     )}

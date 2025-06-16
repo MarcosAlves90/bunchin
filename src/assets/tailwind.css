@@ -12,7 +12,10 @@
     --color-highlight: var(--highlight);
     
     --color-card: var(--card);
+    
     --color-story-card: var(--story-card);
+
+    --color-placeholder: var(--placeholder);
 
     --color-green: var(--color-green);
     --color-red: var(--color-red);
@@ -29,6 +32,8 @@
     --card: rgb(188, 188, 188);
     --story-card: #0f0f0f;
 
+    --placeholder: rgb(148, 148, 148);
+
     --color-green: #68c935;
     --color-red: #e61f1f;
 }
@@ -43,6 +48,9 @@
     /* --text-card:#C6C6C6; */
     --card: rgb(91, 91, 91);
     --story-card: #f0f0f0;
+
+    --placeholder: rgb(131, 131, 131);
+
 }
 
 .mainCommon {
