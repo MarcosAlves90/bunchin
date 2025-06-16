@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Usuario } from "../context/userContext";
+import { Usuario } from "../../types/interfaces";
 
 export default function useLoginForm(
     API_URL: string,

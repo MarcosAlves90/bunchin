@@ -53,7 +53,7 @@ export default function ThemeDropdown() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex justify-center items-center gap-0.5 h-[38.4px] w-[38.4px] rounded-sm cursor-pointer border-2 p-[0.2rem] text-lg transition-colors duration-300 hover:text-primary hover:border-primary ${isOpen ? "text-primary border-primary" : "text-highlight border-highlight"}`}
+                className={`flex justify-center items-center gap-0.5 h-[38.4px] w-[38.4px] rounded-sm cursor-pointer border-2 p-[0.2rem] text-lg transition-colors duration-200 hover:text-primary hover:border-primary ${isOpen ? "text-primary border-primary" : "text-highlight border-highlight"}`}
                 aria-label="Selecionar tema"
             >
                 <Cog className={`h-1.5 w-1.5 transition duration-200 ${isOpen ? "rotate-90" : ""}`} />

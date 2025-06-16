@@ -71,7 +71,6 @@
 
 .button-session {
     @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
-    @apply border-none transition text-lg px-2 py-[0.7rem] rounded-sm bg-highlight hover:bg-primary text-secondary cursor-pointer font-medium;
     &.last {
         @apply mt-3;
     }
