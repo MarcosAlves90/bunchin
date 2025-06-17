@@ -50,6 +50,7 @@ export default function Footer() {
                             <li className="cursor-pointer"><a onClick={() => navigate("/")}>Início</a></li>
                             <li className="cursor-pointer"><a onClick={() => navigate("/sobre")}>Sobre</a></li>
                             <li className="cursor-pointer"><a onClick={() => navigate("/contato")}>Trabalhe conosco</a></li>
+                            <li className="cursor-pointer"><a onClick={() => navigate("/faq")}>FAQ</a></li>
                         </ul>
                     </div>
                     <div className="flex gap-1 flex-col max-w-30">
