@@ -47,7 +47,8 @@ export function EmployeeFormFields({
             {fields.map(field => (
                 <div key={field.name} className={`flex flex-col ${field.colSpan} relative`}>
                     <label className="w-full text-start">{field.label}</label>
-                    {field.type === "input" ? (                        <input
+                    {field.type === "input" ? (
+                        <input
                             className={`border-b-2 p-0.5 rounded-t-sm focus:border-highlight ${
                                 field.disabled ? 'pointer-events-none' : ''
                             } 
