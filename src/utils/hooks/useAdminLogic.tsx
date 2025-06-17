@@ -107,7 +107,7 @@ export function useAdminLogic() {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(`${API_URL}funcionario/organizacao/${usuario?.organizacao?.idOrganizacao ?? 1}`, {
+            const response = await axios.get(`${API_URL}funcionario/organizacao/${usuario?.organizacao_id ?? 1}`, {
                 signal: controller.signal
             });
 
