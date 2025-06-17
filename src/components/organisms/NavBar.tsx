@@ -42,6 +42,7 @@ export default function NavBar() {
     const userLinks: NavLink[] = [
         { to: "/perfil", label: "Usuário" },
         { to: "/pontos", label: "Pontos" },
+        {to: "/projetos", label: "Projetos"},
         ...(usuario?.funcao === "administrador" ? [{ to: "/administrador", label: "Painel de Controle" }] : [])
     ];    return (
         <>
