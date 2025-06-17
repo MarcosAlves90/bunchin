@@ -1,10 +1,10 @@
 import { useContext, useState, useRef, useCallback, useMemo } from "react";
-import { UserContext } from "../utils/context/userContext.js";
+import { UserContext } from "../utils/context/userContext";
 import { UserContextType, RegistroPonto, GeneratePointsRef } from "../types/interfaces";
 import { v4 as uuidv4 } from 'uuid';
 import { GeneratePoints } from "../components/organisms/PointSystems";
 import axios from "axios";
-import LiveClock from "../components/atoms/LiveClock.js";
+import LiveClock from "../components/atoms/LiveClock";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, AlarmClock } from "lucide-react";
 

@@ -140,7 +140,7 @@ export default function Registro() {
 
     const handleBackButtonClick = () => navigate('/');
     return (
-        <div className={`registro-form flex items-center content-center pb-3 h-36 relative`}>
+        <div className={`registro-form flex items-center content-center pb-3 h-36 relative before:rounded-br-sm`}>
             <div className={"bird-icon-wrapper absolute top-[-3.3rem] left-[-2.1rem] cursor-pointer"}
                 onClick={handleBackButtonClick}>
                 <img
@@ -148,7 +148,8 @@ export default function Registro() {
                     src="https://res.cloudinary.com/dflvo098t/image/upload/bunchin_bird_icon_r8mgim.svg"
                     alt="Pássaro do bunchin"
                 />
-            </div>                        <div className="absolute left-1/2 bottom-[0.5rem]">
+            </div>
+            <div className="absolute left-1/2 bottom-[0.5rem]">
                 <ProgressIndicator
                     step={step}
                     onStepClick={handleStepClick}
@@ -157,14 +158,14 @@ export default function Registro() {
             </div>
             {step === 1 ? (
                 <>
-                    <div className={`bg-(--highlight) text-(--primary) items-center px-2 flex flex-col h-full justify-center`}>
+                    <div className={`bg-(--highlight) rounded-tl-sm text-(--primary) items-center px-2 flex flex-col h-full justify-center`}>
                         <p className={"max-w-20 text-xl text-justify"}>
                             Preencha os dados iniciais da sua empresa para começar o cadastro.<br />
                             Essas informações são essenciais para criar o perfil da organização e garantir a segurança dos dados.<br />
                             Certifique-se de preencher todos os campos corretamente antes de avançar para a próxima etapa.
                         </p>
                     </div>
-                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2 relative"}>
+                    <div className={"bg-(--tertiary) rounded-tr-sm text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2 relative"}>
                         <h2 className={"text-3xl font-(family-name:--font-subrayada) font-bold mb-2"}>Cadastrando sua empresa!</h2>
                         <form
                             className="form-login min-w-[35vw] w-full flex flex-col items-center justify-end gap-2"
@@ -269,7 +270,7 @@ export default function Registro() {
                 </>
             ) : (
                 <>
-                    <div className={"bg-(--tertiary) text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2"}>
+                    <div className={"bg-(--tertiary) rounded-tl-sm text-(--primary) flex flex-col items-center justify-center self-start h-full px-2 pt-2"}>
                         <h2 className={"text-3xl mb-2 font-(family-name:--font-subrayada) font-bold"}>Estamos Quase lá!</h2>
                         <form
                             className="form-login min-w-[35vw] w-full flex flex-col gap-2 items-center"
@@ -349,7 +350,7 @@ export default function Registro() {
                             </button>
                         </form>
                     </div>
-                    <div className={`bg-(--highlight) text-(--primary) px-2 flex flex-col h-full items-center justify-center`}>
+                    <div className={`bg-(--highlight) rounded-tr-sm text-(--primary) px-2 flex flex-col h-full items-center justify-center`}>
                         <p className={"left-side-p max-w-20 text-xl text-justify"}>
                             Por padrão, o primeiro funcionário é cadastrado como um administrador do RH, podendo atualizar dados e cadastrar outros funcionários na plataforma. Essas informações poderão ser alteradas posteriormente na página de perfil do usuário.
                         </p>

@@ -1,3 +1,4 @@
+import validator from 'validator';
 import { useRef, useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -18,15 +19,17 @@ import PricingCard from "../components/molecules/PricingCard";
 import { UserContext } from "../utils/context/userContext";
 import Story from "../components/atoms/Story";
 import { UserContextType } from "../types/interfaces";
+import { SendEmail } from "../utils/services/sendEmail";
 import AOS from "aos";
 // @ts-ignore
 import "aos/dist/aos.css";
 
 export default function Home() {
     const navigate = useNavigate();
-    const secondTitleRef = useRef(null);
-    const { tema } = useContext(UserContext) as UserContextType;
+    const secondTitleRef = useRef(null);    const { tema } = useContext(UserContext) as UserContextType;
     const [email, setEmail] = useState("");
+    const [loadingNewsletterSubmit, setLoadingNewsletterSubmit] = useState(false);
+    const [showNewsletterSuccess, setShowNewsletterSuccess] = useState(false);
 
     useEffect(() => {
         AOS.init();
@@ -40,13 +43,30 @@ export default function Home() {
     };    function handleLoginButtonClick() {
         navigate("/login");
     }
-
-    const handleNewsletterSubmit = (e: React.FormEvent) => {
+    const handleNewsletterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (email) {
-            // Aqui você adicionaria a lógica para salvar o email
-            alert("Obrigado por se inscrever! Entraremos em contato em breve.");
-            setEmail("");
+        const normalizedEmail = validator.normalizeEmail(email);
+        if (normalizedEmail && validator.isEmail(normalizedEmail)) {
+            setLoadingNewsletterSubmit(true);
+            try {
+                // @ts-ignore
+                await SendEmail(import.meta.env.VITE_PUBLIC_API_KEY,
+                    // @ts-ignore
+                    import.meta.env.VITE_SERVICE_API_KEY,
+                    // @ts-ignore
+                    import.meta.env.VITE_TEMPLATE_API_KEY_1, {
+                    email: email,
+                });
+                setEmail("");
+                setShowNewsletterSuccess(true);
+                setTimeout(() => setShowNewsletterSuccess(false), 3000);
+            } catch (error) {
+                console.log('Erro ao enviar email');
+            } finally {
+                setLoadingNewsletterSubmit(false);
+            }
+        } else {
+            console.log('Email inválido');
         }
     };
 
@@ -222,12 +242,18 @@ export default function Home() {
                                 placeholder="Seu melhor email"
                                 className="w-full border-b-2 p-0.5 rounded-t-sm focus:border-highlight bg-secondary text-primary border-primary"
                                 required
-                            />
-                            <button
+                            />                            <button
                                 type="submit"
-                                className="button-session max-w-10 w-full"
+                                disabled={loadingNewsletterSubmit}
+                                className={`max-w-10 w-full border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium ${
+                                    loadingNewsletterSubmit ? "bg-gray-400 cursor-not-allowed pointer-events-none" :
+                                    showNewsletterSuccess ? "bg-green hover:bg-green-600" :
+                                    "bg-highlight hover:bg-primary"
+                                }`}
                             >
-                                Inscrever-se
+                                {loadingNewsletterSubmit ? "Enviando..." :
+                                showNewsletterSuccess ? "Enviado!" :
+                                "Inscrever-se"}
                             </button>
                         </form>
                     </div>
@@ -240,7 +266,10 @@ export default function Home() {
                     <p className="text-xl text-primary/80 mb-5 transition-colors duration-200">
                         Junte-se a centenas de empresas que já transformaram sua gestão de ponto e equipe.
                     </p>
-                    <button className={"button-session"}>
+                    <button 
+                        className={"button-session"}
+                        onClick={() => navigate('/registro')}
+                    >
                         Registre sua empresa
                     </button>
                 </div>

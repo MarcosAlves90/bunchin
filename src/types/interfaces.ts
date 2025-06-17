@@ -146,6 +146,8 @@ export interface ResourcePointProps {
 export interface FAQItemProps {
     question: string;
     answer: string;
+    isOpen: boolean;
+    onToggle: () => void;
 }
 
 export interface DecorativePenasProps {
@@ -195,4 +197,35 @@ export interface StoryProps {
     text: string;
     author: string;
     starNumber: number;
+}
+
+// ==================== INTERFACES DE PROJETO ====================
+
+export interface FuncionarioProjeto {
+    nome: string;
+}
+
+export interface Projeto {
+    id: number;
+    nome: string;
+    dataInicio: string;
+    dataTermino: string;
+    descricao: string;
+    idOrganizacao: string;
+    responsavel: string;
+    status: string;
+    funcionarios: FuncionarioProjeto[];
+    atividades: any[];
+}
+
+export interface ProjetoInputs {
+    nome: string;
+    dataInicio: string;
+    dataTermino: string;
+    descricao: string;
+    idOrganizacao: string;
+    responsavel: string;
+    status: string;
+    funcionarios: FuncionarioProjeto[];
+    atividades: any[];
 }

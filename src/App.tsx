@@ -10,6 +10,7 @@ import Contato from './pages/Contato.tsx';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import Perfil from "./pages/Perfil.tsx";
+import Projetos from "./pages/Projetos.tsx";
 import Pontos from "./pages/Pontos.tsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./utils/context/userContext.tsx";
@@ -56,7 +57,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Controle do scroll apenas para a Home
     if (location.pathname === "/") {
       const handleScroll = () => {
         setIsDown(window.scrollY > 0);
@@ -110,6 +110,7 @@ function App() {
           <Route path="/contato" element={<Contato />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/perfil" element={<Perfil/>}/>
+          <Route path="/projetos" element={<Projetos/>}/>
           <Route path="/pontos" element={<Pontos/>}/>
           <Route path="/administrador" element={<Administrador/>}/>
           <Route path="/login" element={<Login/>}/>

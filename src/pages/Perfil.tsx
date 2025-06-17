@@ -2,6 +2,7 @@ import { useContext, useState, useCallback, useMemo } from "react";
 import { UserContext } from "../utils/context/userContext.js";
 import { GeneratePoints } from "../components/organisms/PointSystems";
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { formatCPF } from "../utils/validateCPF";
 
 export default function Perfil() {
     const { usuario } = useContext(UserContext);
@@ -21,12 +22,11 @@ export default function Perfil() {
     const handleDateChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedDate(event.target.value);
     }, []);
-
     const userFields = useMemo(() => [
         { label: "NOME COMPLETO", value: usuario?.nome, placeholder: "Exemplo da Silva", type: "text", name: "nome" },
         { label: "EMAIL", value: usuario?.email, placeholder: "exemplo@gmail.com", type: "email", name: "email" },
         { label: "REGISTRO", value: usuario?.n_registro, placeholder: "1234567890", type: "number", name: "n_registro" },
-        { label: "CPF", value: usuario?.cpf, placeholder: "12345678900", type: "number", name: "cpf" },
+        { label: "CPF", value: usuario?.cpf ? formatCPF(usuario.cpf) : "", placeholder: "123.456.789-00", type: "text", name: "cpf" },
         { label: "FUNÇÃO", value: usuario?.funcao, placeholder: "comum", type: "text", name: "funcao" },
         { label: "CARGO", value: usuario?.cargo, placeholder: "estagiario", type: "text", name: "cargo" },
         { label: "DEPARTAMENTO", value: usuario?.departamento, placeholder: "administrativo", type: "text", name: "departamento" }

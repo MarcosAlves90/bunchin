@@ -1,13 +1,18 @@
 import FAQItem from "../components/molecules/FAQItem";
 import { faqData } from "../utils/data/faqData";
-
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Faq() {
     const navigate = useNavigate();
+    const [openItemIndex, setOpenItemIndex] = useState<number | null>(null);
 
     function handleHomeButtonClick() {
         navigate("/");
+    }
+
+    function handleItemToggle(index: number) {
+        setOpenItemIndex(openItemIndex === index ? null : index);
     }
 
     return (
@@ -20,6 +25,8 @@ export default function Faq() {
                             key={index}
                             question={faq.pergunta}
                             answer={faq.resposta}
+                            isOpen={openItemIndex === index}
+                            onToggle={() => handleItemToggle(index)}
                         />
                     ))}
                 </div>

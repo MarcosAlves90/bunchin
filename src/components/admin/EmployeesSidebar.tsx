@@ -89,12 +89,11 @@ export function EmployeesSidebar({
             </article>
         );
     };
-
     return (
-        <article className={`sidebar pt-[90px] pb-2 flex items-center justify-center text-primary transition-all duration-500 ease-in-out ${
+        <article className={`sidebar pt-[90px] pb-2 flex items-center justify-center text-primary transition-[max-width,padding] duration-500 ease-in-out ${
             sidebarCollapsed ? 'max-w-0 pl-0 overflow-hidden' : 'max-w-[280px] pl-1'
         }`}>
-            <div className={`bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm min-w-17 gap-1 transition-all duration-500 ease-in-out ${
+            <div className={`bg-secondary border-tertiary border-1 p-1 h-full flex flex-col rounded-sm min-w-17 gap-1 transition-[opacity,transform] duration-500 ease-in-out ${
                 sidebarCollapsed ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
             }`}>
                 <div className="div-title flex justify-between items-center">

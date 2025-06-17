@@ -1,9 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { FAQItemProps } from "../../types/interfaces";
 
-export default function FAQItem({ question, answer }: FAQItemProps) {
-    const [isOpen, setIsOpen] = useState(false);
+export default function FAQItem({ question, answer, isOpen, onToggle }: FAQItemProps) {
     const contentRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState(0);
 
@@ -17,7 +16,7 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
         <div className="bg-tertiary rounded-sm overflow-hidden">
             <button
                 className="w-full p-1 text-left flex justify-between cursor-pointer items-center hover:bg-secondary/20 transition-colors duration-200"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={onToggle}
             >
                 <span className="font-medium text-primary pr-4 transition-colors duration-200">
                     {question}
