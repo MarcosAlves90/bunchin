@@ -1,15 +1,16 @@
 import { useContext, useState, useCallback, useMemo, useEffect } from "react";
-import { UserContext } from "../utils/context/userContext.js";
+import { UserContext } from "../utils/context/userContext";
+import { Projeto, ProjetoInputs } from "../types/interfaces";
 // import axios from "axios";
 
 export default function Projetos() {
-    const { usuario, API_URL } = useContext(UserContext);
+    const { API_URL } = useContext(UserContext);
 
     // Dados mockados para testes
-    const [projetos, setProjetos] = useState([]);
-    const [selectedProjeto, setSelectedProjeto] = useState(null);
+    const [projetos, setProjetos] = useState<Projeto[]>([]);
+    const [selectedProjeto, setSelectedProjeto] = useState<number | null>(null);
     const [funcionariosInput, setFuncionariosInput] = useState("");
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<ProjetoInputs>({
         nome: "",
         dataInicio: "",
         dataTermino: "",
@@ -37,19 +38,17 @@ export default function Projetos() {
 
     useEffect(() => {
         fetchProjetos();
-    }, [fetchProjetos]);
-
-    const handleChange = (event) => {
+    }, [fetchProjetos]);    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
         setInputs((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSearchChange = (event) => {
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
     // Adiciona/atualiza projeto localmente
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
 
@@ -66,7 +65,7 @@ export default function Projetos() {
                 // await axios.put(`${API_URL}projetos/${selectedProjeto}`, inputs);
             } else {
                 // Cria novo projeto
-                const novoProjeto = {
+                const novoProjeto: Projeto = {
                     ...inputs,
                     id: Math.max(0, ...projetos.map((p) => p.id)) + 1,
                 };
@@ -89,7 +88,7 @@ export default function Projetos() {
         }, 500);
     };
 
-    const handleEdit = (projeto) => {
+    const handleEdit = (projeto: Projeto) => {
         setSelectedProjeto(projeto.id);
         setInputs({
             nome: projeto.nome,
@@ -108,18 +107,18 @@ export default function Projetos() {
         return projetos.filter((projeto) =>
             projeto.nome.toLowerCase().includes(searchTerm.toLowerCase())
         );
-    }, [projetos, searchTerm]);
-
-    // Adiciona/remover funcionário (apenas string para simulação)
-    const handleResponsavelChange = (event) => {
+    }, [projetos, searchTerm]);    // Adiciona/remover funcionário (apenas string para simulação)
+    const handleResponsavelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputs((prev) => ({
             ...prev,
             responsavel: event.target.value
         }));
     };
-    const handleFuncionarioInputChange = (event) => {
+    
+    const handleFuncionarioInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFuncionariosInput(event.target.value);
     };
+    
     const handleFuncionarioInputBlur = () => {
         setInputs((prev) => ({
             ...prev,
@@ -135,13 +134,13 @@ export default function Projetos() {
         <main className="mainCommon projetos text-base gap-2 flex justify-center items-center flex-col text-primary transition-colors">
             <article className="w-full bg-tertiary p-1.5 rounded-sm">
                 <h1 className="text-4xl font-subrayada w-full text-left">DADOS DO PROJETO</h1>
-                <form onSubmit={handleSubmit} className="my-2">
+                <form onSubmit={handleSubmit} className="mt-2">
                     <div className="flex flex-col">
                         <div className="grid grid-cols-3 gap-2">
                             <div className="flex flex-col col-span-3">
                                 <label className="w-full text-start">NOME DO PROJETO</label>
                                 <input
-                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
+                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight"
                                     name="nome"
                                     value={inputs.nome}
                                     onChange={handleChange}
@@ -153,7 +152,7 @@ export default function Projetos() {
                                 <label className="w-full text-start">DATA DE INÍCIO</label>
                                 <input
                                     type="date"
-                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
+                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight"
                                     name="dataInicio"
                                     value={inputs.dataInicio}
                                     onChange={handleChange}
@@ -164,7 +163,7 @@ export default function Projetos() {
                                 <label className="w-full text-start">DATA DE TÉRMINO</label>
                                 <input
                                     type="date"
-                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
+                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight"
                                     name="dataTermino"
                                     value={inputs.dataTermino}
                                     onChange={handleChange}
@@ -174,7 +173,7 @@ export default function Projetos() {
                             <div className="flex flex-col">
                                 <label className="w-full text-start">STATUS</label>
                                 <select
-                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
+                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight"
                                     name="status"
                                     value={inputs.status}
                                     onChange={handleChange}
@@ -188,7 +187,7 @@ export default function Projetos() {
                             <div className="flex flex-col col-span-3">
                                 <label className="w-full text-start">DESCRIÇÃO DO PROJETO</label>
                                 <textarea
-                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
+                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight"
                                     name="descricao"
                                     value={inputs.descricao}
                                     onChange={handleChange}
@@ -201,8 +200,8 @@ export default function Projetos() {
                             <div className="flex flex-col col-span-2">
                                 <label className="w-full text-start">RESPONSÁVEL PELO PROJETO</label>
                                 <input
-                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
-                                    placeholder="Responsável da Silva"
+                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight"
+                                    placeholder="Insira o nome do responsável"
                                     value={inputs.responsavel}
                                     onChange={handleResponsavelChange}
                                 />
@@ -213,7 +212,7 @@ export default function Projetos() {
                             <div className="flex flex-col col-span-2">
                                 <label className="w-full text-start">FUNCIONÁRIOS ATRIBUÍDOS</label>
                                 <input
-                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm"
+                                    className="border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight"
                                     placeholder="Digite nomes separados por vírgula"
                                     value={funcionariosInput}
                                     onChange={handleFuncionarioInputChange}
@@ -229,7 +228,7 @@ export default function Projetos() {
                     </div>
                     <button
                         type="submit"
-                        className="border-none transition text-lg my-3 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-40 w-full bg-highlight hover:bg-primary"
+                        className="border-none transition text-lg my-1 px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full bg-highlight hover:bg-primary"
                         aria-label="Avançar"
                     >
                         {selectedProjeto ? "Atualizar Projeto" : "Criar Projeto"}
@@ -243,9 +242,9 @@ export default function Projetos() {
                         <p>Carregando projetos...</p>
                     ) : (
                         <div>
-                            <div className="relative group mb-2">
-                                <input
-                                    className="border-b-2 w-full border-primary p-0.5 pr-[2.2rem] bg-tertiary rounded-t-sm group-focus-within:border-highlight"
+                                <div className="relative group mb-2">
+                                    <input
+                                    className="border-b-2 w-full border-primary p-0.5 pr-[2.2rem] bg-tertiary rounded-t-sm group-focus-within:border-highlight focus:border-highlight"
                                     value={searchTerm}
                                     onChange={handleSearchChange}
                                     placeholder="Buscar projeto..."
@@ -269,11 +268,10 @@ export default function Projetos() {
                                         <div className="flex flex-wrap gap-1 mt-1">
                                             <span className="bg-secondary text-primary px-2 py-0.5 rounded-sm text-xs">{projeto.status}</span>
                                             <span className="bg-secondary text-primary px-2 py-0.5 rounded-sm text-xs">{projeto.responsavel}</span>
-                                        </div>
-                                        <div>
+                                        </div>                                        <div>
                                             {projeto.funcionarios && projeto.funcionarios.length > 0 && (
                                                 <div className="flex flex-wrap gap-1 mt-1">
-                                                    {projeto.funcionarios.map((f, idx) => (
+                                                    {projeto.funcionarios.map((f, idx: number) => (
                                                     <span key={idx} className="bg-highlight text-secondary px-2 py-0.5 rounded-sm text-xs">
                                                         {f.nome}
                                                     </span>

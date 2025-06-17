@@ -65,7 +65,7 @@ export function EmployeeFormFields({
                         />
                     ) : (
                         <select
-                            className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm ${
+                            className={`border-b-2 border-primary p-0.5 bg-secondary rounded-t-sm focus:border-highlight ${
                                 field.disabled ? 'pointer-events-none appearance-none' : ''
                             }`}
                             value={inputs[field.name] || field.options?.[0]?.value || ""}

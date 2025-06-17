@@ -198,3 +198,34 @@ export interface StoryProps {
     author: string;
     starNumber: number;
 }
+
+// ==================== INTERFACES DE PROJETO ====================
+
+export interface FuncionarioProjeto {
+    nome: string;
+}
+
+export interface Projeto {
+    id: number;
+    nome: string;
+    dataInicio: string;
+    dataTermino: string;
+    descricao: string;
+    idOrganizacao: string;
+    responsavel: string;
+    status: string;
+    funcionarios: FuncionarioProjeto[];
+    atividades: any[];
+}
+
+export interface ProjetoInputs {
+    nome: string;
+    dataInicio: string;
+    dataTermino: string;
+    descricao: string;
+    idOrganizacao: string;
+    responsavel: string;
+    status: string;
+    funcionarios: FuncionarioProjeto[];
+    atividades: any[];
+}
