@@ -3,6 +3,8 @@ import { UserContext } from "../utils/context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
 import ProgressIndicator from "../components/molecules/ProgressIndicator";
 import axios from "axios";
+import { validateCNPJ, formatCNPJ } from "../utils/validateCNPJ";
+import { validatePhone, formatPhone } from "../utils/validatePhone";
 
 export default function Registro() {
     const navigate = useNavigate();
@@ -24,8 +26,35 @@ export default function Registro() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(""); const handleNextStepButtonClick = (e: React.FormEvent) => {
+    const [error, setError] = useState("");
+    const [cnpjError, setCnpjError] = useState("");
+    const [phoneError, setPhoneError] = useState("");    const handleNextStepButtonClick = (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Validar CNPJ antes de avançar
+        const isCNPJValid = validateCNPJ(cnpjEmpresa);
+        const isPhoneValid = validatePhone(telefoneEmpresa);
+        
+        if (!isCNPJValid) {
+            setCnpjError("CNPJ inválido");
+            setTimeout(() => {
+                setCnpjError("");
+            }, 5000);
+        }
+        
+        if (!isPhoneValid) {
+            setPhoneError("Telefone inválido");
+            setTimeout(() => {
+                setPhoneError("");
+            }, 5000);
+        }
+        
+        if (!isCNPJValid || !isPhoneValid) {
+            return;
+        }
+        
+        setCnpjError("");
+        setPhoneError("");
         setStep(2);
     };
     const isStep1Complete = () => {
@@ -33,7 +62,9 @@ export default function Registro() {
             cnpjEmpresa.trim() !== "" &&
             enderecoEmpresa.trim() !== "" &&
             telefoneEmpresa.trim() !== "" &&
-            emailEmpresa.trim() !== "";
+            emailEmpresa.trim() !== "" &&
+            !cnpjError &&
+            !phoneError;
     };
 
     const isStep2Complete = () => {
@@ -77,9 +108,9 @@ export default function Registro() {
         try {
             const requestBody = {
                 nome: nomeEmpresa,
-                cnpj: cnpjEmpresa,
+                cnpj: cnpjEmpresa.replace(/\D/g, ''), // Remove formatação antes de enviar
                 endereco: enderecoEmpresa,
-                telefone: telefoneEmpresa,
+                telefone: telefoneEmpresa, // Mantém formatação
                 email: emailEmpresa,
                 adminNome: nomeCompleto,
                 adminEmail: email,
@@ -159,8 +190,17 @@ export default function Registro() {
                                         id="cnpjEmpresa"
                                         placeholder="00.000.000/0000-00"
                                         value={cnpjEmpresa}
-                                        onChange={e => setCnpjEmpresa(e.target.value)}
-                                        className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            const cleanValue = value.replace(/\D/g, '');
+                                            if (cleanValue.length <= 14) {
+                                                setCnpjEmpresa(formatCNPJ(cleanValue));
+                                            }
+                                            if (cnpjError) {
+                                                setCnpjError("");
+                                            }
+                                        }}
+                                        className="border-b-2 w-full p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5 border-primary"
                                         required
                                     />
                                 </div>
@@ -171,7 +211,16 @@ export default function Registro() {
                                         id="telefoneEmpresa"
                                         placeholder="(00) 00000-0000"
                                         value={telefoneEmpresa}
-                                        onChange={e => setTelefoneEmpresa(e.target.value)}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            const cleanValue = value.replace(/\D/g, '');
+                                            if (cleanValue.length <= 11) {
+                                                setTelefoneEmpresa(formatPhone(cleanValue));
+                                            }
+                                            if (phoneError) {
+                                                setPhoneError("");
+                                            }
+                                        }}
                                         className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
                                         required
                                     />
@@ -204,12 +253,15 @@ export default function Registro() {
                             <button
                                 type={"submit"}
                                 value={"Submit"}
-                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${isStep1Complete() ? "bg-highlight hover:bg-primary" : "bg-gray-400 cursor-not-allowed"}`}
-                                disabled={!isStep1Complete()}
+                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm cursor-pointer font-medium max-w-20 w-full ${
+                                    cnpjError || phoneError ? "bg-red text-secondary hover:bg-secondary hover:text-red cursor-not-allowed" :
+                                    isStep1Complete() ? "bg-highlight hover:bg-primary text-secondary" : "bg-gray-400 cursor-not-allowed text-secondary"
+                                }`}
+                                disabled={!isStep1Complete() || !!cnpjError || !!phoneError}
                                 aria-label="Avançar"
                             >
                                 <i className="bi bi-feather2 left"></i>
-                                Avançar
+                                {cnpjError ? "CNPJ inválido" : phoneError ? "Telefone inválido" : "Avançar"}
                                 <i className="bi bi-feather2 right"></i>
                             </button>
                         </form>
