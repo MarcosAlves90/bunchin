@@ -236,7 +236,9 @@ export default function ResetarSenha() {
                     <button className={"absolute bg-secondary p-1 rounded-sm border-4 border-tertiary left-1 top-[-2rem] cursor-pointer"} onClick={handleBackButtonClick}>
                         <ArrowLeft size={30} />
                     </button>
-                    <h1 className="text-3xl font-subrayada font-bold mb-2">Recuperar conta</h1>
+                    <h1 className="text-3xl font-subrayada font-bold mb-2">
+                        {usuario && usuario.status === "0" ? "Definir senha" : "Recuperar conta"}
+                    </h1>
                     {(resetCode && isValidCode) || (usuario && usuario.status === "0") ? (
                         <div className="wrapper flex flex-col gap-2 max-w-30 w-full items-center justify-center">
                             <div className="flex flex-col items-start w-full">
