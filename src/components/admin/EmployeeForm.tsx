@@ -12,6 +12,8 @@ interface EmployeeFormProps {
     showEditModeMessage: boolean;
     sidebarCollapsed: boolean;
     cpfError: string;
+    loadingDelete: boolean;
+    showDeleteSuccessMessage: boolean;
     onSubmit: (event: React.FormEvent) => void;
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
     onSidebarToggle: () => void;
@@ -28,13 +30,15 @@ export function EmployeeForm({
     showEditModeMessage,
     sidebarCollapsed,
     cpfError,
+    loadingDelete,
+    showDeleteSuccessMessage,
     onSubmit,
     onChange,
     onSidebarToggle,
     onDeleteUser,
     onToggleLock
 }: EmployeeFormProps) {
-    const loadingDots = useLoadingDots(loadingSubmit);
+    const loadingDots = useLoadingDots(loadingSubmit || loadingDelete);
 
     const userFields = useMemo(() => [
         {
@@ -138,17 +142,18 @@ export function EmployeeForm({
                 <div className="container-save-button">
                     <button
                         className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${
-                            loadingSubmit ? "bg-gray-400 cursor-not-allowed pointer-events-none" :
+                            (loadingSubmit || loadingDelete) ? "bg-gray-400 cursor-not-allowed pointer-events-none" :
                             cpfError ? "bg-red hover:bg-red-600 cursor-not-allowed" :
-                            showSuccessMessage ? "bg-green hover:bg-green-600" :
+                            (showSuccessMessage || showDeleteSuccessMessage) ? "bg-green hover:bg-green-600" :
                             showEditModeMessage ? "bg-red hover:bg-secondary hover:text-red" :
                             "bg-highlight hover:bg-primary"
                         }`}
                         type="submit"
-                        disabled={loadingSubmit || !!cpfError}
+                        disabled={(loadingSubmit || loadingDelete) || !!cpfError}
                     >
-                        {loadingSubmit ? `Carregando${loadingDots}` :
+                        {(loadingSubmit || loadingDelete) ? `Carregando${loadingDots}` :
                         cpfError ? cpfError :
+                        showDeleteSuccessMessage ? "Funcionário excluído!" :
                         showSuccessMessage ? (funcionarioSelecionado ? "Funcionário atualizado!" : "Funcionário criado!") :
                         showEditModeMessage ? "Modo de Edição Necessário" :
                         (!funcionarioSelecionado ? "Criar usuário" : "Salvar alterações")

@@ -26,7 +26,10 @@ export function useAdminLogic() {
     const [lockInputs, setLockInputs] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModeMessage, setShowEditModeMessage] = useState(false);
-    const [loadingSubmit, setLoadingSubmit] = useState(false);    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [showDeleteSuccessMessage, setShowDeleteSuccessMessage] = useState(false);
     const [cpfError, setCpfError] = useState("");
     const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -221,16 +224,21 @@ export function useAdminLogic() {
         for (const [name, value] of Object.entries(defaultValues)) {
             handleChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
         }
-    };
-
-    const deleteUser = useCallback(async (cpf: string): Promise<void> => {
+    };    const deleteUser = useCallback(async (cpf: string): Promise<void> => {
+        setLoadingDelete(true);
         try {
             await axios.delete(`${API_URL}funcionario/${cpf}`);
             console.log("Funcionário deletado com sucesso!");
             await getUsers();
             clearForm();
+            setShowDeleteSuccessMessage(true);
+            setTimeout(() => {
+                setShowDeleteSuccessMessage(false);
+            }, 5000);
         } catch (error) {
             console.error("Erro ao deletar funcionário:", error);
+        } finally {
+            setLoadingDelete(false);
         }
     }, [API_URL, getUsers]);
 
@@ -275,8 +283,7 @@ export function useAdminLogic() {
             });
         }
         console.log(funcionarioSelecionado);
-    }, [funcionarioSelecionado, indexFuncionario]);
-    return {
+    }, [funcionarioSelecionado, indexFuncionario]);    return {
         // State
         funcionarios,
         funcionarioSelecionado,
@@ -289,6 +296,8 @@ export function useAdminLogic() {
         showEditModeMessage,
         loadingSubmit,
         showSuccessMessage,
+        loadingDelete,
+        showDeleteSuccessMessage,
         selectedDate,
         selectedDateISO,
         tema,

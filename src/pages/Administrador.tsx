@@ -14,6 +14,8 @@ export default function Administrador() {
         showEditModeMessage,
         loadingSubmit,
         showSuccessMessage,
+        loadingDelete,
+        showDeleteSuccessMessage,
         selectedDate,
         selectedDateISO,
         tema,
@@ -53,6 +55,8 @@ export default function Administrador() {
                     showEditModeMessage={showEditModeMessage}
                     sidebarCollapsed={sidebarCollapsed}
                     cpfError={cpfError}
+                    loadingDelete={loadingDelete}
+                    showDeleteSuccessMessage={showDeleteSuccessMessage}
                     onSubmit={handleSubmit}
                     onChange={handleChange}
                     onSidebarToggle={handleSidebarCollapse}
