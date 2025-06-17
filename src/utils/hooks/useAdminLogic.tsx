@@ -181,7 +181,7 @@ export function useAdminLogic() {
                     ...cleanedInputs,
                     senha: newPassword,
                     organizacao: {
-                        idOrganizacao: usuario?.organizacao?.idOrganizacao ?? 1
+                        idOrganizacao: usuario?.organizacao_id ?? 1
                     }
                 };
                 if ('n_registro' in inputsClone) {
@@ -207,7 +207,7 @@ export function useAdminLogic() {
         finally {
             setLoadingSubmit(false);
         }
-    }, [API_URL, funcionarioSelecionado, inputs, lockInputs, getUsers, usuario?.organizacao?.idOrganizacao, setCpfError]);
+    }, [API_URL, funcionarioSelecionado, inputs, lockInputs, getUsers, usuario?.organizacao_id, setCpfError]);
 
     const clearForm = () => {
         setFuncionarioSelecionado("");

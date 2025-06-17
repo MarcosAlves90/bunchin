@@ -4,7 +4,7 @@
 // ==================== INTERFACES DE USUÁRIO ====================
 
 export interface Usuario {
-    id: string;
+    id?: string;
     n_registro: number;
     nome: string;
     email: string;
@@ -13,7 +13,8 @@ export interface Usuario {
     departamento: string;
     cpf: string;
     status: string;
-    organizacao: Organizacao;
+    organizacao_id: number;
+    organizacao?: Organizacao;
 }
 
 export interface Organizacao {
