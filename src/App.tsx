@@ -56,7 +56,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Controle do scroll apenas para a Home
     if (location.pathname === "/") {
       const handleScroll = () => {
         setIsDown(window.scrollY > 0);
