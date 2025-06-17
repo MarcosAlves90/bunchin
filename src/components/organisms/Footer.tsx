@@ -7,22 +7,33 @@ import { SendEmail } from "../../utils/services/sendEmail";
 export default function Footer() {
 
     const [email, setEmail] = useState("");
+    const [loadingFooterSubmit, setLoadingFooterSubmit] = useState(false);
+    const [showFooterSuccess, setShowFooterSuccess] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
     const { tema } = useContext(UserContext);
-
-    function handleSendEmailClick() {
+    async function handleSendEmailClick() {
         const normalizedEmail = validator.normalizeEmail(email);
         if (normalizedEmail && validator.isEmail(normalizedEmail)) {
-            // @ts-ignore
-            SendEmail(import.meta.env.VITE_PUBLIC_API_KEY,
+            setLoadingFooterSubmit(true);
+            try {
                 // @ts-ignore
-                import.meta.env.VITE_SERVICE_API_KEY,
-                // @ts-ignore
-                import.meta.env.VITE_TEMPLATE_API_KEY_1, {
-                email: email,
-            });
+                await SendEmail(import.meta.env.VITE_PUBLIC_API_KEY,
+                    // @ts-ignore
+                    import.meta.env.VITE_SERVICE_API_KEY,
+                    // @ts-ignore
+                    import.meta.env.VITE_TEMPLATE_API_KEY_1, {
+                    email: email,
+                });
+                setEmail("");
+                setShowFooterSuccess(true);
+                setTimeout(() => setShowFooterSuccess(false), 3000);
+            } catch (error) {
+                console.log('Erro ao enviar email');
+            } finally {
+                setLoadingFooterSubmit(false);
+            }
         } else {
             console.log('Email inválido');
         }
@@ -65,13 +76,23 @@ export default function Footer() {
                     <div className="flex gap-1 flex-col max-w-25">
                         <p className={"text-xl font-bold w-full text-start"}>De olho nas novidades</p>
                         <p className="text-justify">Fique por dentro das novidades e atualizações! Inscreva-se e seja o
-                            primeiro a saber de melhorias e recursos exclusivos.</p>
-                        <div className={"relative"}>
+                            primeiro a saber de melhorias e recursos exclusivos.</p>                        <div className={"relative"}>
                             <input className={`w-full py-0.5 pl-1 pr-7.5 border-b-2 bg-secondary border-card text-card rounded-t-sm`}
                                 placeholder={"Seu email"}
+                                value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                disabled={loadingFooterSubmit}
                             ></input>
-                            <p className={"absolute top-1/2 -translate-y-1/2 right-1 text-highlight cursor-pointer hover:bg-highlight/50 px-0.5 rounded-sm transition-colors"} onClick={handleSendEmailClick}>Inscrever-se</p>
+                            <p className={`absolute top-1/2 -translate-y-1/2 right-1 cursor-pointer px-0.5 rounded-sm transition-all ${
+                                loadingFooterSubmit ? "text-gray-400 cursor-not-allowed pointer-events-none" :
+                                showFooterSuccess ? "text-green bg-green/10" :
+                                "text-highlight hover:bg-highlight/50"
+                            }`} 
+                            onClick={loadingFooterSubmit ? undefined : handleSendEmailClick}>
+                                {loadingFooterSubmit ? "Enviando..." :
+                                showFooterSuccess ? "Enviado!" :
+                                "Inscrever-se"}
+                            </p>
                         </div>
                     </div>
                 </div>
