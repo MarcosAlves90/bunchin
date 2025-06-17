@@ -5,6 +5,7 @@ import ProgressIndicator from "../components/molecules/ProgressIndicator";
 import axios from "axios";
 import { validateCNPJ, formatCNPJ } from "../utils/validateCNPJ";
 import { validatePhone, formatPhone } from "../utils/validatePhone";
+import { validateCPF, formatCPF } from "../utils/validateCPF";
 
 export default function Registro() {
     const navigate = useNavigate();
@@ -28,7 +29,8 @@ export default function Registro() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [cnpjError, setCnpjError] = useState("");
-    const [phoneError, setPhoneError] = useState("");    const handleNextStepButtonClick = (e: React.FormEvent) => {
+    const [phoneError, setPhoneError] = useState("");
+    const [cpfError, setCpfError] = useState("");    const handleNextStepButtonClick = (e: React.FormEvent) => {
         e.preventDefault();
         
         // Validar CNPJ antes de avançar
@@ -71,7 +73,8 @@ export default function Registro() {
         return nomeCompleto.trim() !== "" &&
             cpf.trim() !== "" &&
             email.trim() !== "" &&
-            senha.trim() !== "";
+            senha.trim() !== "" &&
+            !cpfError;
     };
 
     const canNavigateToStep = (targetStep: number) => {
@@ -97,6 +100,17 @@ export default function Registro() {
         console.log('isStep2Complete():', isStep2Complete());
         console.log('API_URL:', API_URL);
         
+        // Validar CPF antes de finalizar
+        const isCPFValid = validateCPF(cpf);
+        
+        if (!isCPFValid) {
+            setCpfError("CPF inválido");
+            setTimeout(() => {
+                setCpfError("");
+            }, 5000);
+            return;
+        }
+        
         if (!isStep2Complete()) {
             console.log('Step 2 não está completo, retornando');
             return;
@@ -104,6 +118,7 @@ export default function Registro() {
 
         setIsLoading(true);
         setError("");
+        setCpfError("");
 
         try {
             const requestBody = {
@@ -115,7 +130,7 @@ export default function Registro() {
                 adminNome: nomeCompleto,
                 adminEmail: email,
                 adminSenha: senha,
-                adminCpf: cpf
+                adminCpf: cpf.replace(/\D/g, '') // Remove formatação antes de enviar
             };
 
             console.log('Dados do registro:', requestBody);
@@ -294,9 +309,18 @@ export default function Registro() {
                                     <input
                                         type="text"
                                         id="cpf"
-                                        placeholder="Seu CPF"
+                                        placeholder="000.000.000-00"
                                         value={cpf}
-                                        onChange={e => setCpf(e.target.value)}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            const cleanValue = value.replace(/\D/g, '');
+                                            if (cleanValue.length <= 11) {
+                                                setCpf(formatCPF(cleanValue));
+                                            }
+                                            if (cpfError) {
+                                                setCpfError("");
+                                            }
+                                        }}
                                         className="border-b-2 w-full border-primary p-0.5 bg-secondary rounded-t-sm group-focus-within:border-highlight pr-2.5"
                                         required
                                     />
@@ -336,16 +360,17 @@ export default function Registro() {
                             <button
                                 type={"submit"}
                                 value={"Submit"}
-                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm text-secondary cursor-pointer font-medium max-w-20 w-full ${
+                                className={`border-none transition text-lg px-2 py-[0.7rem] rounded-sm cursor-pointer font-medium max-w-20 w-full ${
+                                    cpfError ? "bg-red text-secondary hover:bg-secondary hover:text-red cursor-not-allowed" :
                                     isStep2Complete() && !isLoading 
-                                        ? "bg-highlight hover:bg-primary" 
-                                        : "bg-gray-400 cursor-not-allowed"
+                                        ? "bg-highlight hover:bg-primary text-secondary" 
+                                        : "bg-gray-400 cursor-not-allowed text-secondary"
                                 }`}
-                                disabled={!isStep2Complete() || isLoading}
+                                disabled={!isStep2Complete() || isLoading || !!cpfError}
                                 aria-label="Finalizar cadastro"
                             >
                                 <i className="bi bi-feather2 left"></i>
-                                {isLoading ? 'Cadastrando...' : 'Finalizar'}
+                                {cpfError ? "CPF inválido" : isLoading ? 'Cadastrando...' : 'Finalizar'}
                                 <i className="bi bi-feather2 right"></i>
                             </button>
                         </form>
