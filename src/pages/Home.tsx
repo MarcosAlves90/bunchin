@@ -240,7 +240,10 @@ export default function Home() {
                     <p className="text-xl text-primary/80 mb-5 transition-colors duration-200">
                         Junte-se a centenas de empresas que já transformaram sua gestão de ponto e equipe.
                     </p>
-                    <button className={"button-session"}>
+                    <button 
+                        className={"button-session"}
+                        onClick={() => navigate('/registro')}
+                    >
                         Registre sua empresa
                     </button>
                 </div>
