@@ -61,7 +61,7 @@ export default function ResetarSenha() {
         const { data } = await axios.post(`${API_URL}checkEmailExists`, { email });
         const { n_registro: funcionarioId, nome: funcionarioNome } = data;
         const responseLink = await axios.post(`${API_URL}storeResetCode`, {
-            email, codigo: code, funcionario_id: funcionarioId
+            email, codigo: code, funcionario: {n_registro: funcionarioId}
         });
         return { ok: responseLink.status === 200, nome: funcionarioNome };
     };
@@ -100,7 +100,7 @@ export default function ResetarSenha() {
             
             setError("Email enviado com sucesso! Verifique sua caixa de entrada.");
         } catch (error) {
-            setError("Erro ao enviar email. Tente novamente.");
+            setError("Erro ao enviar email.");
         } finally {
             setLoadingSendEmail(false);
         }
@@ -164,7 +164,7 @@ export default function ResetarSenha() {
 
         try {
             const response = await axios.put(`${API_URL}${apiEndpoint}`, payload);
-            if (response.data.status === 1) {
+            if (response.status === 200) {
                 setError("Senha alterada com sucesso.");
                 setTimeout(() => {
                     if (usuario && usuario.status === "0") {
