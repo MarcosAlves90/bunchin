@@ -6,7 +6,7 @@
 ![Bitbucket open issues](https://img.shields.io/bitbucket/issues/MarcosAlves90/bunchin?style=for-the-badge)
 ![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/MarcosAlves90/bunchin?style=for-the-badge)
 
-![Página inicial da plataforma](readme_details/bunchin_tela_inicial.png)
+[![Página inicial da plataforma](readme_details/bunchin_tela_inicial.png)](https://bunchin-project.onrender.com)
 
 > Online time tracking platform project.
 >
@@ -28,7 +28,7 @@ This project was developed using the following main technologies:
 
 The project is still under development and the next updates will focus on the following tasks:
 
-- [ ] Add projects page
+- [X] Add projects page
 - [ ] Add tasks page
-- [ ] Refactor project CSS to use TailwindCSS
-- [ ] Update the project to consume the new Java Spring Boot API
+- [X] Refactor project CSS to use TailwindCSS
+- [X] Update the project to consume the new Java Spring Boot API
